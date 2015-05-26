@@ -10,9 +10,9 @@ import SpriteKit
 
 class Tree: Lifeform {
     
-    init(size: CGFloat) {
+    init(size: CGFloat, rect: CGRect) {
         
-        let texture = SKTexture(imageNamed: "Tree")
+        let texture = SKTexture(imageNamed: "RectGreen")
         let sizeWH = CGSize(width: size, height: size)
         
         super.init(texture: texture, color: nil, size: sizeWH)
@@ -24,10 +24,8 @@ class Tree: Lifeform {
         organicProduction = 0
         cost = 100
         
-        self.physicsBody = SKPhysicsBody(circleOfRadius: (size)/2)
-        self.physicsBody?.dynamic = false
-        self.physicsBody?.categoryBitMask = 1 << 1
-        self.physicsBody?.contactTestBitMask = 0xFFFFFF
+        self.position = randomPointInsideRect(rect)
+        self.zPosition = 2
         
         self.name = "tree"
     }

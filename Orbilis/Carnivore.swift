@@ -10,10 +10,16 @@ import SpriteKit
 
 class Carnivore: Lifeform {
     
-    init(size: CGFloat) {
+    var theSize: CGFloat = 0
+    var theRect = CGRect()
+    
+    init(size: CGFloat, rect: CGRect) {
         
-        let texture = SKTexture(imageNamed: "Tree")
+        let texture = SKTexture(imageNamed: "RectBlue")
         let sizeWH = CGSize(width: size, height: size)
+        
+        theSize = size
+        theRect = rect
         
         super.init(texture: texture, color: nil, size: sizeWH)
         
@@ -24,12 +30,16 @@ class Carnivore: Lifeform {
         organicProduction = 0
         cost = 100
         
-        self.physicsBody = SKPhysicsBody(circleOfRadius: (size)/2)
-        self.physicsBody?.dynamic = false
-        self.physicsBody?.categoryBitMask = 1 << 3
-        self.physicsBody?.contactTestBitMask = 0xFFFFFF
+        self.position = randomPointInsideRect(rect)
+        self.zPosition = 2
         
         self.name = "carnivore"
+    }
+    
+    override func reproduce() -> Lifeform {
+        var herbivore = Carnivore(size: theSize,rect: theRect)
+        herbivore.position = self.position
+        return herbivore as Lifeform
     }
     
     required init?(coder aDecoder: NSCoder) {

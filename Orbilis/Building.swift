@@ -27,6 +27,11 @@ class Building: SKSpriteNode {
         self.name = "building"
     }
     
+    func destroy() -> Lifeform {
+        //Animate and remove from parent.
+        return Lifeform()
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
