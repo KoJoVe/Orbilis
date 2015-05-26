@@ -34,6 +34,11 @@ class Lifeform: SKSpriteNode {
         //Calculate a percentage based on pullution limit. If certain percentage, the lifeform die.
     }
     
+    func interact(lifeform: SKSpriteNode) -> Bool {
+        return false
+        //Subclass only
+    }
+    
     func eat(lifeform: Lifeform) -> Bool {
         if(hungerCooldown <= 0) {
             hungerCooldown = 10
@@ -51,7 +56,7 @@ class Lifeform: SKSpriteNode {
         self.removeFromParent()
     }
     
-    func reproduce() -> Lifeform {
+    func reproduce() -> Lifeform? {
         //Subclass only
         return Lifeform()
     }

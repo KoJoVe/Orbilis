@@ -36,7 +36,19 @@ class Herbivore: Lifeform {
         self.name = "herbivore"
     }
     
-    override func reproduce() -> Lifeform {
+    override func interact(lifeform: SKSpriteNode) -> Bool {
+        
+        if(lifeform.name == "tree") {
+            var node = lifeform as! Lifeform
+            node.animateToDie()
+            node.aboutToDelete = 1
+            return true
+        }
+        
+        return false
+    }
+    
+    override func reproduce() -> Lifeform? {
         var herbivore = Herbivore(size: theSize,rect: theRect)
         herbivore.position = self.position
         return herbivore as Lifeform

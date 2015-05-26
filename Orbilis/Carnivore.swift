@@ -36,7 +36,7 @@ class Carnivore: Lifeform {
         self.name = "carnivore"
     }
     
-    override func reproduce() -> Lifeform {
+    override func reproduce() -> Lifeform? {
         var herbivore = Carnivore(size: theSize,rect: theRect)
         herbivore.position = self.position
         return herbivore as Lifeform

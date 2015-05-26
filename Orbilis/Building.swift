@@ -10,7 +10,7 @@ import SpriteKit
 
 class Building: SKSpriteNode {
     
-    var pollutionRate = 0
+    var pollutionRate = 100
     
     init(size: CGFloat) {
         
@@ -27,9 +27,8 @@ class Building: SKSpriteNode {
         self.name = "building"
     }
     
-    func destroy() -> Lifeform {
+    func destroy() {
         //Animate and remove from parent.
-        return Lifeform()
     }
     
     required init?(coder aDecoder: NSCoder) {
