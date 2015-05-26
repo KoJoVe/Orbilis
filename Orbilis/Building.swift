@@ -12,7 +12,7 @@ class Building: SKSpriteNode {
     
     var pollutionRate = 100
     
-    init(size: CGFloat) {
+    init(size: CGFloat, rect: CGRect) {
         
         let texture = SKTexture(imageNamed: "Tree")
         let sizeWH = CGSize(width: size, height: size)

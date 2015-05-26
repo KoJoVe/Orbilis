@@ -27,6 +27,7 @@ class GameScene: SKScene {
     var orbGlass = SKSpriteNode()
     var orbWater = SKSpriteNode()
     var orbSand = SKSpriteNode()
+    var orbCloud = SKSpriteNode()
     
     var creaturesArray: Array<Lifeform> = []
     var buildingsArray: Array<Building> = []
@@ -57,6 +58,7 @@ class GameScene: SKScene {
     }
     
     func drawOrb() {
+        //Joao
         backgroundSprite = SKSpriteNode(imageNamed: "RectGreen")
         backgroundSprite.size = CGSizeMake(self.frame.size.width - 40, self.frame.size.width - 40)
         backgroundSprite.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
@@ -69,7 +71,7 @@ class GameScene: SKScene {
     }
     
     func drawInfo() {
-        
+        //Joao
         descriptor = SKSpriteNode()
         descriptor!.size = CGSizeMake(self.frame.size.width/3, self.frame.size.width/3)
         descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2)
@@ -122,8 +124,20 @@ class GameScene: SKScene {
         var menuItens = Actions.getActionsArray()
         
         var count = CGFloat(menuItens.count)
-        var buttonsSpace:CGFloat = 40
-        var buttonSize:CGFloat = (self.frame.size.width - buttonsSpace*(count + 1))/count
+        
+        var textSize:CGFloat = 50
+        
+        var buttonSize:CGFloat = ((CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2) - organicMatterImage!.frame.size.height - textSize)
+        var buttonsSpace:CGFloat = 0
+        
+        if(buttonSize * CGFloat(menuItens.count) >= self.frame.size.width - 20) {
+            
+        } else {
+            
+        }
+        
+        //var buttonsSpace:CGFloat = 40
+        //var buttonSize:CGFloat = (self.frame.size.width - buttonsSpace*(count + 1))/count
         
         var counter:CGFloat = 1
         
@@ -330,11 +344,14 @@ class GameScene: SKScene {
     func spawnEntity(type: String) {
         
         var new = Actions.executeAction(type, size: sizeOfSprites, rect: islandSprite.frame)
+        
         if(new.node != nil) {
             if(new.type == "Lifeform") {
                 creaturesArray.append(new.node! as! Lifeform)
                 self.islandSprite.addChild(new.node! as! Lifeform)
             } else if (new.type == "Building") {
+                //Lorenzo
+                //Faz uma probabilidade de surgir uma fabrica em um local aleatorio
                 
             }
         }

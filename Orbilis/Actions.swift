@@ -17,6 +17,7 @@ class Actions: NSObject {
         array.append("AddTree")
         array.append("AddHerb")
         array.append("AddCarn")
+        array.append("AddFactory")
         
         return array
         
@@ -35,6 +36,10 @@ class Actions: NSObject {
         if(type=="AddCarn") {
             var sprite = Carnivore(size: size, rect: rect)
             return (sprite as AnyObject,"Lifeform")
+        }
+        if(type=="AddFactory") {
+            var sprite = Building(size: size, rect: rect)
+            return (sprite as AnyObject,"Building")
         }
         
         return (nil,"Nil")
@@ -68,6 +73,9 @@ class Actions: NSObject {
         }
         if(type=="AddCarn") {
             return "Add Carnivore"
+        }
+        if(type=="RemoveFactory") {
+            return "Remove Factory"
         }
         
         return nil
