@@ -10,6 +10,8 @@ import SpriteKit
 
 class GameScene: SKScene {
     
+    var pollutionLimits = [0,100,200,300,500]
+    
     var sizeOfSprites: CGFloat = 20
     var tickTime = 0.5
     var tickTimer = NSTimer()
@@ -72,16 +74,35 @@ class GameScene: SKScene {
     
     func drawInfo() {
         //Joao
+        var textSize:CGFloat = 30
+        
         descriptor = SKSpriteNode()
-        descriptor!.size = CGSizeMake(self.frame.size.width/3, self.frame.size.width/3)
-        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2)
+        descriptor!.size = CGSizeMake(self.frame.size.width/6, self.frame.size.width/6)
+        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2 + textSize)
         descriptor!.alpha = 0
         descriptor!.zPosition = 2
         self.addChild(descriptor!)
         
+        redrawDescriptorText("")
+        
         redrawOrganicMatter()
         
         redrawPresentTime()
+        
+    }
+    
+    func redrawDescriptorText(text: String) {
+        
+        var space:CGFloat = 15
+        
+        descriptorLabel?.removeFromParent()
+        descriptorLabel = SKLabelNode()
+        descriptorLabel!.text = text
+        descriptorLabel!.fontSize = 18
+            descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), descriptor!.position.y - descriptor!.frame.size.height/2 - descriptorLabel!.frame.size.height/2 - space)
+        descriptorLabel!.alpha = 1
+        descriptorLabel!.zPosition = 2
+        self.addChild(descriptorLabel!)
         
     }
     
@@ -92,12 +113,16 @@ class GameScene: SKScene {
         organicMatterImage!.zPosition = 2
         self.addChild(organicMatterImage!)
         
+        organicMatterLabel?.removeFromParent()
         organicMatterLabel = SKLabelNode()
         organicMatterLabel!.text = "\(organicMatter)"
+        organicMatterLabel!.fontSize = 18
         organicMatterLabel!.zPosition = 2
         self.addChild(organicMatterLabel!)
         
-        var difference = organicMatterLabel!.frame.size.width - organicMatterImage!.frame.size.width
+        var space:CGFloat = 10
+        
+        var difference = organicMatterLabel!.frame.size.width - organicMatterImage!.frame.size.width + space/2
         
         var y = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2)/2
         var x = CGRectGetMidX(self.frame) - organicMatterImage!.frame.size.width/2 - difference
@@ -106,14 +131,15 @@ class GameScene: SKScene {
         pointOrganicMatter.x = organicMatterImage!.position.x
         pointOrganicMatter.y = organicMatterImage!.position.y
         
-        organicMatterLabel!.position = CGPointMake(x + organicMatterLabel!.frame.size.width, y - organicMatterLabel!.frame.size.height/2)
+        organicMatterLabel!.position = CGPointMake(x + organicMatterLabel!.frame.size.width + space, y - organicMatterLabel!.frame.size.height/2)
         pointOrganicMatterLabel.x = organicMatterLabel!.position.x
         pointOrganicMatterLabel.y = organicMatterLabel!.position.y
     }
     
     func redrawPresentTime() {
+        presentTimeLabel?.removeFromParent()
         presentTimeLabel = SKLabelNode()
-        presentTimeLabel!.text = "\(presentTime)"
+        presentTimeLabel!.text = "\(presentTime)d"
         presentTimeLabel!.position = CGPointMake(presentTimeLabel!.frame.size.width/2 + 10, self.frame.height - presentTimeLabel!.frame.size.height/2 - 20)
         presentTimeLabel!.zPosition = 2
         self.addChild(presentTimeLabel!)
@@ -125,19 +151,17 @@ class GameScene: SKScene {
         
         var count = CGFloat(menuItens.count)
         
-        var textSize:CGFloat = 50
+        var textSize:CGFloat = 20
         
-        var buttonSize:CGFloat = ((CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2) - organicMatterImage!.frame.size.height - textSize)
+        var buttonSize:CGFloat = ((CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2) - (self.frame.size.width/10) - (textSize + 10))
         var buttonsSpace:CGFloat = 0
         
-        if(buttonSize * CGFloat(menuItens.count) >= self.frame.size.width - 20) {
-            
+        if(buttonSize * CGFloat(menuItens.count) >= self.frame.size.width - 10) {
+            buttonSize = buttonSize - 30
+            buttonsSpace = (self.frame.size.width - (buttonSize * CGFloat(menuItens.count)))/CGFloat(menuItens.count + 1)
         } else {
-            
+            buttonsSpace = (self.frame.size.width - (buttonSize * CGFloat(menuItens.count)))/CGFloat(menuItens.count + 1)
         }
-        
-        //var buttonsSpace:CGFloat = 40
-        //var buttonSize:CGFloat = (self.frame.size.width - buttonsSpace*(count + 1))/count
         
         var counter:CGFloat = 1
         
@@ -157,7 +181,8 @@ class GameScene: SKScene {
             
             var label = SKLabelNode()
             label.text = "\(Actions.getActionCost(i))"
-            label.position = CGPointMake(x, y - buttonSize/2 - label.frame.size.height/2 - 20)
+            label.fontSize = 16
+            label.position = CGPointMake(x, y - buttonSize/2 - label.frame.size.height/2 - (textSize - 10))
             label.alpha = 0
             label.zPosition = 2
             menuCosts.append(label)
@@ -207,11 +232,14 @@ class GameScene: SKScene {
         var action = SKAction.fadeAlphaTo(1, duration: 0.2)
         descriptor!.runAction(action)
         descriptor!.texture = Actions.getActionDescriptor(type)
+        descriptorLabel!.runAction(action)
+        redrawDescriptorText(Actions.getActionText(type)!)
     }
     
     func hideDescriptor() {
         var action = SKAction.fadeAlphaTo(0, duration: 0.2)
         descriptor!.runAction(action)
+        descriptorLabel!.runAction(action)
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
@@ -265,7 +293,13 @@ class GameScene: SKScene {
             
             for i in options {
                 if name == i {
-                    spawnEntity(i)
+                    if(organicMatter < Actions.getActionCost(i)) {
+                        //Not enough matter
+                    } else {
+                        executeGameAction(i)
+                        organicMatterLabel?.text = "\(organicMatter)"
+                    }
+                    
                 }
             }
         }
@@ -277,6 +311,11 @@ class GameScene: SKScene {
         checkForCollisions()
         moveAndAgeEntities()
         calculatePollution()
+        chanceSpawnFactory()
+        
+        presentTime++
+        
+        redrawPresentTime()
         
         tickTimer = NSTimer.scheduledTimerWithTimeInterval(tickTime, target: self, selector: Selector("updateTick"), userInfo: nil, repeats: false)
     }
@@ -333,15 +372,16 @@ class GameScene: SKScene {
         
         for i in creaturesArray {
             i.move(islandSprite.frame,time: tickTime)
-            if(i.lifeTime > i.lifeTimeMax) {
+            if(i.lifeTime > i.lifeTimeMax && i.aboutToDelete == 0) {
                 i.animateToDie()
                 i.aboutToDelete = 1
-                organicMatter++
+                organicMatter += i.organicProduction
+                organicMatterLabel?.text = "\(organicMatter)"
             }
         }
     }
     
-    func spawnEntity(type: String) {
+    func executeGameAction(type: String) {
         
         var new = Actions.executeAction(type, size: sizeOfSprites, rect: islandSprite.frame)
         
@@ -349,15 +389,23 @@ class GameScene: SKScene {
             if(new.type == "Lifeform") {
                 creaturesArray.append(new.node! as! Lifeform)
                 self.islandSprite.addChild(new.node! as! Lifeform)
+                organicMatter -= Actions.getActionCost(type)
             } else if (new.type == "Building") {
-                //Lorenzo
-                //Faz uma probabilidade de surgir uma fabrica em um local aleatorio
-                
+                buildingsArray.append(new.node! as! Building)
+                self.islandSprite.addChild(new.node! as! Building)
+            } else if (new.type == "RemoveFactory") {
+                if(buildingsArray.count >= 1) {
+                    buildingsArray[0].destroy()
+                    buildingsArray.removeAtIndex(0)
+                    organicMatter -= Actions.getActionCost(type)
+                }
             }
         }
     }
     
     func calculatePollution() {
+        
+        println(pollution)
         
         for i in buildingsArray {
             pollution += i.pollutionRate
@@ -367,7 +415,30 @@ class GameScene: SKScene {
             pollution -= i.pollutionIncrement
         }
         
-        //Show weather effects according to pollution here
+        if(pollution < 0) {
+            pollution = 0
+        }
+        
+        if(pollution <= pollutionLimits[0]) {
+            rain()
+        } else if(pollution <= pollutionLimits[1]) {
+            smoke()
+        } else if(pollution <= pollutionLimits[2]) {
+            acidRain()
+        } else if(pollution <= pollutionLimits[3]) {
+            darkenColor()
+        } else if(pollution <= pollutionLimits[4]) {
+            loseGame()
+        }
+    }
+    
+    func chanceSpawnFactory() {
+        
+        var r = random(1...10)
+        
+        if(r<=1) {
+            executeGameAction("AddFactory")
+        }
         
     }
     
@@ -389,6 +460,21 @@ class GameScene: SKScene {
     
     func loseGame() {
         //Anima enchete e abre proxima cena.
+    }
+    
+    func random(range: Range<Int> ) -> Int
+    {
+        var offset = 0
+        
+        if range.startIndex < 0
+        {
+            offset = abs(range.startIndex)
+        }
+        
+        let mini = UInt32(range.startIndex + offset)
+        let maxi = UInt32(range.endIndex   + offset)
+        
+        return Int(mini + arc4random_uniform(maxi - mini)) - offset
     }
     
     override func update(currentTime: CFTimeInterval) {

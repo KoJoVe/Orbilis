@@ -26,12 +26,12 @@ class Carnivore: Lifeform {
         pollutionIncrement = -10
         pollutionLimit = 300
         reproductionRate = 0
-        lifeTimeMax = 300
-        organicProduction = 0
+        lifeTimeMax = 5
+        organicProduction = 100
         cost = 100
         
         self.position = randomPointInsideRect(rect)
-        self.zPosition = 2
+        self.zPosition = 4
         
         self.name = "carnivore"
     }

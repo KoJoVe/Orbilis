@@ -17,7 +17,7 @@ class Actions: NSObject {
         array.append("AddTree")
         array.append("AddHerb")
         array.append("AddCarn")
-        array.append("AddFactory")
+        array.append("RemoveFactory")
         
         return array
         
@@ -41,6 +41,9 @@ class Actions: NSObject {
             var sprite = Building(size: size, rect: rect)
             return (sprite as AnyObject,"Building")
         }
+        if(type=="RemoveFactory") {
+            return ("Removed", "RemoveFactory")
+        }
         
         return (nil,"Nil")
     }
@@ -57,6 +60,10 @@ class Actions: NSObject {
         }
         if(type=="AddCarn") {
             var sprite = SKSpriteNode(imageNamed: "RectBlue")
+            return sprite
+        }
+        if(type=="RemoveFactory") {
+            var sprite = SKSpriteNode(imageNamed: "RectPurple")
             return sprite
         }
         
@@ -94,6 +101,10 @@ class Actions: NSObject {
         }
         if(type=="AddCarn") {
             var sprite = SKTexture(imageNamed: "RectBlue")
+            return sprite
+        }
+        if(type=="RemoveFactory") {
+            var sprite = SKTexture(imageNamed: "RectPurple")
             return sprite
         }
         

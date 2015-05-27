@@ -31,7 +31,7 @@ class Herbivore: Lifeform {
         cost = 100
         
         self.position = randomPointInsideRect(rect)
-        self.zPosition = 2
+        self.zPosition = 4
         
         self.name = "herbivore"
     }

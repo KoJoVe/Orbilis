@@ -25,9 +25,13 @@ class Tree: Lifeform {
         cost = 100
         
         self.position = randomPointInsideRect(rect)
-        self.zPosition = 2
+        self.zPosition = 4
         
         self.name = "tree"
+    }
+    
+    override func move(rect: CGRect, time: Double) {
+        
     }
 
     required init?(coder aDecoder: NSCoder) {
