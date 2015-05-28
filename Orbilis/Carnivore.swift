@@ -38,9 +38,10 @@ class Carnivore: Lifeform {
     
     override func interact(lifeform: SKSpriteNode) -> Bool {
         
-        if(lifeform.name == "herbivore") {
+        if(lifeform.name == "herbivore" && fed == false) {
             var node = lifeform as! Lifeform
             node.animateToDie()
+            fed = true
             node.aboutToDelete = 1
             return true
         }

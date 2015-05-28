@@ -67,7 +67,7 @@ class GameScene: SKScene {
     
     var presentTime = 0
     var pollution = 0
-    var organicMatter = 356
+    var organicMatter = 500
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */

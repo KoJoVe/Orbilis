@@ -37,9 +37,10 @@ class Herbivore: Lifeform {
     
     override func interact(lifeform: SKSpriteNode) -> Bool {
         
-        if(lifeform.name == "tree") {
+        if(lifeform.name == "tree" && fed == false) {
             var node = lifeform as! Lifeform
             node.animateToDie()
+            fed = true
             node.aboutToDelete = 1
             return true
         }
