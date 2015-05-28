@@ -48,6 +48,7 @@
 		51FEA4721B1678CC007EBB09 /* FloodIsland.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA46F1B1678CC007EBB09 /* FloodIsland.png */; };
 		51FEA4731B1678CC007EBB09 /* BadIsland.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA4701B1678CC007EBB09 /* BadIsland.png */; };
 		51FEA4741B1678CC007EBB09 /* GoodCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA4711B1678CC007EBB09 /* GoodCloud.png */; };
+		947716911B1760EB00D3015C /* UserInformation.plist in Resources */ = {isa = PBXBuildFile; fileRef = 947716901B1760EB00D3015C /* UserInformation.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -106,6 +107,7 @@
 		51FEA46F1B1678CC007EBB09 /* FloodIsland.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FloodIsland.png; sourceTree = "<group>"; };
 		51FEA4701B1678CC007EBB09 /* BadIsland.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadIsland.png; sourceTree = "<group>"; };
 		51FEA4711B1678CC007EBB09 /* GoodCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodCloud.png; sourceTree = "<group>"; };
+		947716901B1760EB00D3015C /* UserInformation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserInformation.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -215,6 +217,7 @@
 				515FDAA31B14DC7D00D4A3BE /* Actions.swift */,
 				51A9A2D61B13912400E24060 /* UserData.swift */,
 				51A9A2D81B13930C00E24060 /* AudioManager.swift */,
+				947716901B1760EB00D3015C /* UserInformation.plist */,
 			);
 			name = Abstracts;
 			sourceTree = "<group>";
@@ -375,6 +378,7 @@
 				513994F41B113D7B003C408C /* Images.xcassets in Resources */,
 				51A8E9241B166C63001F24DC /* Background.png in Resources */,
 				51A8E9351B166F2C001F24DC /* BadBackground.png in Resources */,
+				947716911B1760EB00D3015C /* UserInformation.plist in Resources */,
 				513994F21B113D7B003C408C /* Main.storyboard in Resources */,
 				51A8E9291B166C63001F24DC /* Tree.png in Resources */,
 				51A8E9261B166C63001F24DC /* Factory.png in Resources */,

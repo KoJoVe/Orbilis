@@ -13,12 +13,18 @@ class EndScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
-        //Congratulations
+        //Oh noes! The environment collapsed!
+        
+        //Foto da orb
+        
+        //But hey! Well done!
+        
         //You've kept up the orb for x days
         
-        //New record! (Ou nulo)
+        //Its a new record! (Ou nulo)
         
-        //Ao dar tap, volta pra STARTSCENE
+        //Play again
+        //Rate us
         
         
     }
