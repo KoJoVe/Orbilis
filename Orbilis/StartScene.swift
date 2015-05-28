@@ -14,7 +14,7 @@ class StartScene: SKScene {
     var orbTitle: SKLabelNode = SKLabelNode()
     var orbPlay: SKLabelNode = SKLabelNode()
     var orbTutorial: SKLabelNode = SKLabelNode()
-    var animationDuration = 0.8
+    var animationDuration = 0.4
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -64,7 +64,9 @@ class StartScene: SKScene {
         
 //        Check if First Time
         
-//        UserData.initializePlist()
+        UserData.initializePlist()
+        
+        var first = UserData.isFirstTime() //0 = First time 
         
         if UserData.isFirstTime() == 0 {
         
@@ -72,7 +74,7 @@ class StartScene: SKScene {
             
         }
 
-        println(UserData.isFirstTime())
+        
         
     }
     
@@ -101,7 +103,7 @@ class StartScene: SKScene {
                     
                     var scene = GameScene(size:self.size)
                     
-                    self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(1.5))
+                    self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.8))
                     
                 })
                 var sequenceOrb = SKAction.sequence([wait,group,block])

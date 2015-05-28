@@ -20,7 +20,7 @@ class EndScene: SKScene {
     var playButton = SKSpriteNode()
     var rateButton = SKSpriteNode()
     
-    var animationDuration = 0.5
+    var animationDuration = 0.4
     var scoreValue = 0
     
     override func didMoveToView(view: SKView) {
@@ -67,7 +67,7 @@ class EndScene: SKScene {
         
         //Its a new record! (Ou nulo)
         
-//        if scoreValue >= UserData.getUserRecord() {
+      if scoreValue >= UserData.getUserRecord() {
 //            
             congrats = SKLabelNode(text: "It's a new record!")
             congrats.position = CGPoint(x: self.frame.width/2, y: self.frame.height/2.7)
@@ -75,9 +75,9 @@ class EndScene: SKScene {
             congrats.fontName = "Avenir-Roman"
             self.addChild(congrats)
 //
-//            UserData.setUserRecord(scoreValue)
-//        }
-        
+            UserData.setUserRecord(scoreValue)
+        }
+    
         //Play again
         
         playButton = SKSpriteNode(imageNamed: "PlayButton")

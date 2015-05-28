@@ -760,7 +760,7 @@ class GameScene: SKScene {
     func loseGame() {
         lostGame = true
         orbBackgroundBad.alpha = 1
-        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
+        var vanish = SKAction.fadeAlphaTo(0, duration: 0.25)
         islandSprite.runAction(vanish)
         orbBadCloud.runAction(vanish)
         orbSmoke.runAction(vanish)
@@ -768,17 +768,17 @@ class GameScene: SKScene {
         organicMatterImage?.runAction(vanish)
         organicMatterLabel?.runAction(vanish)
         hideDescriptor()
-        var action = SKAction.fadeAlphaTo(1, duration: 1.0)
+        var action = SKAction.fadeAlphaTo(1, duration: 0.5)
         orbWaterFlood.runAction(action)
         
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("lostLevelTransition"), userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("lostLevelTransition"), userInfo: nil, repeats: false)
         
     }
     
     func lostLevelTransition() {
         
-        var action = SKAction.resizeToWidth(self.frame.width/3, height: self.frame.width/3, duration: 1.0)
-        var action2 = SKAction.moveTo(CGPoint(x: self.frame.width/2, y: self.frame.height/1.4), duration: 1.0)
+        var action = SKAction.resizeToWidth(self.frame.width/3, height: self.frame.width/3, duration: 0.4)
+        var action2 = SKAction.moveTo(CGPoint(x: self.frame.width/2, y: self.frame.height/1.4), duration: 0.4)
         
         action.timingMode = SKActionTimingMode.EaseInEaseOut
         action2.timingMode = SKActionTimingMode.EaseInEaseOut
@@ -795,7 +795,7 @@ class GameScene: SKScene {
         orbWaterBad.removeFromParent()
         orbWater.removeFromParent()
         
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("nextScene"), userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("nextScene"), userInfo: nil, repeats: false)
         
     }
     
@@ -804,7 +804,7 @@ class GameScene: SKScene {
         var scene = EndScene(size:self.size)
         scene.scoreValue = presentTime
         
-        self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(1.5))
+        self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.6))
         
     }
     
