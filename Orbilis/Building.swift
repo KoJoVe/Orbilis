@@ -23,6 +23,16 @@ class Building: SKSpriteNode {
         self.zPosition = 3
         
         self.name = "building"
+        
+        var stars: AnyObject = NSKeyedUnarchiver.unarchiveObjectWithFile(NSBundle.mainBundle().pathForResource("FabricSmoke", ofType: "sks")!)!
+        var emitter:SKEmitterNode = stars as! SKEmitterNode
+        emitter.targetNode = self
+        emitter.position.y = self.frame.height
+        emitter.position.x = self.frame.width*2/3
+        emitter.particlePositionRange = CGVector(dx: 0.0, dy: 0.0)
+//        emitter.frame.size = CGSize(width: 10, height: 10)
+        emitter.zPosition = 100
+        self.addChild(emitter)
     }
     
     func destroy() {
