@@ -136,8 +136,19 @@ class Actions: NSObject {
     
     class func getActionCost(type: String) -> Int {
         
-        return 100
+        if(type=="AddTree") {
+            return 100
+        }
+        if(type=="AddHerb") {
+            return 50
+        }
+        if(type=="AddCarn") {
+            return 80
+        }
+        if(type=="RemoveFactory") {
+            return 150
+        }
         
+        return 0
     }
-    
 }

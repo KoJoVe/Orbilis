@@ -16,8 +16,8 @@ class Lifeform: SKSpriteNode {
     var reproductionRate = 0
     var lifeTimeMax = 15
     var organicProduction = 0
-    var cost = 0
     var hungerCooldownRate = 10
+    var organicProductionP = 0
     
     var aboutToDelete = 0 //Prevent Flying Memory
     

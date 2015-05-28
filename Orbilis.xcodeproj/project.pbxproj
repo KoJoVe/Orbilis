@@ -36,6 +36,7 @@
 		519CE5EE1B17A03300A85E53 /* RateButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 519CE5EC1B17A03300A85E53 /* RateButton.png */; };
 		519CE5EF1B17A03300A85E53 /* PlayButton.png in Resources */ = {isa = PBXBuildFile; fileRef = 519CE5ED1B17A03300A85E53 /* PlayButton.png */; };
 		519CE5F11B17A29600A85E53 /* OrbTree.png in Resources */ = {isa = PBXBuildFile; fileRef = 519CE5F01B17A29600A85E53 /* OrbTree.png */; };
+		519CE5F31B17ACDE00A85E53 /* MoreOrganic.png in Resources */ = {isa = PBXBuildFile; fileRef = 519CE5F21B17ACDE00A85E53 /* MoreOrganic.png */; };
 		51A8E9191B16636C001F24DC /* Lifeform.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A8E9181B16636C001F24DC /* Lifeform.swift */; };
 		51A8E9241B166C63001F24DC /* Background.png in Resources */ = {isa = PBXBuildFile; fileRef = 51A8E91A1B166C63001F24DC /* Background.png */; };
 		51A8E9251B166C63001F24DC /* OrganicImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 51A8E91B1B166C63001F24DC /* OrganicImage.png */; };
@@ -106,6 +107,7 @@
 		519CE5EC1B17A03300A85E53 /* RateButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RateButton.png; sourceTree = "<group>"; };
 		519CE5ED1B17A03300A85E53 /* PlayButton.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PlayButton.png; sourceTree = "<group>"; };
 		519CE5F01B17A29600A85E53 /* OrbTree.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrbTree.png; sourceTree = "<group>"; };
+		519CE5F21B17ACDE00A85E53 /* MoreOrganic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoreOrganic.png; sourceTree = "<group>"; };
 		51A8E9181B16636C001F24DC /* Lifeform.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Lifeform.swift; sourceTree = "<group>"; };
 		51A8E91A1B166C63001F24DC /* Background.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Background.png; sourceTree = "<group>"; };
 		51A8E91B1B166C63001F24DC /* OrganicImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrganicImage.png; sourceTree = "<group>"; };
@@ -265,6 +267,7 @@
 		51A9A2DC1B1394B100E24060 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				519CE5F21B17ACDE00A85E53 /* MoreOrganic.png */,
 				519CE5F01B17A29600A85E53 /* OrbTree.png */,
 				519CE5EC1B17A03300A85E53 /* RateButton.png */,
 				519CE5ED1B17A03300A85E53 /* PlayButton.png */,
@@ -409,6 +412,7 @@
 				515FDA971B13B40E00D4A3BE /* RectBlue.png in Resources */,
 				51A8E92D1B166C63001F24DC /* TreeButton.png in Resources */,
 				519CE5E91B179D0800A85E53 /* OrbFlood.png in Resources */,
+				519CE5F31B17ACDE00A85E53 /* MoreOrganic.png in Resources */,
 				511C16951B1761F4003CA03E /* PollutionSmokeLess.png in Resources */,
 				511C169B1B1767A1003CA03E /* FloodIsland.png in Resources */,
 				51A8E92A1B166C63001F24DC /* FacButton.png in Resources */,

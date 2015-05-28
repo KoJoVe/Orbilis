@@ -49,6 +49,7 @@ class GameScene: SKScene {
     var pauseButton = SKSpriteNode()
     var pauseScreen = SKSpriteNode()
     
+    var giveUpText = SKLabelNode()
     var pauseText = SKLabelNode()
     
     var creaturesArray: Array<Lifeform> = []
@@ -205,6 +206,15 @@ class GameScene: SKScene {
         pauseText.alpha = 0
         pauseText.fontName = "Avenir-Roman"
         self.addChild(pauseText)
+        
+        giveUpText.text = "Quit Game"
+        giveUpText.fontSize = 30
+        giveUpText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - 200)
+        giveUpText.zPosition = -3
+        giveUpText.alpha = 0
+        giveUpText.name = "give"
+        giveUpText.fontName = "Avenir-Roman"
+        self.addChild(giveUpText)
         
         redrawDescriptorText("")
         
@@ -396,7 +406,15 @@ class GameScene: SKScene {
                         NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: Selector("openItensMenu"), userInfo: nil, repeats: false)
                     }
                 } else {
-                    unPause()
+                    
+                    var name = nodeAtPoint(touch.locationInNode(self)).name
+                    if(name == "give") {
+                        println("LOL")
+                        pollution = 100000
+                        unPause()
+                    } else {
+                        unPause()
+                    }
                 }
             }
         }
@@ -462,6 +480,8 @@ class GameScene: SKScene {
         pauseScreen.alpha = 0.6
         pauseScreen.zPosition = 100
         pauseText.zPosition = 101
+        giveUpText.zPosition = 102
+        giveUpText.alpha = 1
         pauseText.alpha = 1
         tickTimer.invalidate()
         for i in creaturesArray {
@@ -473,8 +493,10 @@ class GameScene: SKScene {
         pausedGame = false
         pauseScreen.zPosition = -3
         pauseText.zPosition = -3
+        giveUpText.zPosition = -3
         pauseScreen.alpha = 0
         pauseText.alpha = 0
+        giveUpText.alpha = 0
         updateTick()
     }
     
@@ -530,6 +552,28 @@ class GameScene: SKScene {
         }
     }
     
+    func moreOrganicMatter(x: CGFloat, y: CGFloat) {
+        
+        println("AD")
+        var image = SKSpriteNode(imageNamed: "MoreOrganic")
+        image.size = CGSizeMake(sizeOfSprites, sizeOfSprites)
+        image.position = CGPointMake(x, y)
+        image.zPosition = 5
+        image.alpha = 0
+        self.islandSprite.addChild(image)
+        var appear = SKAction.fadeAlphaTo(1, duration: 0.2)
+        var up = SKAction.moveBy(CGVectorMake(0, 20), duration: 0.8)
+        var disappear = SKAction.fadeAlphaTo(0, duration: 0.2)
+        var block = SKAction.runBlock({
+            
+            image.removeFromParent()
+            
+        })
+        var sequence = SKAction.sequence([appear,up,disappear,block])
+        image.runAction(sequence)
+        
+    }
+    
     func checkForCollisions() {
         
         for var i = 0; i < creaturesArray.count; i++ {
@@ -576,6 +620,9 @@ class GameScene: SKScene {
                 i.aboutToDelete = 1
                 organicMatter += i.organicProduction
                 organicMatterLabel?.text = "\(organicMatter)"
+                if(i.organicProduction > 0) {
+                    moreOrganicMatter(i.position.x, y: i.position.y)
+                }
             }
         }
     }
@@ -710,6 +757,7 @@ class GameScene: SKScene {
     
     func loseGame() {
         lostGame = true
+        orbBackgroundBad.alpha = 1
         var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
         islandSprite.runAction(vanish)
         orbBadCloud.runAction(vanish)
