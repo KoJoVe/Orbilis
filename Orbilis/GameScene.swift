@@ -29,6 +29,7 @@ class GameScene: SKScene {
     var screenPressed = false
     var lostGame = false
     var pausedGame = false
+    var raining = false
     
     var islandRect = SKSpriteNode()
     var presentTimeRect: SKSpriteNode?
@@ -45,11 +46,14 @@ class GameScene: SKScene {
     var orbBadCloud = SKSpriteNode()
     var orbSmoke = SKSpriteNode()
     var orbSmokeLess = SKSpriteNode()
+    var pauseButton = SKSpriteNode()
+    var pauseScreen = SKSpriteNode()
+    
+    var pauseText = SKLabelNode()
     
     var creaturesArray: Array<Lifeform> = []
     var buildingsArray: Array<Building> = []
     
-    var pauseButton: SKSpriteNode?
     var organicMatterImage: SKSpriteNode?
     var descriptor: SKSpriteNode?
     var descriptorLabel: SKLabelNode?
@@ -179,6 +183,28 @@ class GameScene: SKScene {
         descriptor!.alpha = 0
         descriptor!.zPosition = 2
         self.addChild(descriptor!)
+        
+        pauseButton = SKSpriteNode(imageNamed: "PauseButton")
+        pauseButton.size = CGSizeMake(self.frame.size.width/12, self.frame.size.width/12)
+        pauseButton.position = CGPointMake(self.size.width - pauseButton.size.width/2 - 10, self.size.height - pauseButton.size.height/2 - 10)
+        pauseButton.zPosition = 30
+        pauseButton.name = "Pause"
+        self.addChild(pauseButton)
+        
+        pauseScreen = SKSpriteNode(imageNamed: "RectBlue")
+        pauseScreen.size = CGSizeMake(self.frame.size.width, self.frame.size.height)
+        pauseScreen.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        pauseScreen.zPosition = -3
+        pauseScreen.alpha = 0
+        self.addChild(pauseScreen)
+        
+        pauseText.text = "Paused"
+        pauseText.fontSize = 40
+        pauseText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        pauseText.zPosition = -3
+        pauseText.alpha = 0
+        pauseText.fontName = "Avenir-Roman"
+        self.addChild(pauseText)
         
         redrawDescriptorText("")
         
@@ -369,6 +395,8 @@ class GameScene: SKScene {
                     } else {
                         NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: Selector("openItensMenu"), userInfo: nil, repeats: false)
                     }
+                } else {
+                    unPause()
                 }
             }
         }
@@ -422,9 +450,32 @@ class GameScene: SKScene {
                 
                 if (name == "Time") {
                     fastFoward()
+                } else if (name == "Pause") {
+                    pause()
                 }
             }
         }
+    }
+    
+    func pause() {
+        pausedGame = true
+        pauseScreen.alpha = 0.6
+        pauseScreen.zPosition = 100
+        pauseText.zPosition = 101
+        pauseText.alpha = 1
+        tickTimer.invalidate()
+        for i in creaturesArray {
+            i.removeAllActions()
+        }
+    }
+    
+    func unPause() {
+        pausedGame = false
+        pauseScreen.zPosition = -3
+        pauseText.zPosition = -3
+        pauseScreen.alpha = 0
+        pauseText.alpha = 0
+        updateTick()
     }
     
     func fastFoward() {
@@ -453,7 +504,7 @@ class GameScene: SKScene {
     
     func updateTick() {
         
-        if(lostGame == false && menuIsOpen == false) {
+        if(lostGame == false && pausedGame == false) {
             deleteMarkedEntities()
             checkForCollisions()
             moveAndAgeEntities()
@@ -553,7 +604,7 @@ class GameScene: SKScene {
     
     func calculatePollution() {
         
-        println(pollution)
+        //println(pollution)
         
         for i in buildingsArray {
             pollution += i.pollutionRate
@@ -669,6 +720,42 @@ class GameScene: SKScene {
         hideDescriptor()
         var action = SKAction.fadeAlphaTo(1, duration: 1.0)
         orbWaterFlood.runAction(action)
+        
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("lostLevelTransition"), userInfo: nil, repeats: false)
+        
+    }
+    
+    func lostLevelTransition() {
+        
+        var action = SKAction.resizeToWidth(self.frame.width/3, height: self.frame.width/3, duration: 1.0)
+        var action2 = SKAction.moveTo(CGPoint(x: self.frame.width/2, y: self.frame.height/1.4), duration: 1.0)
+        
+        action.timingMode = SKActionTimingMode.EaseInEaseOut
+        action2.timingMode = SKActionTimingMode.EaseInEaseOut
+        
+        orbGlass.runAction(action)
+        orbGlass.runAction(action2)
+        orbBackgroundBad.runAction(action)
+        orbBackgroundBad.runAction(action2)
+        orbWaterFlood.runAction(action)
+        orbWaterFlood.runAction(action2)
+        
+        backgroundSprite.removeFromParent()
+        islandSprite.removeFromParent()
+        orbWaterBad.removeFromParent()
+        orbWater.removeFromParent()
+        
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("nextScene"), userInfo: nil, repeats: false)
+        
+    }
+    
+    func nextScene() {
+        
+        var scene = EndScene(size:self.size)
+        scene.scoreValue = presentTime
+        
+        self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(1.5))
+        
     }
     
     func random(range: Range<Int> ) -> Int
@@ -684,10 +771,6 @@ class GameScene: SKScene {
         let maxi = UInt32(range.endIndex   + offset)
         
         return Int(mini + arc4random_uniform(maxi - mini)) - offset
-    }
-    
-    func lostLevelTransition() {
-        
     }
     
     override func update(currentTime: CFTimeInterval) {

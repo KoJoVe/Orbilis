@@ -93,7 +93,7 @@ class StartScene: SKScene {
                 var fadeOut = SKAction.fadeOutWithDuration(animationDuration)
                 var moveToCenter = SKAction.moveToY(self.frame.height/2, duration: animationDuration)
                 moveToCenter.timingMode = SKActionTimingMode.EaseInEaseOut
-                var increaseSize = SKAction.resizeByWidth(self.frame.width*2/3 - 40, height: self.frame.width*2/3-40, duration: animationDuration)
+                var increaseSize = SKAction.resizeToWidth(self.frame.width - 40, height: self.frame.width - 40, duration: animationDuration)
                 increaseSize.timingMode = SKActionTimingMode.EaseInEaseOut
                 var wait = SKAction.waitForDuration(animationDuration)
                 var group = SKAction.group([moveToCenter,increaseSize])
