@@ -145,6 +145,12 @@ class EndScene: SKScene {
                 self.playButton.runAction(fadeOut)
                 self.rateButton.runAction(fadeOut)
                 
+            } else if name == "rateUs" {
+                
+                //Mudar ID
+                var url = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=991654758&onlyLatestVersion=true&pageNumber=0&sortOrdering=1)"
+                UIApplication.sharedApplication().openURL(NSURL(string: url)!)
+                
             }
             
         }
