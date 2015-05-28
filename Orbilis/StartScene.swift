@@ -65,14 +65,14 @@ class StartScene: SKScene {
 //        Check if First Time
         
 //        UserData.initializePlist()
-//        
-//        if UserData.isFirstTime() == 0 {
-//        
-//            UserData.setAlreadyUser(1)
-//            
-//        }
+        
+        if UserData.isFirstTime() == 0 {
+        
+            UserData.setAlreadyUser(1)
+            
+        }
 
-        //println(UserData.isFirstTime())
+        println(UserData.isFirstTime())
         
     }
     
