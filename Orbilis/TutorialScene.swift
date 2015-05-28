@@ -21,8 +21,10 @@
 //        //Aparece uma fabrica
 //        Once in a while, factorys will appear
 //        They increase the pollution!
+//        You will begin to see the...
+//        pollution effects in the long term. //Chama funçao de fumaça (Joao implementa)
 //        And that`s not good…
-//        Lets remove this factory!
+//        Lets remove this factory! //Some a fumaça
 //        Tap and hold to open menu.
 //        //Depois de abrir o menu
 //        Tap on remove factory. //Seta aponta para fabric
