@@ -10,7 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    var pollutionLimits = [0,100,200,300,500,600,700]
+    var pollutionLimits = [0,100,200,300,400,500,600]
     
     var timeSpeed = 0
     
@@ -20,7 +20,7 @@ class GameScene: SKScene {
     var speedTimer = NSTimer()
     var audioManager = AudioManager()
     
-    var chanceToSpawnFactory = 10
+    var chanceToSpawnFactory = 40
     
     var pointOrganicMatter = CGPointMake(0, 0)
     var pointOrganicMatterLabel = CGPointMake(0, 0)
@@ -71,6 +71,10 @@ class GameScene: SKScene {
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
+        
+        var prop:CGFloat = self.frame.size.width/375.0
+        
+        sizeOfSprites = 30 * prop
         
         var background = SKSpriteNode(imageNamed: "Background")
         background.size = CGSizeMake(self.frame.size.width, self.frame.size.height)
@@ -180,7 +184,7 @@ class GameScene: SKScene {
         
         descriptor = SKSpriteNode()
         descriptor!.size = CGSizeMake(self.frame.size.width/6, self.frame.size.width/6)
-        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2 + textSize - 20)
+        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2 + textSize - 10)
         descriptor!.alpha = 0
         descriptor!.zPosition = 2
         self.addChild(descriptor!)
@@ -556,7 +560,7 @@ class GameScene: SKScene {
         var image = SKSpriteNode(imageNamed: "MoreOrganic")
         image.size = CGSizeMake(sizeOfSprites + 10, sizeOfSprites + 10)
         image.position = CGPointMake(x, y)
-        image.zPosition = 5
+        image.zPosition = 100
         image.alpha = 0
         self.islandSprite.addChild(image)
         var appear = SKAction.fadeAlphaTo(1, duration: 0.2)

@@ -27,7 +27,7 @@ class Herbivore: Lifeform {
         pollutionLimit = 300
         reproductionRate = 0
         lifeTimeMax = 90
-        organicProduction = 0
+        organicProduction = 10
         
         self.position = randomPointInsideRect(rect)
         self.zPosition = 4
