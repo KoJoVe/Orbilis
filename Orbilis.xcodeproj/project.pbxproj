@@ -51,6 +51,7 @@
 		51A9A2D91B13930C00E24060 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A9A2D81B13930C00E24060 /* AudioManager.swift */; };
 		51FEA46E1B1677C2007EBB09 /* NormalIsland.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA46D1B1677C2007EBB09 /* NormalIsland.png */; };
 		51FEA4741B1678CC007EBB09 /* GoodCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA4711B1678CC007EBB09 /* GoodCloud.png */; };
+		947716911B1760EB00D3015C /* UserInformation.plist in Resources */ = {isa = PBXBuildFile; fileRef = 947716901B1760EB00D3015C /* UserInformation.plist */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -112,6 +113,7 @@
 		51A9A2D81B13930C00E24060 /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
 		51FEA46D1B1677C2007EBB09 /* NormalIsland.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NormalIsland.png; sourceTree = "<group>"; };
 		51FEA4711B1678CC007EBB09 /* GoodCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodCloud.png; sourceTree = "<group>"; };
+		947716901B1760EB00D3015C /* UserInformation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserInformation.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -221,6 +223,7 @@
 				515FDAA31B14DC7D00D4A3BE /* Actions.swift */,
 				51A9A2D61B13912400E24060 /* UserData.swift */,
 				51A9A2D81B13930C00E24060 /* AudioManager.swift */,
+				947716901B1760EB00D3015C /* UserInformation.plist */,
 			);
 			name = Abstracts;
 			sourceTree = "<group>";

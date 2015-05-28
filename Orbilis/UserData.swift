@@ -10,21 +10,66 @@ import Foundation
 
 class UserData: NSObject {
     
-    class func tutorialIsActive() -> Int {
-        return 0
+    
+    class func initializePlist() {
+        
+        var pathAux = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
+        var path = pathAux.stringByAppendingPathComponent("UserInformation.plist")
+        var fileManager = NSFileManager.defaultManager()
+        if (!(fileManager.fileExistsAtPath(path))) {
+            
+            var bundle : NSString! = NSBundle.mainBundle().pathForResource("UserInformation", ofType: "plist")
+            fileManager.copyItemAtPath(bundle as String, toPath: path, error:nil)
+            
+        }
+        
     }
     
-    class func setTutorialActive(n: Int) {
+    class func isFirstTime() -> Int {
         
+        var pathAux = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
+        var path = pathAux.stringByAppendingPathComponent("UserInformation.plist")
+        
+        let contents: NSDictionary! = NSDictionary(contentsOfFile: path as String)
+        var first = contents.objectForKey("FirstTime") as! Int
+        
+        return first
+    }
+    
+    class func setAlreadyUser(n: Int) {
+        
+        var pathAux = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
+        var path = pathAux.stringByAppendingPathComponent("UserInformation.plist")
+        
+        let contents: NSMutableDictionary! = NSMutableDictionary(contentsOfFile: path as String)
+        
+        contents.setObject(n, forKey: "FirstTime")
+        contents.writeToFile(path, atomically: false)
     }
     
     
     class func setUserRecord(record: Int) {
         
+        var pathAux = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
+        var path = pathAux.stringByAppendingPathComponent("UserInformation.plist")
+        
+        let contents: NSMutableDictionary! = NSMutableDictionary(contentsOfFile: path as String)
+        
+        contents.setObject(record, forKey: "UserRecord")
+        contents.writeToFile(path, atomically: false)
+        
     }
     
     class func getUserRecord() -> Int {
-        return 0
+        
+        var pathAux = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
+        var path = pathAux.stringByAppendingPathComponent("UserInformation.plist")
+        
+        let contents: NSDictionary! = NSDictionary(contentsOfFile: path as String)
+        var record = contents.objectForKey("UserRecord") as! Int
+        
+        
+        return record
     }
    
 }

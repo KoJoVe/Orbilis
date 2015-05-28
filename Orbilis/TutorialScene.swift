@@ -8,7 +8,7 @@
 
 //        //De inicio, nao pode adicionar NADA
 //        Welcome to orbilis!
-//        You have on simple job.
+//        You have one simple job.
 //        Dont let the enviroment die with pollution.
 //        Let`s see how you do this.
 //        This is your organic matter. //Seta aponta para organic matter
