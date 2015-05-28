@@ -15,7 +15,7 @@ class Herbivore: Lifeform {
     
     init(size: CGFloat, rect: CGRect) {
         
-        let texture = SKTexture(imageNamed: "RectYellow")
+        let texture = SKTexture(imageNamed: "Herb")
         let sizeWH = CGSize(width: size, height: size)
         
         theSize = size

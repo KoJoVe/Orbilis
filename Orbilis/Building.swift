@@ -14,7 +14,7 @@ class Building: SKSpriteNode {
     
     init(size: CGFloat, rect: CGRect) {
         
-        let texture = SKTexture(imageNamed: "RectPurple")
+        let texture = SKTexture(imageNamed: "Factory")
         let sizeWH = CGSize(width: size, height: size)
         
         super.init(texture: texture, color: nil, size: sizeWH)

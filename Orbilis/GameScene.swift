@@ -23,10 +23,15 @@ class GameScene: SKScene {
     var menuIsOpen = false
     var screenPressed = false
     
+    var islandRect = SKSpriteNode()
+    
     var backgroundSprite = SKSpriteNode()
+    var orbBackgroundBad = SKSpriteNode()
     var orbBackground = SKSpriteNode()
     var islandSprite = SKSpriteNode()
     var orbGlass = SKSpriteNode()
+    var orbWaterBad = SKSpriteNode()
+    var orbWaterFlood = SKSpriteNode()
     var orbWater = SKSpriteNode()
     var orbSand = SKSpriteNode()
     var orbCloud = SKSpriteNode()
@@ -52,6 +57,12 @@ class GameScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
+        var background = SKSpriteNode(imageNamed: "Background")
+        background.size = CGSizeMake(self.frame.size.width, self.frame.size.height)
+        background.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        background.zPosition = -1
+        self.addChild(background)
+        
         drawOrb()
         drawInfo()
         drawItensMenu()
@@ -61,14 +72,38 @@ class GameScene: SKScene {
     
     func drawOrb() {
         //Joao
-        backgroundSprite = SKSpriteNode(imageNamed: "RectGreen")
-        backgroundSprite.size = CGSizeMake(self.frame.size.width - 40, self.frame.size.width - 40)
+        var spacing: CGFloat = 40
+        var islandW: CGFloat = 400
+        var islandH: CGFloat = 230
+        
+        var prop: CGFloat = self.frame.size.width/640
+        var deloc: CGFloat = -35 * prop
+        
+        islandW = islandW * prop
+        islandH = islandH * prop
+        
+        backgroundSprite = SKSpriteNode(imageNamed: "NormalBackground")
+        backgroundSprite.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
         backgroundSprite.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        backgroundSprite.zPosition = 0
         self.addChild(backgroundSprite)
         
+        orbWater = SKSpriteNode(imageNamed: "NormalIsland")
+        orbWater.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
+        orbWater.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        orbWater.zPosition = 0
+        self.addChild(orbWater)
+        
+        orbGlass = SKSpriteNode(imageNamed: "GlassCover")
+        orbGlass.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
+        orbGlass.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        orbGlass.zPosition = 6
+        self.addChild(orbGlass)
+        
         islandSprite = SKSpriteNode(imageNamed: "RectRed")
-        islandSprite.size = CGSizeMake(self.frame.size.width/2, self.frame.size.width/4)
-        islandSprite.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - islandSprite.frame.size.height/2)
+        islandSprite.size = CGSizeMake(islandW, islandH)
+        islandSprite.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - deloc)
+        islandSprite.alpha = 0.4
         self.addChild(islandSprite)
     }
     
@@ -108,7 +143,7 @@ class GameScene: SKScene {
     
     func redrawOrganicMatter() {
         
-        organicMatterImage = SKSpriteNode(imageNamed: "RectOrange")
+        organicMatterImage = SKSpriteNode(imageNamed: "OrganicImage")
         organicMatterImage!.size = CGSizeMake(self.frame.size.width/10, self.frame.size.width/10)
         organicMatterImage!.zPosition = 2
         self.addChild(organicMatterImage!)
@@ -170,14 +205,14 @@ class GameScene: SKScene {
             var x = counter*buttonsSpace + buttonSize/2 + (counter-1)*buttonSize
             var y:CGFloat = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2)/2
             
-            var button = SKSpriteNode(imageNamed: "RectRed")
-            button.size = CGSizeMake(buttonSize, buttonSize)
-            button.position = CGPointMake(x, y)
-            button.name = i
-            button.alpha = 0
-            button.zPosition = 2
-            menuButtons.append(button)
-            self.addChild(button)
+            var button = Actions.getActionButton(i)
+            button!.size = CGSizeMake(buttonSize, buttonSize)
+            button!.position = CGPointMake(x, y)
+            button!.name = i
+            button!.alpha = 0
+            button!.zPosition = 2
+            menuButtons.append(button!)
+            self.addChild(button!)
             
             var label = SKLabelNode()
             label.text = "\(Actions.getActionCost(i))"
@@ -274,8 +309,6 @@ class GameScene: SKScene {
                     showDescriptorToMenu(i)
                 }
             }
-            
-            
         }
     }
     
@@ -412,7 +445,7 @@ class GameScene: SKScene {
         }
         
         for i in creaturesArray {
-            pollution -= i.pollutionIncrement
+            pollution += i.pollutionIncrement
         }
         
         if(pollution < 0) {
@@ -427,8 +460,15 @@ class GameScene: SKScene {
             acidRain()
         } else if(pollution <= pollutionLimits[3]) {
             darkenColor()
-        } else if(pollution <= pollutionLimits[4]) {
+        } else if(pollution >= pollutionLimits[4]) {
             loseGame()
+        }
+        
+        for i in creaturesArray {
+            if(i.chanceToDie(pollution) == true) {
+                i.animateToDie()
+                i.aboutToDelete = 1
+            }
         }
     }
     
@@ -460,6 +500,7 @@ class GameScene: SKScene {
     
     func loseGame() {
         //Anima enchete e abre proxima cena.
+        println("YOU LOST MOTAFOCKA")
     }
     
     func random(range: Range<Int> ) -> Int

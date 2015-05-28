@@ -30,8 +30,14 @@ class Lifeform: SKSpriteNode {
         lifeTime++
     }
     
-    func chanceToDie(pollution: Int) {
-        //Calculate a percentage based on pullution limit. If certain percentage, the lifeform die.
+    func chanceToDie(pollution: Int) -> Bool {
+        if(pollution >= pollutionLimit) {
+            var r = random(1...10)
+            if(r<=1) {
+                return true
+            }
+        }
+        return false
     }
     
     func interact(lifeform: SKSpriteNode) -> Bool {

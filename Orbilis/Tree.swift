@@ -12,7 +12,7 @@ class Tree: Lifeform {
     
     init(size: CGFloat, rect: CGRect) {
         
-        let texture = SKTexture(imageNamed: "RectGreen")
+        let texture = SKTexture(imageNamed: "Tree")
         let sizeWH = CGSize(width: size, height: size)
         
         super.init(texture: texture, color: nil, size: sizeWH)

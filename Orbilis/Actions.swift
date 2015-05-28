@@ -51,19 +51,19 @@ class Actions: NSObject {
     class func getActionButton(type: String) -> SKSpriteNode? {
         
         if(type=="AddTree") {
-            var sprite = SKSpriteNode(imageNamed: "RectGreen")
+            var sprite = SKSpriteNode(imageNamed: "TreeButton")
             return sprite
         }
         if(type=="AddHerb") {
-            var sprite = SKSpriteNode(imageNamed: "RectYellow")
+            var sprite = SKSpriteNode(imageNamed: "HerbButton")
             return sprite
         }
         if(type=="AddCarn") {
-            var sprite = SKSpriteNode(imageNamed: "RectBlue")
+            var sprite = SKSpriteNode(imageNamed: "CarnButton")
             return sprite
         }
         if(type=="RemoveFactory") {
-            var sprite = SKSpriteNode(imageNamed: "RectPurple")
+            var sprite = SKSpriteNode(imageNamed: "FacButton")
             return sprite
         }
         
@@ -92,19 +92,19 @@ class Actions: NSObject {
     class func getActionDescriptor(type: String) -> SKTexture? {
         
         if(type=="AddTree") {
-            var sprite = SKTexture(imageNamed: "RectGreen")
+            var sprite = SKTexture(imageNamed: "TreeButton")
             return sprite
         }
         if(type=="AddHerb") {
-            var sprite = SKTexture(imageNamed: "RectYellow")
+            var sprite = SKTexture(imageNamed: "HerbButton")
             return sprite
         }
         if(type=="AddCarn") {
-            var sprite = SKTexture(imageNamed: "RectBlue")
+            var sprite = SKTexture(imageNamed: "CarnButton")
             return sprite
         }
         if(type=="RemoveFactory") {
-            var sprite = SKTexture(imageNamed: "RectPurple")
+            var sprite = SKTexture(imageNamed: "FacButton")
             return sprite
         }
         

@@ -15,7 +15,7 @@ class Carnivore: Lifeform {
     
     init(size: CGFloat, rect: CGRect) {
         
-        let texture = SKTexture(imageNamed: "RectBlue")
+        let texture = SKTexture(imageNamed: "Carn")
         let sizeWH = CGSize(width: size, height: size)
         
         theSize = size
