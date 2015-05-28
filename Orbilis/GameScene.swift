@@ -88,7 +88,7 @@ class GameScene: SKScene {
     
     func drawOrb() {
         //Joao
-        var spacing: CGFloat = 40
+        var spacing: CGFloat = 0
         var islandW: CGFloat = 390
         var islandH: CGFloat = islandW/2
         
@@ -180,7 +180,7 @@ class GameScene: SKScene {
         
         descriptor = SKSpriteNode()
         descriptor!.size = CGSizeMake(self.frame.size.width/6, self.frame.size.width/6)
-        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2 + textSize)
+        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2 + textSize - 20)
         descriptor!.alpha = 0
         descriptor!.zPosition = 2
         self.addChild(descriptor!)
@@ -208,12 +208,12 @@ class GameScene: SKScene {
         self.addChild(pauseText)
         
         giveUpText.text = "Quit Game"
-        giveUpText.fontSize = 30
-        giveUpText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - 200)
+        giveUpText.fontSize = 15
+        giveUpText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - 120)
         giveUpText.zPosition = -3
         giveUpText.alpha = 0
         giveUpText.name = "give"
-        giveUpText.fontName = "Avenir-Roman"
+        giveUpText.fontName = "Avenir-Black"
         self.addChild(giveUpText)
         
         redrawDescriptorText("")
@@ -259,7 +259,7 @@ class GameScene: SKScene {
         
         var difference = organicMatterLabel!.frame.size.width - organicMatterImage!.frame.size.width + space/2
         
-        var y = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2)/2
+        var y = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20)/2
         var x = CGRectGetMidX(self.frame) - organicMatterImage!.frame.size.width/2 - difference
         
         organicMatterImage!.position = CGPointMake(x, y)
@@ -299,7 +299,7 @@ class GameScene: SKScene {
         
         var textSize:CGFloat = 20
         
-        var buttonSize:CGFloat = ((CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2) - (self.frame.size.width/10) - (textSize + 10))
+        var buttonSize:CGFloat = ((CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20) - (self.frame.size.width/10) - (textSize + 10))
         var buttonsSpace:CGFloat = 0
         
         if(buttonSize * CGFloat(menuItens.count) >= self.frame.size.width - 10) {
@@ -314,7 +314,7 @@ class GameScene: SKScene {
         for i in menuItens {
             
             var x = counter*buttonsSpace + buttonSize/2 + (counter-1)*buttonSize
-            var y:CGFloat = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2)/2
+            var y:CGFloat = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20)/2
             
             var button = Actions.getActionButton(i)
             button!.size = CGSizeMake(buttonSize, buttonSize)
@@ -343,8 +343,8 @@ class GameScene: SKScene {
         if(screenPressed==true) {
             //Show itens menu
             var action = SKAction.fadeAlphaTo(1, duration: 0.2)
-            var move = SKAction.moveTo(CGPointMake(pointOrganicMatter.x, CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 - organicMatterImage!.frame.size.height/2), duration: 0.2)
-            var moveText = SKAction.moveTo(CGPointMake(pointOrganicMatterLabel.x, CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 - organicMatterImage!.frame.size.height/2 - organicMatterLabel!.frame.size.height/2), duration: 0.2)
+            var move = SKAction.moveTo(CGPointMake(pointOrganicMatter.x, CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20 - organicMatterImage!.frame.size.height/2), duration: 0.2)
+            var moveText = SKAction.moveTo(CGPointMake(pointOrganicMatterLabel.x, CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20 - organicMatterImage!.frame.size.height/2 - organicMatterLabel!.frame.size.height/2), duration: 0.2)
             
             for i in menuButtons {
                 i.runAction(action)
@@ -409,7 +409,6 @@ class GameScene: SKScene {
                     
                     var name = nodeAtPoint(touch.locationInNode(self)).name
                     if(name == "give") {
-                        println("LOL")
                         pollution = 100000
                         unPause()
                     } else {
@@ -554,9 +553,8 @@ class GameScene: SKScene {
     
     func moreOrganicMatter(x: CGFloat, y: CGFloat) {
         
-        println("AD")
         var image = SKSpriteNode(imageNamed: "MoreOrganic")
-        image.size = CGSizeMake(sizeOfSprites, sizeOfSprites)
+        image.size = CGSizeMake(sizeOfSprites + 10, sizeOfSprites + 10)
         image.position = CGPointMake(x, y)
         image.zPosition = 5
         image.alpha = 0
