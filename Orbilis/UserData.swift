@@ -10,9 +10,14 @@ import Foundation
 
 class UserData: NSObject {
     
-    class func userIsFirstTime() -> Int {
+    class func tutorialIsActive() -> Int {
         return 0
     }
+    
+    class func setTutorialActive(n: Int) {
+        
+    }
+    
     
     class func setUserRecord(record: Int) {
         

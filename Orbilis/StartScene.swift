@@ -13,6 +13,14 @@ class StartScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
+        //Orb no meio
+        //Titulo orbilis
+        //tap screen to play
+        
+        
+        
+        //tutorial
+        
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {

@@ -13,6 +13,14 @@ class EndScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
+        //Congratulations
+        //You've kept up the orb for x days
+        
+        //New record! (Ou nulo)
+        
+        //Ao dar tap, volta pra STARTSCENE
+        
+        
     }
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
