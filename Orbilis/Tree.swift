@@ -22,7 +22,6 @@ class Tree: Lifeform {
         reproductionRate = 0
         lifeTimeMax = 300
         organicProduction = 0
-        cost = 100
         
         self.position = randomPointInsideRect(rect)
         self.zPosition = 4

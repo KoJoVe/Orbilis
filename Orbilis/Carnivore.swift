@@ -27,13 +27,25 @@ class Carnivore: Lifeform {
         pollutionLimit = 300
         reproductionRate = 0
         lifeTimeMax = 5
-        organicProduction = 100
-        cost = 100
+        organicProduction = 70
+        organicProductionP = 50
         
         self.position = randomPointInsideRect(rect)
         self.zPosition = 4
         
         self.name = "carnivore"
+    }
+    
+    override func interact(lifeform: SKSpriteNode) -> Bool {
+        
+        if(lifeform.name == "herbivore") {
+            var node = lifeform as! Lifeform
+            node.animateToDie()
+            node.aboutToDelete = 1
+            return true
+        }
+        
+        return false
     }
     
     override func reproduce() -> Lifeform? {

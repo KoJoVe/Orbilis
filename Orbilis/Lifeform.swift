@@ -16,7 +16,8 @@ class Lifeform: SKSpriteNode {
     var reproductionRate = 0
     var lifeTimeMax = 15
     var organicProduction = 0
-    var cost = 0
+    var hungerCooldownRate = 10
+    var organicProductionP = 0
     
     var aboutToDelete = 0 //Prevent Flying Memory
     
@@ -47,7 +48,7 @@ class Lifeform: SKSpriteNode {
     
     func eat(lifeform: Lifeform) -> Bool {
         if(hungerCooldown <= 0) {
-            hungerCooldown = 10
+            hungerCooldown = hungerCooldownRate
             return true
         }
         return false
@@ -68,9 +69,13 @@ class Lifeform: SKSpriteNode {
     }
     
     func randomPointInsideRect(rect: CGRect) -> CGPoint {
-        var x = CGFloat(random(Int(-rect.size.width/2)...Int(rect.size.width/2)))
-        var y = CGFloat(random(Int(-rect.size.height/2)...Int(rect.size.height/2)))
-        return CGPointMake(x, y)
+        
+        var angle = Double(-1*random(0...100))/100
+        var radius = CGFloat(random(0...Int(rect.size.width/2)))
+        
+        var point = rotatePoint(0, cY: -rect.size.height/2, angle: Float(angle*M_PI), pX: (-radius), pY: -rect.size.height/2)
+        
+        return point
     }
     
     func random(range: Range<Int> ) -> Int
@@ -86,5 +91,26 @@ class Lifeform: SKSpriteNode {
         let maxi = UInt32(range.endIndex   + offset)
         
         return Int(mini + arc4random_uniform(maxi - mini)) - offset
+    }
+    
+    func rotatePoint(cX: CGFloat,cY: CGFloat,angle: Float,pX: CGFloat, pY: CGFloat) -> CGPoint {
+        
+        var s:CGFloat = CGFloat(sin(angle))
+        var c:CGFloat = CGFloat(cos(angle))
+        
+        var newpX = pX
+        var newpY = pY
+        
+        newpX = pX - cX
+        newpY = pY - cY
+        
+        var xnew:CGFloat = newpX * c - newpY * s
+        var ynew:CGFloat = newpX * s + newpY * c
+        
+        newpX = xnew + cX
+        newpY = ynew + cY
+        
+        return CGPointMake(newpX, newpY)
+        
     }
 }

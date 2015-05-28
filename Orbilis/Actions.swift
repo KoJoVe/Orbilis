@@ -85,6 +85,16 @@ class Actions: NSObject {
             return "Remove Factory"
         }
         
+        if(type=="1x") {
+            return "Normal Speed"
+        }
+        if(type=="2x") {
+            return "Super Speed"
+        }
+        if(type=="3x") {
+            return "Hyper Speed"
+        }
+        
         return nil
         
     }
@@ -108,13 +118,37 @@ class Actions: NSObject {
             return sprite
         }
         
+        if(type=="1x") {
+            var sprite = SKTexture(imageNamed: "Fast1x")
+            return sprite
+        }
+        if(type=="2x") {
+            var sprite = SKTexture(imageNamed: "Fast2x")
+            return sprite
+        }
+        if(type=="3x") {
+            var sprite = SKTexture(imageNamed: "Fast3x")
+            return sprite
+        }
+        
         return nil
     }
     
     class func getActionCost(type: String) -> Int {
         
-        return 100
+        if(type=="AddTree") {
+            return 100
+        }
+        if(type=="AddHerb") {
+            return 50
+        }
+        if(type=="AddCarn") {
+            return 80
+        }
+        if(type=="RemoveFactory") {
+            return 150
+        }
         
+        return 0
     }
-    
 }
