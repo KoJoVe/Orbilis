@@ -23,11 +23,11 @@ class Carnivore: Lifeform {
         
         super.init(texture: texture, color: nil, size: sizeWH)
         
-        pollutionIncrement = -10
+        pollutionIncrement = 0
         pollutionLimit = 200
         reproductionRate = 0
-        lifeTimeMax = 5
-        organicProduction = 70
+        lifeTimeMax = 35
+        organicProduction = 150
         organicProductionP = 50
         
         self.position = randomPointInsideRect(rect)

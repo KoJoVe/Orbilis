@@ -93,6 +93,7 @@ class StartScene: SKScene {
             else {
                 
                 var fadeOut = SKAction.fadeOutWithDuration(animationDuration)
+                initialOrb.texture = SKTexture(imageNamed: "OrbPure")
                 var moveToCenter = SKAction.moveToY(self.frame.height/2, duration: animationDuration)
                 moveToCenter.timingMode = SKActionTimingMode.EaseInEaseOut
                 var increaseSize = SKAction.resizeToWidth(self.frame.width, height: self.frame.width, duration: animationDuration)
@@ -103,7 +104,7 @@ class StartScene: SKScene {
                     
                     var scene = GameScene(size:self.size)
                     
-                    self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.8))
+                    self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.1))
                     
                 })
                 var sequenceOrb = SKAction.sequence([wait,group,block])

@@ -20,7 +20,7 @@ class GameScene: SKScene {
     var speedTimer = NSTimer()
     var audioManager = AudioManager()
     
-    var chanceToSpawnFactory = 40
+    var chanceToSpawnFactory = 45
     
     var pointOrganicMatter = CGPointMake(0, 0)
     var pointOrganicMatterLabel = CGPointMake(0, 0)

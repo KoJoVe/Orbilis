@@ -23,11 +23,11 @@ class Herbivore: Lifeform {
         
         super.init(texture: texture, color: nil, size: sizeWH)
         
-        pollutionIncrement = -10
-        pollutionLimit = 300
+        pollutionIncrement = 0
+        pollutionLimit = 400
         reproductionRate = 0
         lifeTimeMax = 90
-        organicProduction = 10
+        organicProduction = 0
         
         self.position = randomPointInsideRect(rect)
         self.zPosition = 4

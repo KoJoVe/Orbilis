@@ -140,13 +140,13 @@ class Actions: NSObject {
             return 100
         }
         if(type=="AddHerb") {
-            return 50
+            return 60
         }
         if(type=="AddCarn") {
             return 80
         }
         if(type=="RemoveFactory") {
-            return 150
+            return 120
         }
         
         return 0
