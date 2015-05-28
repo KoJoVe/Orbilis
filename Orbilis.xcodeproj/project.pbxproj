@@ -49,6 +49,12 @@
 		51FEA4731B1678CC007EBB09 /* BadIsland.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA4701B1678CC007EBB09 /* BadIsland.png */; };
 		51FEA4741B1678CC007EBB09 /* GoodCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA4711B1678CC007EBB09 /* GoodCloud.png */; };
 		947716911B1760EB00D3015C /* UserInformation.plist in Resources */ = {isa = PBXBuildFile; fileRef = 947716901B1760EB00D3015C /* UserInformation.plist */; };
+		94BB5ADC1B17B15B00EECD5E /* Rain.sks in Resources */ = {isa = PBXBuildFile; fileRef = 94BB5ADA1B17B15B00EECD5E /* Rain.sks */; };
+		94BB5ADD1B17B15B00EECD5E /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 94BB5ADB1B17B15B00EECD5E /* spark.png */; };
+		94BB5ADF1B17B20100EECD5E /* AcidRain.sks in Resources */ = {isa = PBXBuildFile; fileRef = 94BB5ADE1B17B20100EECD5E /* AcidRain.sks */; };
+		94BB5AE11B17B2CB00EECD5E /* FabricSmoke.sks in Resources */ = {isa = PBXBuildFile; fileRef = 94BB5AE01B17B2CB00EECD5E /* FabricSmoke.sks */; };
+		94BB5AE51B17B2EC00EECD5E /* smoke.png in Resources */ = {isa = PBXBuildFile; fileRef = 94BB5AE31B17B2EC00EECD5E /* smoke.png */; };
+		94BB5AEB1B17B3BB00EECD5E /* NewObject.sks in Resources */ = {isa = PBXBuildFile; fileRef = 94BB5AEA1B17B3BB00EECD5E /* NewObject.sks */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -108,6 +114,12 @@
 		51FEA4701B1678CC007EBB09 /* BadIsland.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadIsland.png; sourceTree = "<group>"; };
 		51FEA4711B1678CC007EBB09 /* GoodCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodCloud.png; sourceTree = "<group>"; };
 		947716901B1760EB00D3015C /* UserInformation.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = UserInformation.plist; sourceTree = "<group>"; };
+		94BB5ADA1B17B15B00EECD5E /* Rain.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Rain.sks; sourceTree = "<group>"; };
+		94BB5ADB1B17B15B00EECD5E /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		94BB5ADE1B17B20100EECD5E /* AcidRain.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = AcidRain.sks; sourceTree = "<group>"; };
+		94BB5AE01B17B2CB00EECD5E /* FabricSmoke.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = FabricSmoke.sks; sourceTree = "<group>"; };
+		94BB5AE31B17B2EC00EECD5E /* smoke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = smoke.png; sourceTree = "<group>"; };
+		94BB5AEA1B17B3BB00EECD5E /* NewObject.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = NewObject.sks; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -235,6 +247,12 @@
 		51A9A2DB1B1394AD00E24060 /* Particles */ = {
 			isa = PBXGroup;
 			children = (
+				94BB5ADE1B17B20100EECD5E /* AcidRain.sks */,
+				94BB5ADA1B17B15B00EECD5E /* Rain.sks */,
+				94BB5AE01B17B2CB00EECD5E /* FabricSmoke.sks */,
+				94BB5ADB1B17B15B00EECD5E /* spark.png */,
+				94BB5AE31B17B2EC00EECD5E /* smoke.png */,
+				94BB5AEA1B17B3BB00EECD5E /* NewObject.sks */,
 			);
 			name = Particles;
 			sourceTree = "<group>";
@@ -359,21 +377,27 @@
 				51A8E92B1B166C63001F24DC /* CarnButton.png in Resources */,
 				51FEA4721B1678CC007EBB09 /* FloodIsland.png in Resources */,
 				515FDA981B13B40E00D4A3BE /* RectGreen.png in Resources */,
+				94BB5AEB1B17B3BB00EECD5E /* NewObject.sks in Resources */,
 				515FDA9A1B13B40E00D4A3BE /* RectPurple.png in Resources */,
 				51A8E9251B166C63001F24DC /* OrganicImage.png in Resources */,
+				94BB5AE11B17B2CB00EECD5E /* FabricSmoke.sks in Resources */,
 				51A8E9381B166F2C001F24DC /* GlassCover.png in Resources */,
 				51FEA4741B1678CC007EBB09 /* GoodCloud.png in Resources */,
 				51FEA46E1B1677C2007EBB09 /* NormalIsland.png in Resources */,
 				51A8E92C1B166C63001F24DC /* HerbButton.png in Resources */,
+				94BB5ADC1B17B15B00EECD5E /* Rain.sks in Resources */,
 				51FEA4731B1678CC007EBB09 /* BadIsland.png in Resources */,
 				513994F71B113D7B003C408C /* LaunchScreen.xib in Resources */,
 				51A8E93A1B166F2C001F24DC /* NormalBackground.png in Resources */,
 				51A8E9281B166C63001F24DC /* Herb.png in Resources */,
 				515FDA971B13B40E00D4A3BE /* RectBlue.png in Resources */,
+				94BB5ADD1B17B15B00EECD5E /* spark.png in Resources */,
+				94BB5ADF1B17B20100EECD5E /* AcidRain.sks in Resources */,
 				51A8E92D1B166C63001F24DC /* TreeButton.png in Resources */,
 				51A8E92A1B166C63001F24DC /* FacButton.png in Resources */,
 				515FDA991B13B40E00D4A3BE /* RectOrange.png in Resources */,
 				51A8E9271B166C63001F24DC /* Carn.png in Resources */,
+				94BB5AE51B17B2EC00EECD5E /* smoke.png in Resources */,
 				515FDA9C1B13B40E00D4A3BE /* RectYellow.png in Resources */,
 				513994F41B113D7B003C408C /* Images.xcassets in Resources */,
 				51A8E9241B166C63001F24DC /* Background.png in Resources */,
