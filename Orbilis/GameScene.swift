@@ -15,8 +15,9 @@ class GameScene: SKScene {
     var timeSpeed = 0
     
     var sizeOfSprites: CGFloat = 20
-    var tickTime = 1.0
+    var tickTime = 2.0
     var tickTimer = NSTimer()
+    var speedTimer = NSTimer()
     var audioManager = AudioManager()
     
     var chanceToSpawnFactory = 10
@@ -27,8 +28,10 @@ class GameScene: SKScene {
     var menuIsOpen = false
     var screenPressed = false
     var lostGame = false
+    var pausedGame = false
     
     var islandRect = SKSpriteNode()
+    var presentTimeRect: SKSpriteNode?
     
     var backgroundSprite = SKSpriteNode()
     var orbBackgroundBad = SKSpriteNode()
@@ -100,6 +103,7 @@ class GameScene: SKScene {
         orbBackgroundBad.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
         orbBackgroundBad.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         orbBackgroundBad.zPosition = 1
+        orbBackgroundBad.name = "Flood"
         orbBackgroundBad.alpha = 0
         self.addChild(orbBackgroundBad)
         
@@ -114,6 +118,7 @@ class GameScene: SKScene {
         orbWaterFlood.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
         orbWaterFlood.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         orbWaterFlood.zPosition = 2
+        orbWaterFlood.name = "Flood"
         orbWaterFlood.alpha = 0
         self.addChild(orbWaterFlood)
         
@@ -155,6 +160,7 @@ class GameScene: SKScene {
         orbGlass.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
         orbGlass.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         orbGlass.zPosition = 6
+        orbGlass.name = "Flood"
         self.addChild(orbGlass)
         
         islandSprite = SKSpriteNode()
@@ -230,10 +236,19 @@ class GameScene: SKScene {
     }
     
     func redrawPresentTime() {
+        
+        presentTimeRect?.removeFromParent()
+        presentTimeRect = SKSpriteNode()
+        presentTimeRect!.size = CGSizeMake(self.frame.width/4, self.frame.width/4)
+        presentTimeRect!.position = CGPointMake(presentTimeRect!.size.width/2, self.frame.size.height - presentTimeRect!.size.height/2)
+        presentTimeRect!.name = "Time"
+        self.addChild(presentTimeRect!)
+        
         presentTimeLabel?.removeFromParent()
         presentTimeLabel = SKLabelNode()
         presentTimeLabel!.text = "\(presentTime)d"
-        presentTimeLabel!.fontSize = 20
+        presentTimeLabel!.fontSize = 25
+        presentTimeLabel!.name = "Time"
         presentTimeLabel!.fontName = "Avenir-Roman"
         presentTimeLabel!.position = CGPointMake(presentTimeLabel!.frame.size.width/2 + 10, self.frame.height - presentTimeLabel!.frame.size.height/2 - 20)
         presentTimeLabel!.zPosition = 2
@@ -345,12 +360,15 @@ class GameScene: SKScene {
         if(lostGame == false) {
             for touch in (touches as! Set<UITouch>) {
                 
-                var name = nodeAtPoint(touch.locationInNode(self)).name
+                if(pausedGame == false) {
                 
-                if name == "MenuButton" {
-                    //Open pause menu
-                } else {
-                    NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("openItensMenu"), userInfo: nil, repeats: false)
+                    var name = nodeAtPoint(touch.locationInNode(self)).name
+                    
+                    if name == "MenuButton" {
+                        //Open pause menu
+                    } else {
+                        NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: Selector("openItensMenu"), userInfo: nil, repeats: false)
+                    }
                 }
             }
         }
@@ -401,8 +419,36 @@ class GameScene: SKScene {
                         
                     }
                 }
+                
+                if (name == "Time") {
+                    fastFoward()
+                }
             }
         }
+    }
+    
+    func fastFoward() {
+        
+        timeSpeed++
+        
+        if(timeSpeed > 2) {
+            timeSpeed = 0
+        }
+        
+        if(timeSpeed == 0) {
+            showDescriptorToMenu("1x")
+            tickTime = 2.0
+        } else if(timeSpeed == 1) {
+            showDescriptorToMenu("2x")
+            tickTime = 0.8
+        } else if(timeSpeed == 2) {
+            tickTime = 0.2
+            showDescriptorToMenu("3x")
+        }
+        
+        speedTimer.invalidate()
+        speedTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("hideDescriptor"), userInfo: nil, repeats: false)
+        
     }
     
     func updateTick() {
@@ -615,6 +661,12 @@ class GameScene: SKScene {
         lostGame = true
         var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
         islandSprite.runAction(vanish)
+        orbBadCloud.runAction(vanish)
+        orbSmoke.runAction(vanish)
+        presentTimeLabel?.runAction(vanish)
+        organicMatterImage?.runAction(vanish)
+        organicMatterLabel?.runAction(vanish)
+        hideDescriptor()
         var action = SKAction.fadeAlphaTo(1, duration: 1.0)
         orbWaterFlood.runAction(action)
     }

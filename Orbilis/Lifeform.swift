@@ -17,6 +17,7 @@ class Lifeform: SKSpriteNode {
     var lifeTimeMax = 15
     var organicProduction = 0
     var cost = 0
+    var hungerCooldownRate = 10
     
     var aboutToDelete = 0 //Prevent Flying Memory
     
@@ -47,7 +48,7 @@ class Lifeform: SKSpriteNode {
     
     func eat(lifeform: Lifeform) -> Bool {
         if(hungerCooldown <= 0) {
-            hungerCooldown = 10
+            hungerCooldown = hungerCooldownRate
             return true
         }
         return false

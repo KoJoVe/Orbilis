@@ -85,6 +85,16 @@ class Actions: NSObject {
             return "Remove Factory"
         }
         
+        if(type=="1x") {
+            return "Normal Speed"
+        }
+        if(type=="2x") {
+            return "Super Speed"
+        }
+        if(type=="3x") {
+            return "Hyper Speed"
+        }
+        
         return nil
         
     }
@@ -105,6 +115,19 @@ class Actions: NSObject {
         }
         if(type=="RemoveFactory") {
             var sprite = SKTexture(imageNamed: "FacButton")
+            return sprite
+        }
+        
+        if(type=="1x") {
+            var sprite = SKTexture(imageNamed: "Fast1x")
+            return sprite
+        }
+        if(type=="2x") {
+            var sprite = SKTexture(imageNamed: "Fast2x")
+            return sprite
+        }
+        if(type=="3x") {
+            var sprite = SKTexture(imageNamed: "Fast3x")
             return sprite
         }
         

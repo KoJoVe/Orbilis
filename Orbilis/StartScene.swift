@@ -14,7 +14,7 @@ class StartScene: SKScene {
     var orbTitle: SKLabelNode = SKLabelNode()
     var orbPlay: SKLabelNode = SKLabelNode()
     var orbTutorial: SKLabelNode = SKLabelNode()
-    var animationDuration = 0.5
+    var animationDuration = 0.8
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -23,7 +23,14 @@ class StartScene: SKScene {
         //Titulo orbilis
         //tap screen to play
         
-        initialOrb = SKSpriteNode(imageNamed: "rectGreen")
+        var background = SKSpriteNode(imageNamed: "Background")
+        background.size = CGSizeMake(self.frame.size.width, self.frame.size.height)
+        background.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        background.zPosition = -1
+        background.name = "TheBackground"
+        self.addChild(background)
+        
+        initialOrb = SKSpriteNode(imageNamed: "OrbTree")
         initialOrb.position = CGPointMake(self.frame.width/2, self.frame.height/2 + 30)
         initialOrb.size = CGSize(width: self.frame.width/3, height: self.frame.width/3)
         self.addChild(initialOrb)
@@ -31,12 +38,15 @@ class StartScene: SKScene {
         var labelPosition = CGPoint(x: initialOrb.position.x, y: initialOrb.position.y - initialOrb.size.height/1.25)
         
         orbTitle = SKLabelNode(text: "Orbilis")
+        orbTitle.fontName = "Avenir-Roman"
         orbTitle.position = labelPosition
         self.addChild(orbTitle)
         
         labelPosition = CGPoint(x: labelPosition.x, y: labelPosition.y - initialOrb.size.height/1.25)
         
-        orbPlay = SKLabelNode(text: "Tap to play!")
+        orbPlay = SKLabelNode(text: "tap to play")
+        orbPlay.fontSize = 12
+        orbPlay.fontName = "Avenir-Roman"
         orbPlay.position = labelPosition
         self.addChild(orbPlay)
         
@@ -46,21 +56,23 @@ class StartScene: SKScene {
         
         orbTutorial = SKLabelNode(text: "Tutorial")
         orbTutorial.position = labelPosition
+        orbTutorial.fontSize = 15
         orbTutorial.name = "tutorial"
+        orbTutorial.fontName = "Avenir-Roman"
         self.addChild(orbTutorial)
         
         
 //        Check if First Time
         
-        UserData.initializePlist()
-        
-        if UserData.isFirstTime() == 0 {
-        
-            UserData.setAlreadyUser(1)
-            
-        }
+//        UserData.initializePlist()
+//        
+//        if UserData.isFirstTime() == 0 {
+//        
+//            UserData.setAlreadyUser(1)
+//            
+//        }
 
-        println(UserData.isFirstTime())
+        //println(UserData.isFirstTime())
         
     }
     
@@ -80,14 +92,16 @@ class StartScene: SKScene {
                 
                 var fadeOut = SKAction.fadeOutWithDuration(animationDuration)
                 var moveToCenter = SKAction.moveToY(self.frame.height/2, duration: animationDuration)
+                moveToCenter.timingMode = SKActionTimingMode.EaseInEaseOut
                 var increaseSize = SKAction.resizeByWidth(self.frame.width*2/3 - 40, height: self.frame.width*2/3-40, duration: animationDuration)
+                increaseSize.timingMode = SKActionTimingMode.EaseInEaseOut
                 var wait = SKAction.waitForDuration(animationDuration)
                 var group = SKAction.group([moveToCenter,increaseSize])
                 var block = SKAction.runBlock({
                     
                     var scene = GameScene(size:self.size)
                     
-                    self.scene!.view?.presentScene(scene, transition: nil)
+                    self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(1.5))
                     
                 })
                 var sequenceOrb = SKAction.sequence([wait,group,block])
