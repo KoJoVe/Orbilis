@@ -49,6 +49,7 @@ class GameScene: SKScene {
     var orbSmokeLess = SKSpriteNode()
     var pauseButton = SKSpriteNode()
     var pauseScreen = SKSpriteNode()
+    var emptySprite = SKSpriteNode()
     
     var giveUpText = SKLabelNode()
     var pauseText = SKLabelNode()
@@ -198,12 +199,17 @@ class GameScene: SKScene {
         descriptor!.zPosition = 50
         self.addChild(descriptor!)
         
+        var pauseEmpty = SKSpriteNode(color: UIColor.clearColor(), size: CGSizeMake(self.frame.size.width/7, self.frame.size.width/7))
+        pauseEmpty.position = CGPointMake(self.size.width / 1.1, self.size.height/1.05)
+        pauseEmpty.zPosition = 31
+        self.addChild(pauseEmpty)
+        
         pauseButton = SKSpriteNode(imageNamed: "PauseButton")
         pauseButton.size = CGSizeMake(self.frame.size.width/11, self.frame.size.width/11)
-        pauseButton.position = CGPointMake(self.size.width - pauseButton.size.width/2 - 10, self.size.height - pauseButton.size.height/2 - 10)
-        pauseButton.zPosition = 30
+//        pauseButton.position = CGPointMake(self.size.width - pauseButton.size.width/2 - 10, self.size.height - pauseButton.size.height/2 - 10)
+        pauseButton.zPosition = 32
         pauseButton.name = "Pause"
-        self.addChild(pauseButton)
+        pauseEmpty.addChild(pauseButton)
         
         pauseScreen = SKSpriteNode(imageNamed: "RectBlue")
         pauseScreen.size = CGSizeMake(self.frame.size.width, self.frame.size.height)
@@ -220,14 +226,20 @@ class GameScene: SKScene {
         pauseText.fontName = "Avenir-Roman"
         self.addChild(pauseText)
         
+        emptySprite = SKSpriteNode(color: UIColor.clearColor(), size: CGSizeMake(self.frame.width/2.5, self.frame.height/10))
+        emptySprite.position = CGPoint(x: CGRectGetMidX(self.frame), y: CGRectGetMidY(self.frame) - 120)
+        emptySprite.name = "give"
+        emptySprite.zPosition = -3
+        self.addChild(emptySprite)
+        
         giveUpText.text = "Quit Game"
         giveUpText.fontSize = 22
-        giveUpText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - 120)
-        giveUpText.zPosition = -3
+//        giveUpText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - 120)
+//        giveUpText.zPosition = -3
         giveUpText.alpha = 0
         giveUpText.name = "give"
         giveUpText.fontName = "Avenir-Black"
-        self.addChild(giveUpText)
+        emptySprite.addChild(giveUpText)
         
         redrawDescriptorText("")
         
@@ -439,6 +451,7 @@ class GameScene: SKScene {
         pauseScreen.zPosition = 100
         pauseText.zPosition = 101
         giveUpText.zPosition = 102
+        emptySprite.zPosition = 101
         giveUpText.alpha = 1
         pauseText.alpha = 1
         tickTimer.invalidate()
