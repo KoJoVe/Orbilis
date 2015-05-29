@@ -77,6 +77,16 @@ class EndScene: SKScene {
 //
             UserData.setUserRecord(scoreValue)
         }
+        
+      else {
+        
+            congrats = SKLabelNode(text: "Your record is \(UserData.getUserRecord())")
+            congrats.position = CGPoint(x: self.frame.width/2, y: self.frame.height/2.7)
+            congrats.fontSize = 23
+            congrats.fontName = "Avenir-Roman"
+            self.addChild(congrats)
+        
+        }
     
         //Play again
         
