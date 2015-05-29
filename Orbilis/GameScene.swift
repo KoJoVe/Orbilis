@@ -481,12 +481,12 @@ class GameScene: SKScene {
         
         if(timeSpeed == 0) {
             showDescriptorToMenu("1x")
-            tickTime = 2.0
+            tickTime = 1.8
         } else if(timeSpeed == 1) {
             showDescriptorToMenu("2x")
-            tickTime = 0.8
+            tickTime = 0.6
         } else if(timeSpeed == 2) {
-            tickTime = 0.2
+            tickTime = 0.1
             showDescriptorToMenu("3x")
         }
         
