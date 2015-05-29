@@ -146,7 +146,7 @@ class Actions: NSObject {
             return 80
         }
         if(type=="RemoveFactory") {
-            return 120
+            return 150
         }
         
         return 0

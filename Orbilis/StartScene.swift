@@ -102,7 +102,7 @@ class StartScene: SKScene {
                 var group = SKAction.group([moveToCenter,increaseSize])
                 var block = SKAction.runBlock({
                     
-                    var scene = GameScene(size:self.size)
+                    var scene = CENA(size:self.size)
                     
                     self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.1))
                     

@@ -20,8 +20,6 @@ class GameScene: SKScene {
     var speedTimer = NSTimer()
     var audioManager = AudioManager()
     
-    var chanceToSpawnFactory = 45
-    
     var pointOrganicMatter = CGPointMake(0, 0)
     var pointOrganicMatterLabel = CGPointMake(0, 0)
     
@@ -555,11 +553,11 @@ class GameScene: SKScene {
         }
     }
     
-    func moreOrganicMatter(x: CGFloat, y: CGFloat) {
+    func popStatus(x: CGFloat, y: CGFloat,type: String) {
         
-        var image = SKSpriteNode(imageNamed: "MoreOrganic")
-        image.size = CGSizeMake(sizeOfSprites + 10, sizeOfSprites + 10)
-        image.position = CGPointMake(x, y)
+        var image = SKSpriteNode(imageNamed: type)
+        image.size = CGSizeMake(sizeOfSprites, sizeOfSprites)
+        image.position = CGPointMake(x, y + sizeOfSprites/2)
         image.zPosition = 100
         image.alpha = 0
         self.islandSprite.addChild(image)
@@ -623,7 +621,7 @@ class GameScene: SKScene {
                 organicMatter += i.organicProduction
                 organicMatterLabel?.text = "\(organicMatter)"
                 if(i.organicProduction > 0) {
-                    moreOrganicMatter(i.position.x, y: i.position.y)
+                    popStatus(i.position.x, y: i.position.y,type: "MoreOrganic")
                 }
             }
         }
@@ -638,12 +636,15 @@ class GameScene: SKScene {
                 creaturesArray.append(new.node! as! Lifeform)
                 self.islandSprite.addChild(new.node! as! Lifeform)
                 organicMatter -= Actions.getActionCost(type)
+                popStatus(new.node!.position.x, y: new.node!.position.y,type: "LessOrganic")
             } else if (new.type == "Building") {
                 buildingsArray.append(new.node! as! Building)
                 self.islandSprite.addChild(new.node! as! Building)
+                popStatus(new.node!.position.x, y: new.node!.position.y,type: "MoreFac")
             } else if (new.type == "RemoveFactory") {
                 if(buildingsArray.count >= 1) {
                     buildingsArray[0].destroy()
+                    popStatus(buildingsArray[0].position.x, y: buildingsArray[0].position.y,type: "LessFac")
                     buildingsArray.removeAtIndex(0)
                     organicMatter -= Actions.getActionCost(type)
                 }
@@ -687,15 +688,30 @@ class GameScene: SKScene {
             if(i.chanceToDie(pollution) == true) {
                 i.animateToDie()
                 i.aboutToDelete = 1
+                organicMatter += i.organicProduction
+                organicMatterLabel?.text = "\(organicMatter)"
+                if(i.organicProduction > 0) {
+                    popStatus(i.position.x, y: i.position.y,type: "MoreOrganic")
+                }
             }
         }
     }
     
     func chanceSpawnFactory() {
         
-        var r = random(1...chanceToSpawnFactory)
+        var r = Double(random(1...1000))
         
-        if(r<=1) {
+        var chance:Double = 1 * Double(presentTime/10)
+        
+        if(chance < 1) {
+            chance = 15
+        }
+        
+        if(chance > 120) {
+            chance = 120
+        }
+        
+        if(r<=chance) {
             executeGameAction("AddFactory")
         }
         
@@ -768,10 +784,10 @@ class GameScene: SKScene {
         organicMatterImage?.runAction(vanish)
         organicMatterLabel?.runAction(vanish)
         hideDescriptor()
-        var action = SKAction.fadeAlphaTo(1, duration: 0.5)
+        var action = SKAction.fadeAlphaTo(1, duration: 1.0)
         orbWaterFlood.runAction(action)
         
-        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("lostLevelTransition"), userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("lostLevelTransition"), userInfo: nil, repeats: false)
         
     }
     
