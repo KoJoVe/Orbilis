@@ -102,5 +102,50 @@ class UserData: NSObject {
         
         return record
     }
+    
+    class func changeAudio() {
+        
+        var audio: Bool = Bool()
+        
+        var pathAux = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
+        var path = pathAux.stringByAppendingPathComponent("tantoFaz.plist")
+        
+        var fileManager = NSFileManager.defaultManager()
+        if (!(fileManager.fileExistsAtPath(path))) {
+            
+            var bundle : NSString! = NSBundle.mainBundle().pathForResource("tantoFaz", ofType: "plist")
+            fileManager.copyItemAtPath(bundle as String, toPath: path, error:nil)
+            
+        }
+        
+        let contents: NSMutableDictionary! = NSMutableDictionary(contentsOfFile: path as String)
+        audio = contents.objectForKey("Audio") as! Bool
+        
+        contents.setObject(!audio, forKey: "Audio")
+        contents.writeToFile(path, atomically: false)
+        
+    }
+    
+    class func getAudio() -> Bool {
+        
+        var audio: Bool = Bool()
+        
+        var pathAux = NSSearchPathForDirectoriesInDomains(.DocumentDirectory, .UserDomainMask, true)[0] as! String
+        var path = pathAux.stringByAppendingPathComponent("tantoFaz.plist")
+        
+        var fileManager = NSFileManager.defaultManager()
+        if (!(fileManager.fileExistsAtPath(path))) {
+            
+            var bundle : NSString! = NSBundle.mainBundle().pathForResource("tantoFaz", ofType: "plist")
+            fileManager.copyItemAtPath(bundle as String, toPath: path, error:nil)
+            
+        }
+        
+        let contents: NSDictionary! = NSDictionary(contentsOfFile: path as String)
+        audio = contents.objectForKey("Audio") as! Bool
+        
+        return audio
+        
+    }
    
 }

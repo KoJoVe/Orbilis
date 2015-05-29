@@ -67,7 +67,7 @@ class EndScene: SKScene {
         
         //Its a new record! (Ou nulo)
         
-      if scoreValue >= UserData.getUserRecord() {
+      if scoreValue > UserData.getUserRecord() {
 //            
             congrats = SKLabelNode(text: "It's a new record!")
             congrats.position = CGPoint(x: self.frame.width/2, y: self.frame.height/2.7)
