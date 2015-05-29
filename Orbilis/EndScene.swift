@@ -38,7 +38,7 @@ class EndScene: SKScene {
         gameOver = SKLabelNode(text: "Oh no! The environment collapsed!")
         gameOver.position = CGPoint(x: self.frame.width/2, y: self.frame.height/1.15)
         gameOver.fontSize = 18
-        gameOver.fontName = "Avenir-Roman"
+        gameOver.fontName = "Avenir-Black"
         self.addChild(gameOver)
         
         //Foto da orb

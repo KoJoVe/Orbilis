@@ -7,8 +7,9 @@
 //
 
 import SpriteKit
+import UIKit
 
-class StartScene: SKScene {
+class StartScene: SKScene, UIAlertViewDelegate {
     
     var initialOrb: SKSpriteNode = SKSpriteNode()
     var orbTitle: SKLabelNode = SKLabelNode()
@@ -42,7 +43,7 @@ class StartScene: SKScene {
         orbTitle.position = labelPosition
         self.addChild(orbTitle)
         
-        labelPosition = CGPoint(x: labelPosition.x, y: labelPosition.y - initialOrb.size.height/1.25)
+        labelPosition = CGPoint(x: labelPosition.x, y: labelPosition.y - initialOrb.size.height/1.25 + 35)
         
         orbPlay = SKLabelNode(text: "tap to play")
         orbPlay.fontSize = 12
@@ -52,11 +53,11 @@ class StartScene: SKScene {
         
         //tutorial
         
-        labelPosition = CGPoint(x: labelPosition.x, y: labelPosition.y - initialOrb.size.height/1.25)
+        labelPosition = CGPoint(x: labelPosition.x, y: labelPosition.y - initialOrb.size.height/1.25 - 30)
         
         orbTutorial = SKLabelNode(text: "Tutorial")
         orbTutorial.position = labelPosition
-        orbTutorial.fontSize = 15
+        orbTutorial.fontSize = 22
         orbTutorial.name = "tutorial"
         orbTutorial.fontName = "Avenir-Roman"
         self.addChild(orbTutorial)
@@ -65,16 +66,6 @@ class StartScene: SKScene {
 //        Check if First Time
         
         UserData.initializePlist()
-        
-        var first = UserData.isFirstTime() //0 = First time 
-        
-        if UserData.isFirstTime() == 0 {
-        
-            UserData.setAlreadyUser(1)
-            
-        }
-
-        
         
     }
     
@@ -87,37 +78,90 @@ class StartScene: SKScene {
             
             if name == "tutorial" {
                 
+                gotoTut()
                 
+                UserData.setAlreadyUser(1)
             }
             
             else {
                 
-                var fadeOut = SKAction.fadeOutWithDuration(animationDuration)
-                initialOrb.texture = SKTexture(imageNamed: "OrbPure")
-                var moveToCenter = SKAction.moveToY(self.frame.height/2, duration: animationDuration)
-                moveToCenter.timingMode = SKActionTimingMode.EaseInEaseOut
-                var increaseSize = SKAction.resizeToWidth(self.frame.width, height: self.frame.width, duration: animationDuration)
-                increaseSize.timingMode = SKActionTimingMode.EaseInEaseOut
-                var wait = SKAction.waitForDuration(animationDuration)
-                var group = SKAction.group([moveToCenter,increaseSize])
-                var block = SKAction.runBlock({
+                if UserData.isFirstTime() == 0 {
                     
-                    var scene = CENA(size:self.size)
+                    var alert = UIAlertView(title: "Do you want to play the tutorial?", message: "It is highly recommended! If not, you can acess it tapping on 'Tutorial' on the bottom of the screen.", delegate: self, cancelButtonTitle: "Yes Please!", otherButtonTitles: "No, Thanks")
+                    alert.show()
                     
-                    self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.1))
+                    UserData.setAlreadyUser(1)
                     
-                })
-                var sequenceOrb = SKAction.sequence([wait,group,block])
-                
-                self.orbPlay.runAction(fadeOut)
-                self.orbTitle.runAction(fadeOut)
-                self.orbTutorial.runAction(fadeOut)
-                self.initialOrb.runAction(sequenceOrb)
-                
+                } else {
+                    
+                    gotoGame()
+                    
+                }
+           
             }
             
         }
         
+    }
+    
+    func gotoGame() {
+        
+        var fadeOut = SKAction.fadeOutWithDuration(animationDuration)
+        initialOrb.texture = SKTexture(imageNamed: "OrbPure")
+        var moveToCenter = SKAction.moveToY(self.frame.height/2, duration: animationDuration)
+        moveToCenter.timingMode = SKActionTimingMode.EaseInEaseOut
+        var increaseSize = SKAction.resizeToWidth(self.frame.width, height: self.frame.width, duration: animationDuration)
+        increaseSize.timingMode = SKActionTimingMode.EaseInEaseOut
+        var wait = SKAction.waitForDuration(animationDuration)
+        var group = SKAction.group([moveToCenter,increaseSize])
+        var block = SKAction.runBlock({
+            
+            var scene = GameScene(size:self.size)
+            
+            self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.1))
+            
+        })
+        var sequenceOrb = SKAction.sequence([wait,group,block])
+        
+        self.orbPlay.runAction(fadeOut)
+        self.orbTitle.runAction(fadeOut)
+        self.orbTutorial.runAction(fadeOut)
+        self.initialOrb.runAction(sequenceOrb)
+    }
+    
+    func gotoTut() {
+        
+        var fadeOut = SKAction.fadeOutWithDuration(animationDuration)
+        initialOrb.texture = SKTexture(imageNamed: "OrbPure")
+        var moveToCenter = SKAction.moveToY(self.frame.height/2, duration: animationDuration)
+        moveToCenter.timingMode = SKActionTimingMode.EaseInEaseOut
+        var increaseSize = SKAction.resizeToWidth(self.frame.width, height: self.frame.width, duration: animationDuration)
+        increaseSize.timingMode = SKActionTimingMode.EaseInEaseOut
+        var wait = SKAction.waitForDuration(animationDuration)
+        var group = SKAction.group([moveToCenter,increaseSize])
+        var block = SKAction.runBlock({
+            
+            var scene = TutorialScene(size:self.size)
+            
+            self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.1))
+            
+        })
+        var sequenceOrb = SKAction.sequence([wait,group,block])
+        
+        self.orbPlay.runAction(fadeOut)
+        self.orbTitle.runAction(fadeOut)
+        self.orbTutorial.runAction(fadeOut)
+        self.initialOrb.runAction(sequenceOrb)
+        
+    }
+    
+    func alertView(alertView: UIAlertView, clickedButtonAtIndex buttonIndex: Int) {
+        if(buttonIndex == 0) {
+            gotoTut()
+            
+        } else {
+            gotoGame()
+        }
     }
     
     override func update(currentTime: CFTimeInterval) {

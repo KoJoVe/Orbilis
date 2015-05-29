@@ -188,7 +188,7 @@ class GameScene: SKScene {
         self.addChild(descriptor!)
         
         pauseButton = SKSpriteNode(imageNamed: "PauseButton")
-        pauseButton.size = CGSizeMake(self.frame.size.width/12, self.frame.size.width/12)
+        pauseButton.size = CGSizeMake(self.frame.size.width/11, self.frame.size.width/11)
         pauseButton.position = CGPointMake(self.size.width - pauseButton.size.width/2 - 10, self.size.height - pauseButton.size.height/2 - 10)
         pauseButton.zPosition = 30
         pauseButton.name = "Pause"
@@ -210,7 +210,7 @@ class GameScene: SKScene {
         self.addChild(pauseText)
         
         giveUpText.text = "Quit Game"
-        giveUpText.fontSize = 15
+        giveUpText.fontSize = 22
         giveUpText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - 120)
         giveUpText.zPosition = -3
         giveUpText.alpha = 0
