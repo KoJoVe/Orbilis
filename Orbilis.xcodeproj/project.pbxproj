@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		511C16901B175E0C003CA03E /* Smoke.png in Resources */ = {isa = PBXBuildFile; fileRef = 511C168E1B175E0C003CA03E /* Smoke.png */; };
-		511C16911B175E0C003CA03E /* BadCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 511C168F1B175E0C003CA03E /* BadCloud.png */; };
 		511C16951B1761F4003CA03E /* PollutionSmokeLess.png in Resources */ = {isa = PBXBuildFile; fileRef = 511C16921B1761F4003CA03E /* PollutionSmokeLess.png */; };
 		511C169A1B1767A1003CA03E /* BadIsland.png in Resources */ = {isa = PBXBuildFile; fileRef = 511C16981B1767A1003CA03E /* BadIsland.png */; };
 		511C169B1B1767A1003CA03E /* FloodIsland.png in Resources */ = {isa = PBXBuildFile; fileRef = 511C16991B1767A1003CA03E /* FloodIsland.png */; };
@@ -64,8 +63,11 @@
 		51DD0FA91B17E51700141954 /* TutorialScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DD0FA81B17E51700141954 /* TutorialScene.swift */; };
 		51DD0FAD1B1804D200141954 /* Seta.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FAC1B1804D200141954 /* Seta.png */; };
 		51DD0FAF1B18055500141954 /* SetaUp.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FAE1B18055500141954 /* SetaUp.png */; };
+		51DD0FB21B189F5200141954 /* Rain.sks in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FB01B189F5200141954 /* Rain.sks */; };
+		51DD0FB31B189F5200141954 /* spark.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FB11B189F5200141954 /* spark.png */; };
+		51DD0FB61B18A42600141954 /* BadCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FB41B18A42600141954 /* BadCloud.png */; };
+		51DD0FB71B18A42600141954 /* GoodCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FB51B18A42600141954 /* GoodCloud.png */; };
 		51FEA46E1B1677C2007EBB09 /* NormalIsland.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA46D1B1677C2007EBB09 /* NormalIsland.png */; };
-		51FEA4741B1678CC007EBB09 /* GoodCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA4711B1678CC007EBB09 /* GoodCloud.png */; };
 		94BB5AED1B17BB3600EECD5E /* tantoFaz.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94BB5AEC1B17BB3600EECD5E /* tantoFaz.plist */; };
 /* End PBXBuildFile section */
 
@@ -81,7 +83,6 @@
 
 /* Begin PBXFileReference section */
 		511C168E1B175E0C003CA03E /* Smoke.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Smoke.png; sourceTree = "<group>"; };
-		511C168F1B175E0C003CA03E /* BadCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadCloud.png; sourceTree = "<group>"; };
 		511C16921B1761F4003CA03E /* PollutionSmokeLess.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = PollutionSmokeLess.png; sourceTree = "<group>"; };
 		511C16931B1761F4003CA03E /* BadBackground.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadBackground.png; sourceTree = "<group>"; };
 		511C16981B1767A1003CA03E /* BadIsland.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadIsland.png; sourceTree = "<group>"; };
@@ -142,8 +143,11 @@
 		51DD0FA81B17E51700141954 /* TutorialScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialScene.swift; sourceTree = "<group>"; };
 		51DD0FAC1B1804D200141954 /* Seta.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Seta.png; sourceTree = "<group>"; };
 		51DD0FAE1B18055500141954 /* SetaUp.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SetaUp.png; sourceTree = "<group>"; };
+		51DD0FB01B189F5200141954 /* Rain.sks */ = {isa = PBXFileReference; lastKnownFileType = file.sks; path = Rain.sks; sourceTree = "<group>"; };
+		51DD0FB11B189F5200141954 /* spark.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = spark.png; sourceTree = "<group>"; };
+		51DD0FB41B18A42600141954 /* BadCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadCloud.png; sourceTree = "<group>"; };
+		51DD0FB51B18A42600141954 /* GoodCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodCloud.png; sourceTree = "<group>"; };
 		51FEA46D1B1677C2007EBB09 /* NormalIsland.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NormalIsland.png; sourceTree = "<group>"; };
-		51FEA4711B1678CC007EBB09 /* GoodCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodCloud.png; sourceTree = "<group>"; };
 		94BB5AEC1B17BB3600EECD5E /* tantoFaz.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tantoFaz.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -190,6 +194,7 @@
 				51A9A2DA1B1394A700E24060 /* Assets */,
 				513994E81B113D7B003C408C /* AppDelegate.swift */,
 				513994EE1B113D7B003C408C /* GameViewController.swift */,
+				5139950E1B113DA4003C408C /* Abstracts */,
 				5139950C1B113D86003C408C /* Scenes */,
 				5139950D1B113D99003C408C /* Objects */,
 				513994F01B113D7B003C408C /* Main.storyboard */,
@@ -232,7 +237,6 @@
 				51A9A2D01B1390B300E24060 /* StartScene.swift */,
 				51A9A2D21B1390DA00E24060 /* EndScene.swift */,
 				51DD0FA81B17E51700141954 /* TutorialScene.swift */,
-				5139950E1B113DA4003C408C /* Abstracts */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -272,6 +276,8 @@
 		51A9A2DB1B1394AD00E24060 /* Particles */ = {
 			isa = PBXGroup;
 			children = (
+				51DD0FB01B189F5200141954 /* Rain.sks */,
+				51DD0FB11B189F5200141954 /* spark.png */,
 			);
 			name = Particles;
 			sourceTree = "<group>";
@@ -279,6 +285,8 @@
 		51A9A2DC1B1394B100E24060 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				51DD0FB41B18A42600141954 /* BadCloud.png */,
+				51DD0FB51B18A42600141954 /* GoodCloud.png */,
 				51DD0FAE1B18055500141954 /* SetaUp.png */,
 				51DD0FAC1B1804D200141954 /* Seta.png */,
 				51DD0FA21B17D88F00141954 /* LessFac.png */,
@@ -300,8 +308,6 @@
 				511C16921B1761F4003CA03E /* PollutionSmokeLess.png */,
 				511C16931B1761F4003CA03E /* BadBackground.png */,
 				511C168E1B175E0C003CA03E /* Smoke.png */,
-				511C168F1B175E0C003CA03E /* BadCloud.png */,
-				51FEA4711B1678CC007EBB09 /* GoodCloud.png */,
 				51FEA46D1B1677C2007EBB09 /* NormalIsland.png */,
 				51A8E9311B166F2C001F24DC /* GlassCover.png */,
 				51A8E9331B166F2C001F24DC /* NormalBackground.png */,
@@ -417,7 +423,6 @@
 				515FDA9A1B13B40E00D4A3BE /* RectPurple.png in Resources */,
 				51A8E9251B166C63001F24DC /* OrganicImage.png in Resources */,
 				51A8E9381B166F2C001F24DC /* GlassCover.png in Resources */,
-				51FEA4741B1678CC007EBB09 /* GoodCloud.png in Resources */,
 				519CE5DF1B17874300A85E53 /* Fast3x.png in Resources */,
 				51FEA46E1B1677C2007EBB09 /* NormalIsland.png in Resources */,
 				511C16901B175E0C003CA03E /* Smoke.png in Resources */,
@@ -431,13 +436,16 @@
 				51DD0FA61B17D88F00141954 /* LessOrganic.png in Resources */,
 				51DD0FAF1B18055500141954 /* SetaUp.png in Resources */,
 				51A8E9281B166C63001F24DC /* Herb.png in Resources */,
+				51DD0FB21B189F5200141954 /* Rain.sks in Resources */,
 				51DD0FA71B17D88F00141954 /* MoreFac.png in Resources */,
 				515FDA971B13B40E00D4A3BE /* RectBlue.png in Resources */,
 				51DD0FAD1B1804D200141954 /* Seta.png in Resources */,
 				51A8E92D1B166C63001F24DC /* TreeButton.png in Resources */,
 				519CE5E91B179D0800A85E53 /* OrbFlood.png in Resources */,
 				519CE5F31B17ACDE00A85E53 /* MoreOrganic.png in Resources */,
+				51DD0FB61B18A42600141954 /* BadCloud.png in Resources */,
 				511C16951B1761F4003CA03E /* PollutionSmokeLess.png in Resources */,
+				51DD0FB71B18A42600141954 /* GoodCloud.png in Resources */,
 				511C169B1B1767A1003CA03E /* FloodIsland.png in Resources */,
 				51A8E92A1B166C63001F24DC /* FacButton.png in Resources */,
 				519CE5EF1B17A03300A85E53 /* PlayButton.png in Resources */,
@@ -454,7 +462,7 @@
 				513994F21B113D7B003C408C /* Main.storyboard in Resources */,
 				519CE5DE1B17874300A85E53 /* Fast2x.png in Resources */,
 				51A8E9291B166C63001F24DC /* Tree.png in Resources */,
-				511C16911B175E0C003CA03E /* BadCloud.png in Resources */,
+				51DD0FB31B189F5200141954 /* spark.png in Resources */,
 				51A8E9261B166C63001F24DC /* Factory.png in Resources */,
 				515FDA9B1B13B40E00D4A3BE /* RectRed.png in Resources */,
 			);

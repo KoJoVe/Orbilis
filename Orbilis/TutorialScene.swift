@@ -290,7 +290,7 @@ class TutorialScene: SKScene {
             self.addChild(button!)
             
             var label = SKLabelNode()
-            label.text = "\(Actions.getActionCost(i))"
+            label.text = "\(Actions.getActionCost(i,timesExecuted: 0))"
             label.fontName = "Avenir-Roman"
             label.fontSize = 16
             label.position = CGPointMake(x, y - buttonSize/2 - label.frame.size.height/2 - (textSize - 10))
@@ -428,7 +428,7 @@ class TutorialScene: SKScene {
             
             for i in options {
                 if name == i { //Name = AddTree or AddHerb or AddCarn or RemoveFactory
-                    if(organicMatter < Actions.getActionCost(i)) {
+                    if(organicMatter < Actions.getActionCost(i,timesExecuted: 0)) {
                         //Not enough matter
                     } else {
                         executeGameAction(i)
@@ -629,7 +629,7 @@ class TutorialScene: SKScene {
             if(new.type == "Lifeform") {
                 creaturesArray.append(new.node! as! Lifeform)
                 self.islandSprite.addChild(new.node! as! Lifeform)
-                organicMatter -= Actions.getActionCost(type)
+                organicMatter -= Actions.getActionCost(type,timesExecuted: 0)
             } else if (new.type == "Building") {
                 buildingsArray.append(new.node! as! Building)
                 self.islandSprite.addChild(new.node! as! Building)
@@ -637,7 +637,7 @@ class TutorialScene: SKScene {
                 if(buildingsArray.count >= 1) {
                     buildingsArray[0].destroy()
                     buildingsArray.removeAtIndex(0)
-                    organicMatter -= Actions.getActionCost(type)
+                    organicMatter -= Actions.getActionCost(type,timesExecuted: 0)
                 }
             }
         }

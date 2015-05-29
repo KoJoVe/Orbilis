@@ -13,6 +13,7 @@ class GameScene: SKScene {
     var pollutionLimits = [0,100,200,300,400,500,600]
     
     var timeSpeed = 0
+    var itemsBought = [0,0,0,0]
     
     var sizeOfSprites: CGFloat = 20
     var tickTime = 2.0
@@ -28,6 +29,8 @@ class GameScene: SKScene {
     var lostGame = false
     var pausedGame = false
     var raining = false
+    
+    var rainEmitter = SKEmitterNode()
     
     var islandRect = SKSpriteNode()
     var presentTimeRect: SKSpriteNode?
@@ -97,8 +100,16 @@ class GameScene: SKScene {
         var prop: CGFloat = self.frame.size.width/640
         var deloc: CGFloat = -35 * prop
         
+        var delocRain: CGFloat = -200 * prop
+        
         islandW = islandW * prop
         islandH = islandH * prop
+        
+        rainEmitter = NSKeyedUnarchiver.unarchiveObjectWithFile(NSBundle.mainBundle().pathForResource("Rain", ofType: "sks")!)! as! SKEmitterNode
+        rainEmitter.zPosition = 4
+        rainEmitter.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - delocRain)
+        rainEmitter.alpha = 0
+        self.addChild(rainEmitter)
         
         backgroundSprite = SKSpriteNode(imageNamed: "NormalBackground")
         backgroundSprite.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
@@ -328,7 +339,7 @@ class GameScene: SKScene {
             self.addChild(button!)
             
             var label = SKLabelNode()
-            label.text = "\(Actions.getActionCost(i))"
+            label.text = "\(Actions.getActionCost(i,timesExecuted: 0))"
             label.fontSize = 16
             label.fontName = "Avenir-Roman"
             label.position = CGPointMake(x, y - buttonSize/2 - label.frame.size.height/2 - (textSize - 10))
@@ -457,7 +468,8 @@ class GameScene: SKScene {
                 
                 for i in options {
                     if name == i {
-                        if(organicMatter < Actions.getActionCost(i)) {
+                        var n = itemsBought[Actions.getActionIndex(i)]
+                        if(organicMatter < Actions.getActionCost(i,timesExecuted: n)) {
                             //Not enough matter
                         } else {
                             executeGameAction(i)
@@ -633,20 +645,35 @@ class GameScene: SKScene {
         
         if(new.node != nil) {
             if(new.type == "Lifeform") {
+                
                 creaturesArray.append(new.node! as! Lifeform)
                 self.islandSprite.addChild(new.node! as! Lifeform)
-                organicMatter -= Actions.getActionCost(type)
+                
+                var n = Actions.getActionIndex(type)
+                organicMatter -= Actions.getActionCost(type,timesExecuted: itemsBought[n])
+                itemsBought[n]++
+                menuCosts[n].text = "\(Actions.getActionCost(type,timesExecuted: itemsBought[n]))"
+                
                 popStatus(new.node!.position.x, y: new.node!.position.y,type: "LessOrganic")
+            
             } else if (new.type == "Building") {
+                
                 buildingsArray.append(new.node! as! Building)
                 self.islandSprite.addChild(new.node! as! Building)
                 popStatus(new.node!.position.x, y: new.node!.position.y,type: "MoreFac")
+            
             } else if (new.type == "RemoveFactory") {
                 if(buildingsArray.count >= 1) {
+                    
                     buildingsArray[0].destroy()
+                    
+                    var n = Actions.getActionIndex(type)
+                    organicMatter -= Actions.getActionCost(type,timesExecuted: itemsBought[n])
+                    itemsBought[n]++
+                    menuCosts[n].text = "\(Actions.getActionCost(type,timesExecuted: itemsBought[n]))"
+                    
                     popStatus(buildingsArray[0].position.x, y: buildingsArray[0].position.y,type: "LessFac")
                     buildingsArray.removeAtIndex(0)
-                    organicMatter -= Actions.getActionCost(type)
                 }
             }
         }
@@ -699,35 +726,64 @@ class GameScene: SKScene {
     
     func chanceSpawnFactory() {
         
-        var r = Double(random(1...1000))
+        var r = Double(random(0...presentTime))/100
         
-        var chance:Double = 1 * Double(presentTime/10)
+        var chance = random(1...3)
         
-        if(chance < 1) {
-            chance = 15
+        var n = random(0...Int(r))
+        
+        if(chance == 1) {
+            for var i=0; i<n; i++ {
+                executeGameAction("AddFactory")
+            }
         }
-        
-        if(chance > 120) {
-            chance = 120
-        }
-        
-        if(r<=chance) {
-            executeGameAction("AddFactory")
-        }
-        
     }
     
     func rain() {
         var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
+        var action = SKAction.fadeAlphaTo(1, duration: 1.0)
         orbSmoke.runAction(vanish)
         orbBadCloud.runAction(vanish)
         orbBackgroundBad.runAction(vanish)
         orbWaterBad.runAction(vanish)
         orbSmokeLess.runAction(vanish)
+        
+        if raining == false {
+            
+            var r = random(1...100)
+            if(r == 1) {
+                orbCloud.runAction(action)
+                //Wait for block
+                
+                var wait = SKAction.waitForDuration(1.0)
+                var block = SKAction.runBlock({
+                    if self.raining == true {
+                        self.rainEmitter.alpha = 1
+                    }
+                
+                })
+                
+                rainEmitter.runAction(SKAction.sequence([wait,block]))
+                
+                raining = true
+            }
+            
+        } else {
+            
+            var r = random(1...20)
+            if(r == 0) {
+                orbCloud.runAction(vanish)
+                rainEmitter.alpha = 0
+                raining = false
+            }
+            
+        }
     }
     
     func smokeLess() {
         var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
+        rainEmitter.alpha = 0
+        orbCloud.runAction(vanish)
         orbSmoke.runAction(vanish)
         orbBadCloud.runAction(vanish)
         orbBackgroundBad.runAction(vanish)
@@ -739,6 +795,8 @@ class GameScene: SKScene {
     
     func smoke() {
         var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
+        orbCloud.runAction(vanish)
+        rainEmitter.alpha = 0
         orbSmokeLess.runAction(vanish)
         orbBadCloud.runAction(vanish)
         orbBackgroundBad.runAction(vanish)
@@ -750,11 +808,41 @@ class GameScene: SKScene {
     
     func acidRain() {
         var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
+        
         orbBackgroundBad.runAction(vanish)
         orbWaterBad.runAction(vanish)
         
         var action = SKAction.fadeAlphaTo(1, duration: 1.0)
-        orbBadCloud.runAction(action)
+        
+        if raining == false {
+            
+            var r = random(1...30)
+            if(r == 1) {
+                orbBadCloud.runAction(action) //Wait for block
+                
+                var wait = SKAction.waitForDuration(1.0)
+                var block = SKAction.runBlock({
+                    if self.raining == true {
+                        self.rainEmitter.alpha = 1
+                    }
+                    
+                })
+                
+                rainEmitter.runAction(SKAction.sequence([wait,block]))
+                
+                raining = true
+            }
+            
+        } else {
+            
+            var r = random(1...20)
+            if(r == 1) {
+                orbBadCloud.runAction(vanish)
+                rainEmitter.alpha = 0
+                raining = false
+            }
+            
+        }
 
     }
     

@@ -23,6 +23,19 @@ class Actions: NSObject {
         
     }
     
+    class func getActionIndex(type: String) -> Int {
+        
+        var array = getActionsArray()
+        
+        for var i = 0; i<array.count; i++ {
+            if(array[i] == type) {
+                return i
+            }
+        }
+        
+        return 0
+    }
+    
     class func executeAction(type: String, size: CGFloat, rect: CGRect) -> (node: AnyObject?,type: String) {
       
         if(type=="AddTree") {
@@ -134,10 +147,10 @@ class Actions: NSObject {
         return nil
     }
     
-    class func getActionCost(type: String) -> Int {
+    class func getActionCost(type: String, timesExecuted: Int) -> Int {
         
         if(type=="AddTree") {
-            return 100
+            return 100//Int(100 * pow(9/8,Double(timesExecuted)))
         }
         if(type=="AddHerb") {
             return 60
@@ -146,7 +159,7 @@ class Actions: NSObject {
             return 80
         }
         if(type=="RemoveFactory") {
-            return 150
+            return Int(150 * pow(9/8,Double(timesExecuted)))
         }
         
         return 0
