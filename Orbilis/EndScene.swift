@@ -35,9 +35,9 @@ class EndScene: SKScene {
         background.name = "TheBackground"
         self.addChild(background)
         
-        gameOver = SKLabelNode(text: "Oh no! The environment collapsed!")
+        gameOver = SKLabelNode(text: "The environment collapsed!")
         gameOver.position = CGPoint(x: self.frame.width/2, y: self.frame.height/1.15)
-        gameOver.fontSize = 18
+        gameOver.fontSize = 21
         gameOver.fontName = "Avenir-Black"
         self.addChild(gameOver)
         

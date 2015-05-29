@@ -65,13 +65,13 @@ class StartScene: SKScene, UIAlertViewDelegate {
         
         if UserData.getAudio() {
             
-            audioButton.texture = SKTexture(imageNamed: "RectGreen.png")
+            audioButton.texture = SKTexture(imageNamed: "SoundButton")
             
         }
         
         else {
             
-            audioButton.texture = SKTexture(imageNamed: "RectRed.png")
+            audioButton.texture = SKTexture(imageNamed: "NoSoundButton")
             
         }
         
@@ -163,6 +163,7 @@ class StartScene: SKScene, UIAlertViewDelegate {
         })
         var sequenceOrb = SKAction.sequence([wait,group,block])
         
+        self.audio.runAction(fadeOut)
         self.orbPlay.runAction(fadeOut)
         self.orbTitle.runAction(fadeOut)
         self.orbTutorial.runAction(fadeOut)
@@ -188,6 +189,7 @@ class StartScene: SKScene, UIAlertViewDelegate {
         })
         var sequenceOrb = SKAction.sequence([wait,group,block])
         
+        self.audio.runAction(fadeOut)
         self.orbPlay.runAction(fadeOut)
         self.orbTitle.runAction(fadeOut)
         self.orbTutorial.runAction(fadeOut)
@@ -208,13 +210,13 @@ class StartScene: SKScene, UIAlertViewDelegate {
         
         if UserData.getAudio() {
             
-            audioButton.texture = SKTexture(imageNamed: "RectGreen.png")
+            audioButton.texture = SKTexture(imageNamed: "SoundButton")
             
         }
             
         else {
             
-            audioButton.texture = SKTexture(imageNamed: "RectRed.png")
+            audioButton.texture = SKTexture(imageNamed: "NoSoundButton")
             
         }
         

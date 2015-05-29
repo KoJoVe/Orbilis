@@ -209,16 +209,14 @@ class TutorialScene: SKScene {
     
     func redrawDescriptorText(text: String) {
         
-        var space:CGFloat = 0
-        
         descriptorLabel?.removeFromParent()
         descriptorLabel = SKLabelNode()
         descriptorLabel!.text = text
-        descriptorLabel!.fontName = "Avenir-Roman"
-        descriptorLabel!.fontSize = 18
-        descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), descriptor!.position.y - descriptor!.frame.size.height/2 - descriptorLabel!.frame.size.height/2 - space)
+        descriptorLabel!.fontSize = 12
+        descriptorLabel!.fontName = "Avenir-Black"
+        descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - backgroundSprite.size.height/2 + self.frame.size.height/16)
         descriptorLabel!.alpha = 1
-        descriptorLabel!.zPosition = 50
+        descriptorLabel!.zPosition = 30
         self.addChild(descriptorLabel!)
         
     }

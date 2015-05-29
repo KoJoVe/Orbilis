@@ -314,7 +314,7 @@ class GameScene: SKScene {
         
         var prop:CGFloat = self.frame.width/375.0
         
-        var buttonSize:CGFloat = 60 * prop //((CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20) -  (textSize + 10))
+        var buttonSize:CGFloat = 120 * prop //((CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20) -  (textSize + 10))
         var buttonsSpace:CGFloat = 0
         
         if(buttonSize * CGFloat(menuItens.count) >= self.frame.size.width - 10) {
@@ -329,7 +329,7 @@ class GameScene: SKScene {
         for i in menuItens {
             
             var x = counter*buttonsSpace + buttonSize/2 + (counter-1)*buttonSize
-            var y:CGFloat = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 60)/2
+            var y:CGFloat = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 40)/2
             
             var button = Actions.getActionButton(i)
             button!.size = CGSizeMake(buttonSize, buttonSize)
