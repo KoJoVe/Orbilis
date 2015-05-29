@@ -15,6 +15,10 @@ class GameScene: SKScene {
     var timeSpeed = 0
     var itemsBought = [0,0,0,0]
     
+    var ticksPassed = 0
+    var totalTicks = 0
+    var tickDay = 10
+    
     var sizeOfSprites: CGFloat = 20
     var tickTime = 2.0
     var tickTimer = NSTimer()
@@ -50,6 +54,7 @@ class GameScene: SKScene {
     var pauseButton = SKSpriteNode()
     var pauseScreen = SKSpriteNode()
     var emptySprite = SKSpriteNode()
+    var orbNight = SKSpriteNode()
     
     var giveUpText = SKLabelNode()
     var pauseText = SKLabelNode()
@@ -63,6 +68,7 @@ class GameScene: SKScene {
     
     var menuButtons: Array<SKSpriteNode> = []
     var menuCosts: Array<SKLabelNode> = []
+    var menuImages: Array<SKSpriteNode> = []
     
     var organicMatterLabel: SKLabelNode?
     var presentTimeLabel: SKLabelNode?
@@ -129,14 +135,14 @@ class GameScene: SKScene {
         orbWaterBad = SKSpriteNode(imageNamed: "BadIsland")
         orbWaterBad.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
         orbWaterBad.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbWaterBad.zPosition = 2
+        orbWaterBad.zPosition = 3
         orbWaterBad.alpha = 0
         self.addChild(orbWaterBad)
         
         orbWaterFlood = SKSpriteNode(imageNamed: "FloodIsland")
         orbWaterFlood.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
         orbWaterFlood.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbWaterFlood.zPosition = 2
+        orbWaterFlood.zPosition = 3
         orbWaterFlood.name = "Flood"
         orbWaterFlood.alpha = 0
         self.addChild(orbWaterFlood)
@@ -144,7 +150,7 @@ class GameScene: SKScene {
         orbWater = SKSpriteNode(imageNamed: "NormalIsland")
         orbWater.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
         orbWater.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbWater.zPosition = 1
+        orbWater.zPosition = 2
         self.addChild(orbWater)
         
         orbCloud = SKSpriteNode(imageNamed: "GoodCloud")
@@ -196,6 +202,7 @@ class GameScene: SKScene {
         descriptor!.size = CGSizeMake(self.frame.size.width/4, self.frame.size.width/4)
         descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + 70)
         descriptor!.alpha = 0
+        descriptor!.name = "desc"
         descriptor!.zPosition = 50
         self.addChild(descriptor!)
         
@@ -255,6 +262,7 @@ class GameScene: SKScene {
         
         descriptorLabel?.removeFromParent()
         descriptorLabel = SKLabelNode()
+        descriptorLabel!.name = "desc"
         descriptorLabel!.text = text
         descriptorLabel!.fontName = "Avenir-Roman"
         descriptorLabel!.fontSize = 18
@@ -307,8 +315,8 @@ class GameScene: SKScene {
         
         presentTimeLabel?.removeFromParent()
         presentTimeLabel = SKLabelNode()
-        presentTimeLabel!.text = "\(presentTime)d"
-        presentTimeLabel!.fontSize = 25
+        presentTimeLabel!.text = "\(presentTime)days"
+        presentTimeLabel!.fontSize = 22
         presentTimeLabel!.name = "Time"
         presentTimeLabel!.fontName = "Avenir-Roman"
         presentTimeLabel!.position = CGPointMake(presentTimeLabel!.frame.size.width/2 + 10, self.frame.height - presentTimeLabel!.frame.size.height/2 - 20)
@@ -352,11 +360,24 @@ class GameScene: SKScene {
             menuButtons.append(button!)
             self.addChild(button!)
             
+            var space:CGFloat = 20
+            
             var label = SKLabelNode()
             label.text = "\(Actions.getActionCost(i,timesExecuted: 0))"
             label.fontSize = 16
             label.fontName = "Avenir-Roman"
-            label.position = CGPointMake(x, y - buttonSize/2 - label.frame.size.height/2 - (textSize - 10))
+            
+            var image = SKSpriteNode(imageNamed: "OrganicMini")
+            image.size = CGSizeMake(self.frame.width/20, self.frame.width/20)
+            menuImages.append(image)
+            self.addChild(image)
+            
+            var difference = label.frame.size.width - image.size.width + space/2
+            var xn = x - image.size.width/2 - difference/2
+            var yn = y - buttonSize/2 - label.frame.size.height/2 - (textSize - 10)
+            image.position = CGPointMake(xn + 3, yn + textSize/2 - 3)
+            
+            label.position = CGPointMake(x + space/2, yn)
             label.alpha = 1
             label.zPosition = 2
             menuCosts.append(label)
@@ -389,6 +410,9 @@ class GameScene: SKScene {
         for i in menuCosts {
             i.runAction(action)
         }
+        for i in menuImages {
+            i.removeFromParent()
+        }
     }
     
     func showDescriptorToMenu(type: String) {
@@ -411,6 +435,7 @@ class GameScene: SKScene {
         if(lostGame == false) {
             for touch in (touches as! Set<UITouch>) {
                 
+                var node = nodeAtPoint(touch.locationInNode(self))
                 var name = nodeAtPoint(touch.locationInNode(self)).name
                 
                 var options = Actions.getActionsArray()
@@ -423,6 +448,13 @@ class GameScene: SKScene {
                         } else {
                             executeGameAction(i)
                             organicMatterLabel?.text = "\(organicMatter)"
+                            
+                            var a1 = SKAction.fadeAlphaTo(0.6, duration: 0)
+                            var a2 = SKAction.waitForDuration(0.001)
+                            var a3 = SKAction.fadeAlphaTo(1, duration: 0)
+                            
+                            node.runAction(SKAction.sequence([a1,a2,a3]))
+                            
                         }
                     }
                 }
@@ -436,7 +468,7 @@ class GameScene: SKScene {
                     }
                 } else if (name == "Pause") {
                     pause()
-                } else if (name == "Flood") {
+                } else if (name == "Flood" || name == "desc") {
                     fastFoward()
                 } else {
 
@@ -504,9 +536,16 @@ class GameScene: SKScene {
             calculatePollution()
             chanceSpawnFactory()
             
-            presentTime++
+            ticksPassed++
+            totalTicks++
             
-            redrawPresentTime()
+            if(ticksPassed > tickDay) {
+                
+                ticksPassed = 0
+                presentTime++
+                redrawPresentTime()
+                
+            }
             
             tickTimer = NSTimer.scheduledTimerWithTimeInterval(tickTime, target: self, selector: Selector("updateTick"), userInfo: nil, repeats: false)
         }
@@ -568,6 +607,7 @@ class GameScene: SKScene {
             if(new != nil) {
                 creaturesArray.append(new!)
                 islandSprite.addChild(new!)
+                popStatus(new!.position.x, y: new!.position.y,type: "Born")
             }
         }
         
@@ -577,6 +617,7 @@ class GameScene: SKScene {
             if(new != nil) {
                 creaturesArray.append(new!)
                 islandSprite.addChild(new!)
+                popStatus(new!.position.x, y: new!.position.y,type: "Born")
             }
         }
     }
@@ -592,6 +633,8 @@ class GameScene: SKScene {
                 organicMatterLabel?.text = "\(organicMatter)"
                 if(i.organicProduction > 0) {
                     popStatus(i.position.x, y: i.position.y,type: "MoreOrganic")
+                } else {
+                    popStatus(i.position.x, y: i.position.y,type: "Die")
                 }
             }
         }
@@ -684,7 +727,7 @@ class GameScene: SKScene {
     
     func chanceSpawnFactory() {
         
-        var r = Double(random(0...presentTime))/100
+        var r = Double(random(0...totalTicks))/100
         
         var chance = random(1...3)
         

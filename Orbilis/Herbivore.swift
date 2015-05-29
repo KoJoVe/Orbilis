@@ -30,7 +30,7 @@ class Herbivore: Lifeform {
         organicProduction = 0
         
         self.position = randomPointInsideRect(rect)
-        self.zPosition = 4
+        self.zPosition = 5
         
         self.name = "herbivore"
     }

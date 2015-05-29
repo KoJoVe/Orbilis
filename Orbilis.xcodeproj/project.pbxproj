@@ -69,6 +69,9 @@
 		51DD0FB61B18A42600141954 /* BadCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FB41B18A42600141954 /* BadCloud.png */; };
 		51DD0FB71B18A42600141954 /* GoodCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FB51B18A42600141954 /* GoodCloud.png */; };
 		51DD0FB91B18BB3F00141954 /* OrganicImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FB81B18BB3F00141954 /* OrganicImage.png */; };
+		51E1C40A1B18EC64007EB61B /* OrganicMini.png in Resources */ = {isa = PBXBuildFile; fileRef = 51E1C4091B18EC64007EB61B /* OrganicMini.png */; };
+		51FB43501B18F8BF0023F3FD /* Born.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FB434E1B18F8BF0023F3FD /* Born.png */; };
+		51FB43511B18F8BF0023F3FD /* Die.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FB434F1B18F8BF0023F3FD /* Die.png */; };
 		51FEA46E1B1677C2007EBB09 /* NormalIsland.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA46D1B1677C2007EBB09 /* NormalIsland.png */; };
 		94BB5AED1B17BB3600EECD5E /* tantoFaz.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94BB5AEC1B17BB3600EECD5E /* tantoFaz.plist */; };
 /* End PBXBuildFile section */
@@ -151,6 +154,9 @@
 		51DD0FB41B18A42600141954 /* BadCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = BadCloud.png; sourceTree = "<group>"; };
 		51DD0FB51B18A42600141954 /* GoodCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodCloud.png; sourceTree = "<group>"; };
 		51DD0FB81B18BB3F00141954 /* OrganicImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrganicImage.png; sourceTree = "<group>"; };
+		51E1C4091B18EC64007EB61B /* OrganicMini.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrganicMini.png; sourceTree = "<group>"; };
+		51FB434E1B18F8BF0023F3FD /* Born.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Born.png; sourceTree = "<group>"; };
+		51FB434F1B18F8BF0023F3FD /* Die.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Die.png; sourceTree = "<group>"; };
 		51FEA46D1B1677C2007EBB09 /* NormalIsland.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NormalIsland.png; sourceTree = "<group>"; };
 		94BB5AEC1B17BB3600EECD5E /* tantoFaz.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tantoFaz.plist; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -289,6 +295,9 @@
 		51A9A2DC1B1394B100E24060 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				51FB434E1B18F8BF0023F3FD /* Born.png */,
+				51FB434F1B18F8BF0023F3FD /* Die.png */,
+				51E1C4091B18EC64007EB61B /* OrganicMini.png */,
 				51B1F2791B18CF7700E19C22 /* SoundButton.png */,
 				51B1F27A1B18CF7700E19C22 /* NoSoundButton.png */,
 				51B1F2711B18CCD000E19C22 /* CarnButton.png */,
@@ -452,6 +461,7 @@
 				519CE5F31B17ACDE00A85E53 /* MoreOrganic.png in Resources */,
 				51DD0FB61B18A42600141954 /* BadCloud.png in Resources */,
 				511C16951B1761F4003CA03E /* PollutionSmokeLess.png in Resources */,
+				51E1C40A1B18EC64007EB61B /* OrganicMini.png in Resources */,
 				51DD0FB71B18A42600141954 /* GoodCloud.png in Resources */,
 				511C169B1B1767A1003CA03E /* FloodIsland.png in Resources */,
 				519CE5EF1B17A03300A85E53 /* PlayButton.png in Resources */,
@@ -465,7 +475,9 @@
 				513994F41B113D7B003C408C /* Images.xcassets in Resources */,
 				519CE5F11B17A29600A85E53 /* OrbTree.png in Resources */,
 				51B1F27B1B18CF7700E19C22 /* SoundButton.png in Resources */,
+				51FB43501B18F8BF0023F3FD /* Born.png in Resources */,
 				51A8E9241B166C63001F24DC /* Background.png in Resources */,
+				51FB43511B18F8BF0023F3FD /* Die.png in Resources */,
 				519CE5E31B1795D900A85E53 /* PauseButton.png in Resources */,
 				513994F21B113D7B003C408C /* Main.storyboard in Resources */,
 				519CE5DE1B17874300A85E53 /* Fast2x.png in Resources */,

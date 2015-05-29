@@ -76,6 +76,10 @@ class TutorialScene: SKScene {
     var tickTimer = NSTimer()
     var audioManager = AudioManager()
     
+    var ticksPassed = 0
+    var totalTicks = 0
+    var tickDay = 10
+    
     var back = SKSpriteNode()
     
     var pointOrganicMatter = CGPointMake(0, 0)
@@ -109,6 +113,7 @@ class TutorialScene: SKScene {
     
     var menuButtons: Array<SKSpriteNode> = []
     var menuCosts: Array<SKLabelNode> = []
+    var menuImages: Array<SKSpriteNode> = []
     
     var organicMatterLabel: SKLabelNode?
     var presentTimeLabel: SKLabelNode?
@@ -216,7 +221,8 @@ class TutorialScene: SKScene {
         descriptorLabel!.text = text
         descriptorLabel!.fontSize = 12
         descriptorLabel!.fontName = "Avenir-Black"
-        descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - backgroundSprite.size.height/2 + self.frame.size.height/16)
+        descriptorLabel!.fontSize = 12
+        descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - backgroundSprite.size.height/2 + self.frame.height/16)
         descriptorLabel!.alpha = 1
         descriptorLabel!.zPosition = 30
         self.addChild(descriptorLabel!)
@@ -254,12 +260,33 @@ class TutorialScene: SKScene {
         pointOrganicMatterLabel.y = organicMatterLabel!.position.y
     }
     
+    func popStatus(x: CGFloat, y: CGFloat,type: String) {
+        
+        var image = SKSpriteNode(imageNamed: type)
+        image.size = CGSizeMake(sizeOfSprites, sizeOfSprites)
+        image.position = CGPointMake(x, y + sizeOfSprites/2)
+        image.zPosition = 100
+        image.alpha = 0
+        self.islandSprite.addChild(image)
+        var appear = SKAction.fadeAlphaTo(1, duration: 0.2)
+        var up = SKAction.moveBy(CGVectorMake(0, 20), duration: 0.8)
+        var disappear = SKAction.fadeAlphaTo(0, duration: 0.2)
+        var block = SKAction.runBlock({
+            
+            image.removeFromParent()
+            
+        })
+        var sequence = SKAction.sequence([appear,up,disappear,block])
+        image.runAction(sequence)
+        
+    }
+    
     func redrawPresentTime() {
         
         presentTimeLabel?.removeFromParent()
         presentTimeLabel = SKLabelNode()
-        presentTimeLabel!.text = "\(presentTime)d"
-        presentTimeLabel!.fontSize = 25
+        presentTimeLabel!.text = "\(presentTime)days"
+        presentTimeLabel!.fontSize = 22
         presentTimeLabel!.name = "Time"
         presentTimeLabel!.fontName = "Avenir-Roman"
         presentTimeLabel!.position = CGPointMake(presentTimeLabel!.frame.size.width/2 + 10, self.frame.height - presentTimeLabel!.frame.size.height/2 - 20)
@@ -296,17 +323,30 @@ class TutorialScene: SKScene {
             button!.size = CGSizeMake(buttonSize, buttonSize)
             button!.position = CGPointMake(x, y)
             button!.name = i
-            button!.alpha = 0
+            button!.alpha = 1
             button!.zPosition = 2
             menuButtons.append(button!)
             self.addChild(button!)
             
+            var space:CGFloat = 20
+            
             var label = SKLabelNode()
             label.text = "\(Actions.getActionCost(i,timesExecuted: 0))"
-            label.fontName = "Avenir-Roman"
             label.fontSize = 16
-            label.position = CGPointMake(x, y - buttonSize/2 - label.frame.size.height/2 - (textSize - 10))
-            label.alpha = 0
+            label.fontName = "Avenir-Roman"
+            
+            var image = SKSpriteNode(imageNamed: "OrganicMini")
+            image.size = CGSizeMake(self.frame.width/20, self.frame.width/20)
+            menuImages.append(image)
+            self.addChild(image)
+            
+            var difference = label.frame.size.width - image.size.width + space/2
+            var xn = x - image.size.width/2 - difference/2
+            var yn = y - buttonSize/2 - label.frame.size.height/2 - (textSize - 10)
+            image.position = CGPointMake(xn + 3, yn + textSize/2 - 3)
+            
+            label.position = CGPointMake(x + space/2, yn)
+            label.alpha = 1
             label.zPosition = 2
             menuCosts.append(label)
             self.addChild(label)
@@ -479,6 +519,15 @@ class TutorialScene: SKScene {
             currentPhase = TutorialPhase.FinalPhase
             menuButtons[2].removeAllChildren()
             break
+        case 20:
+            for i in creaturesArray {
+                if(i.name == "carnivore") {
+                    i.animateToDie()
+                    i.aboutToDelete = 1
+                    popStatus(i.position.x, y: i.position.y,type: "MoreOrganic")
+                }
+            }
+            break
         case 21:
             addArrowForSprite(presentTimeLabel!)
             break
@@ -523,9 +572,16 @@ class TutorialScene: SKScene {
         moveAndAgeEntities()
         calculatePollution()
         
-        presentTime++
+        ticksPassed++
+        totalTicks++
         
-        redrawPresentTime()
+        if(ticksPassed > tickDay) {
+            
+            ticksPassed = 0
+            presentTime++
+            redrawPresentTime()
+            
+        }
         
         tickTimer = NSTimer.scheduledTimerWithTimeInterval(tickTime, target: self, selector: Selector("updateTick"), userInfo: nil, repeats: false)
     }
@@ -582,7 +638,7 @@ class TutorialScene: SKScene {
         
         for i in creaturesArray {
             i.move(islandSprite.frame,time: tickTime)
-            if(i.lifeTime > i.lifeTimeMax && i.aboutToDelete == 0) {
+            if(i.lifeTime > i.lifeTimeMax && i.aboutToDelete == 0 && i.name != "carnivore") {
                 i.animateToDie()
                 i.aboutToDelete = 1
                 organicMatter += i.organicProduction
@@ -697,10 +753,31 @@ class TutorialScene: SKScene {
 
     }
     
+    func closeItensMenu() {
+        //Show itens menu
+        var action = SKAction.fadeAlphaTo(0, duration: 0.25)
+        
+        for i in menuButtons {
+            i.runAction(action)
+        }
+        for i in menuCosts {
+            i.runAction(action)
+        }
+        for i in menuImages {
+            i.removeFromParent()
+        }
+    }
+    
     func endTut() {
+        
+        closeItensMenu()
         
         var action = SKAction.resizeToWidth(self.frame.width/3, height: self.frame.width/3, duration: 0.4)
         var action2 = SKAction.moveTo(CGPointMake(self.frame.width/2, self.frame.height/2 + 30), duration: 0.4)
+        var action3 = SKAction.fadeAlphaTo(0, duration: 0.4)
+        
+        back.runAction(action3)
+        descriptorLabel!.runAction(action3)
         
         orbGlass.runAction(action)
         orbGlass.runAction(action2)

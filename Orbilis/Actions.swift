@@ -159,7 +159,7 @@ class Actions: NSObject {
             return 80
         }
         if(type=="RemoveFactory") {
-            return Int(150 * pow(9/8,Double(timesExecuted)))
+            return Int(50 * pow(16/15,Double(timesExecuted)))
         }
         
         return 0

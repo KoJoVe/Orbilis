@@ -20,7 +20,7 @@ class Building: SKSpriteNode {
         super.init(texture: texture, color: nil, size: sizeWH)
         
         self.position = randomPointInsideRect(rect)
-        self.zPosition = 3
+        self.zPosition = 4
         
         self.name = "building"
     }
