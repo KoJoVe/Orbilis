@@ -27,7 +27,7 @@ class Carnivore: Lifeform {
         pollutionLimit = 200
         reproductionRate = 0
         lifeTimeMax = 35
-        organicProduction = 150
+        organicProduction = 120
         organicProductionP = 50
         
         self.position = randomPointInsideRect(rect)
@@ -38,7 +38,9 @@ class Carnivore: Lifeform {
     
     override func interact(lifeform: SKSpriteNode) -> Bool {
         
-        if(lifeform.name == "herbivore" && fed == false) {
+        var r = random(1...3)
+        
+        if(lifeform.name == "herbivore" && fed == false && r == 1) {
             var node = lifeform as! Lifeform
             node.animateToDie()
             fed = true
