@@ -192,10 +192,10 @@ class GameScene: SKScene {
         var textSize:CGFloat = 30
         
         descriptor = SKSpriteNode()
-        descriptor!.size = CGSizeMake(self.frame.size.width/6, self.frame.size.width/6)
-        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2 + textSize - 10)
+        descriptor!.size = CGSizeMake(self.frame.size.width/4, self.frame.size.width/4)
+        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + 70)
         descriptor!.alpha = 0
-        descriptor!.zPosition = 2
+        descriptor!.zPosition = 50
         self.addChild(descriptor!)
         
         pauseButton = SKSpriteNode(imageNamed: "PauseButton")
@@ -239,7 +239,7 @@ class GameScene: SKScene {
     
     func redrawDescriptorText(text: String) {
         
-        var space:CGFloat = 15
+        var space:CGFloat = 0
         
         descriptorLabel?.removeFromParent()
         descriptorLabel = SKLabelNode()
@@ -248,7 +248,7 @@ class GameScene: SKScene {
         descriptorLabel!.fontSize = 18
             descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), descriptor!.position.y - descriptor!.frame.size.height/2 - descriptorLabel!.frame.size.height/2 - space)
         descriptorLabel!.alpha = 1
-        descriptorLabel!.zPosition = 2
+        descriptorLabel!.zPosition = 50
         self.addChild(descriptorLabel!)
         
     }
@@ -272,7 +272,7 @@ class GameScene: SKScene {
         
         var difference = organicMatterLabel!.frame.size.width - organicMatterImage!.frame.size.width + space/2
         
-        var y = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20)/2
+        var y = self.frame.height - (self.frame.height - (CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2))/2 - 15
         var x = CGRectGetMidX(self.frame) - organicMatterImage!.frame.size.width/2 - difference
         
         organicMatterImage!.position = CGPointMake(x, y)
@@ -312,7 +312,9 @@ class GameScene: SKScene {
         
         var textSize:CGFloat = 20
         
-        var buttonSize:CGFloat = ((CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20) - (self.frame.size.width/10) - (textSize + 10))
+        var prop:CGFloat = self.frame.width/375.0
+        
+        var buttonSize:CGFloat = 60 * prop //((CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20) -  (textSize + 10))
         var buttonsSpace:CGFloat = 0
         
         if(buttonSize * CGFloat(menuItens.count) >= self.frame.size.width - 10) {
@@ -327,13 +329,13 @@ class GameScene: SKScene {
         for i in menuItens {
             
             var x = counter*buttonsSpace + buttonSize/2 + (counter-1)*buttonSize
-            var y:CGFloat = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20)/2
+            var y:CGFloat = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 60)/2
             
             var button = Actions.getActionButton(i)
             button!.size = CGSizeMake(buttonSize, buttonSize)
             button!.position = CGPointMake(x, y)
             button!.name = i
-            button!.alpha = 0
+            button!.alpha = 1
             button!.zPosition = 2
             menuButtons.append(button!)
             self.addChild(button!)
@@ -343,7 +345,7 @@ class GameScene: SKScene {
             label.fontSize = 16
             label.fontName = "Avenir-Roman"
             label.position = CGPointMake(x, y - buttonSize/2 - label.frame.size.height/2 - (textSize - 10))
-            label.alpha = 0
+            label.alpha = 1
             label.zPosition = 2
             menuCosts.append(label)
             self.addChild(label)
@@ -353,29 +355,9 @@ class GameScene: SKScene {
     }
     
     func openItensMenu() {
-        if(screenPressed==true) {
-            //Show itens menu
-            var action = SKAction.fadeAlphaTo(1, duration: 0.2)
-            var move = SKAction.moveTo(CGPointMake(pointOrganicMatter.x, CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20 - organicMatterImage!.frame.size.height/2), duration: 0.2)
-            var moveText = SKAction.moveTo(CGPointMake(pointOrganicMatterLabel.x, CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20 - organicMatterImage!.frame.size.height/2 - organicMatterLabel!.frame.size.height/2), duration: 0.2)
-            
-            for i in menuButtons {
-                i.runAction(action)
-            }
-            for i in menuCosts {
-                i.runAction(action)
-            }
-            
-            organicMatterImage?.runAction(move)
-            organicMatterLabel?.runAction(moveText)
-        }
-    }
-    
-    func closeItensMenu() {
         //Show itens menu
-        var action = SKAction.fadeAlphaTo(0, duration: 0.2)
-        var move = SKAction.moveTo(CGPointMake(pointOrganicMatter.x, pointOrganicMatter.y), duration: 0.2)
-        var moveText = SKAction.moveTo(CGPointMake(pointOrganicMatterLabel.x, pointOrganicMatterLabel.y), duration: 0.2)
+        var action = SKAction.fadeAlphaTo(1, duration: 0.1)
+
         
         for i in menuButtons {
             i.runAction(action)
@@ -383,9 +365,18 @@ class GameScene: SKScene {
         for i in menuCosts {
             i.runAction(action)
         }
+    }
+    
+    func closeItensMenu() {
+        //Show itens menu
+        var action = SKAction.fadeAlphaTo(0, duration: 0.25)
         
-        organicMatterImage?.runAction(move)
-        organicMatterLabel?.runAction(moveText)
+        for i in menuButtons {
+            i.runAction(action)
+        }
+        for i in menuCosts {
+            i.runAction(action)
+        }
     }
     
     func showDescriptorToMenu(type: String) {
@@ -404,60 +395,6 @@ class GameScene: SKScene {
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        screenPressed = true
-        
-        if(lostGame == false) {
-            for touch in (touches as! Set<UITouch>) {
-                
-                if(pausedGame == false) {
-                
-                    var name = nodeAtPoint(touch.locationInNode(self)).name
-                    
-                    if name == "MenuButton" {
-                        //Open pause menu
-                    } else {
-                        NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: Selector("openItensMenu"), userInfo: nil, repeats: false)
-                    }
-                } else {
-                    
-                    var name = nodeAtPoint(touch.locationInNode(self)).name
-                    if(name == "give") {
-                        pollution = 100000
-                        unPause()
-                    } else {
-                        unPause()
-                    }
-                }
-            }
-        }
-
-    }
-    
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
-       
-        hideDescriptor()
-        
-        if(lostGame == false) {
-            for touch in (touches as! Set<UITouch>) {
-                
-                var name = nodeAtPoint(touch.locationInNode(self)).name
-                
-                var options = Actions.getActionsArray()
-                
-                for i in options {
-                    if name == i {
-                        showDescriptorToMenu(i)
-                    }
-                }
-            }
-        }
-    }
-    
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
-        screenPressed = false
-        
-        hideDescriptor()
-        closeItensMenu()
         
         if(lostGame == false) {
             for touch in (touches as! Set<UITouch>) {
@@ -475,14 +412,22 @@ class GameScene: SKScene {
                             executeGameAction(i)
                             organicMatterLabel?.text = "\(organicMatter)"
                         }
-                        
                     }
                 }
                 
-                if (name == "Time") {
-                    fastFoward()
+                if (pausedGame == true) {
+                    if(name == "give") {
+                        pollution = 100000
+                        unPause()
+                    } else {
+                        unPause()
+                    }
                 } else if (name == "Pause") {
                     pause()
+                } else if (name == "Flood") {
+                    fastFoward()
+                } else {
+
                 }
             }
         }
@@ -855,18 +800,20 @@ class GameScene: SKScene {
     }
     
     func darkenColor() {
-        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
-        
         var action = SKAction.fadeAlphaTo(1, duration: 1.0)
+        orbWaterBad.removeAllActions()
         orbWaterBad.runAction(action)
     }
     
     func loseGame() {
+        closeItensMenu()
         lostGame = true
+        rainEmitter.alpha = 0
         orbBackgroundBad.alpha = 1
         var vanish = SKAction.fadeAlphaTo(0, duration: 0.25)
         islandSprite.runAction(vanish)
         orbBadCloud.runAction(vanish)
+        orbCloud.runAction(vanish)
         orbSmoke.runAction(vanish)
         presentTimeLabel?.runAction(vanish)
         organicMatterImage?.runAction(vanish)

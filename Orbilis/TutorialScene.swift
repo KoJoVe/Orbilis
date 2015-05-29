@@ -66,7 +66,7 @@ class TutorialScene: SKScene {
     
     var currentPhase = TutorialPhase.WelcomePhase
     var currentString = 0
-    let descriptionArray = ["Welcome to orbilis!","You have one simple job.","Dont let the enviroment die with pollution.","Let`s see how you do this.","This is your organic matter.","You spend this to modify your enviroment.","Tap and hold the screen to open menu.","Lets add a tree. Release your finger on the tree icon.","Trees help decrease pollution","Once in a while, factories will appear","They increase the pollution!","You will see the pollution effects in the long term.","And that`s not good…","Lets remove this factory!","Tap and hold to open menu.","Release your finger on the remove factory icon.","Nice job!","Now, let`s add a herbivore","Herbivores eat trees and reproduce","You can add carnivores too!","They eat the herbivores and reproduce.","And, when they die…","…you get more organic matter!","Up there, is the number of days passed","You can tap there to change time speed!","Try to keep the environment running…", "…for the maximum days you can!","Thats it! You can acess this tutorial again.", "Just click in 'tutorial' in the initial screen!","Good luck!"]
+    let descriptionArray = ["Welcome to orbilis!","You have one simple job.","Dont let the enviroment die with pollution.","Let`s see how you do this.","This is your organic matter.","You spend this to modify your enviroment.","Tap and hold the screen to open menu.","Lets add a tree. Tap on the add tree icon.","Trees help decrease pollution","Once in a while, factories will appear","They increase the pollution!","You will see the pollution effects in the long term.","And that`s not good…","Lets remove this factory!","Tap and hold to open menu.","Tap the remove factory icon.","Nice job!","Now, let's add a herbivore","Herbivores eat trees and reproduce","You can add carnivores too!","They eat the herbivores and reproduce.","And, when they die…","…you get more organic matter!","Up there, is the number of days passed","You can tap in the orb to change time speed!","Try to keep the environment running…", "…for the maximum days you can!","Thats it! You can acess this tutorial again.", "Just click in 'tutorial' in the initial screen!","Good luck!"]
     
     var pollutionLimits = [0,100,200,300,500]
     
@@ -74,6 +74,8 @@ class TutorialScene: SKScene {
     var tickTime = 2.0
     var tickTimer = NSTimer()
     var audioManager = AudioManager()
+    
+    var back = SKSpriteNode()
     
     var pointOrganicMatter = CGPointMake(0, 0)
     var pointOrganicMatterLabel = CGPointMake(0, 0)
@@ -118,6 +120,8 @@ class TutorialScene: SKScene {
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
         
+        var space:CGFloat = 15
+        
         var prop:CGFloat = self.frame.size.width/375.0
         
         sizeOfSprites = 30 * prop
@@ -151,6 +155,13 @@ class TutorialScene: SKScene {
         backgroundSprite.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         backgroundSprite.zPosition = 0
         self.addChild(backgroundSprite)
+        
+        back = SKSpriteNode(imageNamed: "RectBlue")
+        back.size = CGSizeMake(self.frame.size.width, self.frame.size.height/8)
+        back.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - backgroundSprite.size.height/2 + back.size.height/2)
+        back.alpha = 0.7
+        back.zPosition = 29
+        self.addChild(back)
         
         orbWater = SKSpriteNode(imageNamed: "NormalIsland")
         orbWater.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
@@ -193,20 +204,18 @@ class TutorialScene: SKScene {
         
         redrawPresentTime()
         
-        
     }
     
     func redrawDescriptorText(text: String) {
         
-        var space:CGFloat = 15
         descriptorLabel?.removeFromParent()
         descriptorLabel = SKLabelNode()
         descriptorLabel!.text = text
         descriptorLabel!.fontSize = 12
         descriptorLabel!.fontName = "Avenir-Black"
-        descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), descriptor!.position.y - descriptor!.frame.size.height/2 - descriptorLabel!.frame.size.height/2 - space)
+        descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - backgroundSprite.size.height/2 + self.frame.size.height/16)
         descriptorLabel!.alpha = 1
-        descriptorLabel!.zPosition = 2
+        descriptorLabel!.zPosition = 30
         self.addChild(descriptorLabel!)
         
     }
@@ -230,7 +239,7 @@ class TutorialScene: SKScene {
         
         var difference = organicMatterLabel!.frame.size.width - organicMatterImage!.frame.size.width + space/2
         
-        var y = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20)/2
+        var y = self.frame.height - (self.frame.height - (CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2))/2 - 15
         var x = CGRectGetMidX(self.frame) - organicMatterImage!.frame.size.width/2 - difference
         
         organicMatterImage!.position = CGPointMake(x, y)
@@ -317,8 +326,8 @@ class TutorialScene: SKScene {
                 i.runAction(action)
             }
             
-            organicMatterImage?.runAction(move)
-            organicMatterLabel?.runAction(moveText)
+//            organicMatterImage?.runAction(move)
+//            organicMatterLabel?.runAction(moveText)
             
             if (currentString == 6){
                 updateTutorialForPhase()
@@ -345,8 +354,8 @@ class TutorialScene: SKScene {
             i.runAction(action)
         }
         
-        organicMatterImage?.runAction(move)
-        organicMatterLabel?.runAction(moveText)
+//        organicMatterImage?.runAction(move)
+//        organicMatterLabel?.runAction(moveText)
     }
     
     func showDescriptorToMenu(type: String) {
@@ -511,19 +520,19 @@ class TutorialScene: SKScene {
         
         theArrow?.removeFromParent()
         theArrow = SKSpriteNode(texture: SKTexture(imageNamed: "Seta"))
-        theArrow?.size = CGSizeMake(30, 65)
-        theArrow?.zPosition = 1
+        theArrow?.size = CGSizeMake(30, 40)
+        theArrow?.zPosition = 100
         
         if (sprite == presentTimeLabel){
             theArrow?.texture = SKTexture(imageNamed: "SetaUp")
             self.addChild(theArrow!)
-            theArrow?.position = CGPointMake(30, self.view!.frame.size.height - 80)
+            theArrow?.position = CGPointMake(30, self.view!.frame.size.height - 60)
         }
         else if (sprite == organicMatterLabel){
-            theArrow?.position = CGPointMake(-20, 60)
+            theArrow?.position = CGPointMake(-20, 50)
             sprite.addChild(theArrow!)
         }else {
-            theArrow?.position = CGPointMake(0, 60)
+            theArrow?.position = CGPointMake(0, 50)
             sprite.addChild(theArrow!)
         }
         
