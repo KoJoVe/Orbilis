@@ -11,6 +11,7 @@ import SpriteKit
 
 class Lifeform: SKSpriteNode {
     
+    var fed = false
     var pollutionIncrement = 0
     var pollutionLimit = 0
     var reproductionRate = 0

@@ -50,31 +50,37 @@
 
 import SpriteKit
 
-class TutorialScene: SKScene {
+class CENA: SKScene {
     
-    var pollutionLimits = [0,100,200,300,400,500,600]
+    enum TutorialPhase{
+        
+        case WelcomePhase
+        case AddTree
+        case AddFactory
+        case RemoveFactory
+        case NiceJob
+        case AddHerbivore
+        case FinalPhase
+    }
     
-    var timeSpeed = 0
+    var currentPhase = TutorialPhase.WelcomePhase
+    var currentString = 0
+    let descriptionArray = ["Welcome to orbilis!","You have one simple job.","Dont let the enviroment die with pollution.","Let`s see how you do this.","This is your organic matter.","You spend this to modify your enviroment.","Tap and hold the screen to open menu.","Lets add a tree. Release your finger on the tree icon.","Trees help decrease pollution","Once in a while, factories will appear","They increase the pollution!","You will see the pollution effects in the long term.","And that`s not good…","Lets remove this factory!","Tap and hold to open menu.","Release your finger on the remove factory iconjm.","Nice job!","Now, let`s add a herbivore","Herbivores eat trees and reproduce","You can add carnivores too!","They eat the herbivores and reproduce.","And, when they die…","…you get more organic matter!","Up there, is the number of days passed","You can tap there to change time speed!","Try to keep the environment running for the maximum days you can!","Thats it! You can acess this tutorial again.", "Just click in 'tutorial' in the initial screen!","Good luck!"]
+    
+    var pollutionLimits = [0,100,200,300,500]
     
     var sizeOfSprites: CGFloat = 20
     var tickTime = 2.0
     var tickTimer = NSTimer()
-    var speedTimer = NSTimer()
     var audioManager = AudioManager()
-    
-    var chanceToSpawnFactory = 40
     
     var pointOrganicMatter = CGPointMake(0, 0)
     var pointOrganicMatterLabel = CGPointMake(0, 0)
     
     var menuIsOpen = false
     var screenPressed = false
-    var lostGame = false
-    var pausedGame = false
-    var raining = false
     
     var islandRect = SKSpriteNode()
-    var presentTimeRect: SKSpriteNode?
     
     var backgroundSprite = SKSpriteNode()
     var orbBackgroundBad = SKSpriteNode()
@@ -84,22 +90,19 @@ class TutorialScene: SKScene {
     var orbWaterBad = SKSpriteNode()
     var orbWaterFlood = SKSpriteNode()
     var orbWater = SKSpriteNode()
+    var orbSand = SKSpriteNode()
     var orbCloud = SKSpriteNode()
-    var orbBadCloud = SKSpriteNode()
     var orbSmoke = SKSpriteNode()
-    var orbSmokeLess = SKSpriteNode()
-    var pauseButton = SKSpriteNode()
-    var pauseScreen = SKSpriteNode()
-    
-    var giveUpText = SKLabelNode()
-    var pauseText = SKLabelNode()
     
     var creaturesArray: Array<Lifeform> = []
     var buildingsArray: Array<Building> = []
     
+    var pauseButton: SKSpriteNode?
     var organicMatterImage: SKSpriteNode?
     var descriptor: SKSpriteNode?
     var descriptorLabel: SKLabelNode?
+    
+    var theArrow: SKSpriteNode? //Seta apontando no tutorial
     
     var menuButtons: Array<SKSpriteNode> = []
     var menuCosts: Array<SKLabelNode> = []
@@ -109,34 +112,28 @@ class TutorialScene: SKScene {
     
     var presentTime = 0
     var pollution = 0
-    var organicMatter = 356
+    var organicMatter = 400
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
-        
-        var prop:CGFloat = self.frame.size.width/375.0
-        
-        sizeOfSprites = 30 * prop
         
         var background = SKSpriteNode(imageNamed: "Background")
         background.size = CGSizeMake(self.frame.size.width, self.frame.size.height)
         background.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         background.zPosition = -1
-        background.name = "TheBackground"
         self.addChild(background)
         
         drawOrb()
         drawInfo()
         drawItensMenu()
-        
         updateTick()
     }
     
     func drawOrb() {
         //Joao
         var spacing: CGFloat = 0
-        var islandW: CGFloat = 390
-        var islandH: CGFloat = islandW/2
+        var islandW: CGFloat = 400
+        var islandH: CGFloat = 230
         
         var prop: CGFloat = self.frame.size.width/640
         var deloc: CGFloat = -35 * prop
@@ -150,48 +147,17 @@ class TutorialScene: SKScene {
         backgroundSprite.zPosition = 0
         self.addChild(backgroundSprite)
         
-        orbBackgroundBad = SKSpriteNode(imageNamed: "BadBackground")
-        orbBackgroundBad.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
-        orbBackgroundBad.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbBackgroundBad.zPosition = 1
-        orbBackgroundBad.name = "Flood"
-        orbBackgroundBad.alpha = 0
-        self.addChild(orbBackgroundBad)
-        
-        orbWaterBad = SKSpriteNode(imageNamed: "BadIsland")
-        orbWaterBad.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
-        orbWaterBad.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbWaterBad.zPosition = 2
-        orbWaterBad.alpha = 0
-        self.addChild(orbWaterBad)
-        
-        orbWaterFlood = SKSpriteNode(imageNamed: "FloodIsland")
-        orbWaterFlood.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
-        orbWaterFlood.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbWaterFlood.zPosition = 2
-        orbWaterFlood.name = "Flood"
-        orbWaterFlood.alpha = 0
-        self.addChild(orbWaterFlood)
-        
         orbWater = SKSpriteNode(imageNamed: "NormalIsland")
         orbWater.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
         orbWater.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbWater.zPosition = 1
+        orbWater.zPosition = 0
         self.addChild(orbWater)
         
-        orbCloud = SKSpriteNode(imageNamed: "GoodCloud")
-        orbCloud.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
-        orbCloud.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbCloud.zPosition = 5
-        orbCloud.alpha = 0
-        self.addChild(orbCloud)
-        
-        orbBadCloud = SKSpriteNode(imageNamed: "BadCloud")
-        orbBadCloud.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
-        orbBadCloud.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbBadCloud.zPosition = 5
-        orbBadCloud.alpha = 0
-        self.addChild(orbBadCloud)
+        orbGlass = SKSpriteNode(imageNamed: "GlassCover")
+        orbGlass.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
+        orbGlass.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        orbGlass.zPosition = 6
+        self.addChild(orbGlass)
         
         orbSmoke = SKSpriteNode(imageNamed: "Smoke")
         orbSmoke.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
@@ -199,20 +165,6 @@ class TutorialScene: SKScene {
         orbSmoke.zPosition = 5
         orbSmoke.alpha = 0
         self.addChild(orbSmoke)
-        
-        orbSmokeLess = SKSpriteNode(imageNamed: "PollutionSmokeLess")
-        orbSmokeLess.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
-        orbSmokeLess.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbSmokeLess.zPosition = 2
-        orbSmokeLess.alpha = 0
-        self.addChild(orbSmokeLess)
-        
-        orbGlass = SKSpriteNode(imageNamed: "GlassCover")
-        orbGlass.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
-        orbGlass.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbGlass.zPosition = 6
-        orbGlass.name = "Flood"
-        self.addChild(orbGlass)
         
         islandSprite = SKSpriteNode()
         islandSprite.size = CGSizeMake(islandW, islandH)
@@ -226,59 +178,26 @@ class TutorialScene: SKScene {
         
         descriptor = SKSpriteNode()
         descriptor!.size = CGSizeMake(self.frame.size.width/6, self.frame.size.width/6)
-        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2 + textSize - 10)
-        descriptor!.alpha = 0
+        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2 + textSize)
         descriptor!.zPosition = 2
         self.addChild(descriptor!)
         
-        pauseButton = SKSpriteNode(imageNamed: "PauseButton")
-        pauseButton.size = CGSizeMake(self.frame.size.width/12, self.frame.size.width/12)
-        pauseButton.position = CGPointMake(self.size.width - pauseButton.size.width/2 - 10, self.size.height - pauseButton.size.height/2 - 10)
-        pauseButton.zPosition = 30
-        pauseButton.name = "Pause"
-        self.addChild(pauseButton)
-        
-        pauseScreen = SKSpriteNode(imageNamed: "RectBlue")
-        pauseScreen.size = CGSizeMake(self.frame.size.width, self.frame.size.height)
-        pauseScreen.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        pauseScreen.zPosition = -3
-        pauseScreen.alpha = 0
-        self.addChild(pauseScreen)
-        
-        pauseText.text = "Paused"
-        pauseText.fontSize = 40
-        pauseText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        pauseText.zPosition = -3
-        pauseText.alpha = 0
-        pauseText.fontName = "Avenir-Roman"
-        self.addChild(pauseText)
-        
-        giveUpText.text = "Quit Game"
-        giveUpText.fontSize = 15
-        giveUpText.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - 120)
-        giveUpText.zPosition = -3
-        giveUpText.alpha = 0
-        giveUpText.name = "give"
-        giveUpText.fontName = "Avenir-Black"
-        self.addChild(giveUpText)
-        
-        redrawDescriptorText("")
+        redrawDescriptorText(descriptionArray[0])
         
         redrawOrganicMatter()
         
         redrawPresentTime()
+        
         
     }
     
     func redrawDescriptorText(text: String) {
         
         var space:CGFloat = 15
-        
         descriptorLabel?.removeFromParent()
         descriptorLabel = SKLabelNode()
         descriptorLabel!.text = text
-        descriptorLabel!.fontName = "Avenir-Roman"
-        descriptorLabel!.fontSize = 18
+        descriptorLabel!.fontSize = 15
         descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), descriptor!.position.y - descriptor!.frame.size.height/2 - descriptorLabel!.frame.size.height/2 - space)
         descriptorLabel!.alpha = 1
         descriptorLabel!.zPosition = 2
@@ -296,7 +215,6 @@ class TutorialScene: SKScene {
         organicMatterLabel?.removeFromParent()
         organicMatterLabel = SKLabelNode()
         organicMatterLabel!.text = "\(organicMatter)"
-        organicMatterLabel!.fontName = "Avenir-Roman"
         organicMatterLabel!.fontSize = 18
         organicMatterLabel!.zPosition = 2
         self.addChild(organicMatterLabel!)
@@ -318,20 +236,9 @@ class TutorialScene: SKScene {
     }
     
     func redrawPresentTime() {
-        
-        presentTimeRect?.removeFromParent()
-        presentTimeRect = SKSpriteNode()
-        presentTimeRect!.size = CGSizeMake(self.frame.width/4, self.frame.width/4)
-        presentTimeRect!.position = CGPointMake(presentTimeRect!.size.width/2, self.frame.size.height - presentTimeRect!.size.height/2)
-        presentTimeRect!.name = "Time"
-        self.addChild(presentTimeRect!)
-        
         presentTimeLabel?.removeFromParent()
         presentTimeLabel = SKLabelNode()
         presentTimeLabel!.text = "\(presentTime)d"
-        presentTimeLabel!.fontSize = 25
-        presentTimeLabel!.name = "Time"
-        presentTimeLabel!.fontName = "Avenir-Roman"
         presentTimeLabel!.position = CGPointMake(presentTimeLabel!.frame.size.width/2 + 10, self.frame.height - presentTimeLabel!.frame.size.height/2 - 20)
         presentTimeLabel!.zPosition = 2
         self.addChild(presentTimeLabel!)
@@ -374,7 +281,6 @@ class TutorialScene: SKScene {
             var label = SKLabelNode()
             label.text = "\(Actions.getActionCost(i))"
             label.fontSize = 16
-            label.fontName = "Avenir-Roman"
             label.position = CGPointMake(x, y - buttonSize/2 - label.frame.size.height/2 - (textSize - 10))
             label.alpha = 0
             label.zPosition = 2
@@ -401,6 +307,15 @@ class TutorialScene: SKScene {
             
             organicMatterImage?.runAction(move)
             organicMatterLabel?.runAction(moveText)
+            
+            if (currentString == 6){
+                updateTutorialForPhase(currentPhase)
+            }
+            
+            if (currentString == 15){
+                updateTutorialForPhase(currentPhase)
+            }
+            
         }
     }
     
@@ -408,6 +323,7 @@ class TutorialScene: SKScene {
         //Show itens menu
         var action = SKAction.fadeAlphaTo(0, duration: 0.2)
         var move = SKAction.moveTo(CGPointMake(pointOrganicMatter.x, pointOrganicMatter.y), duration: 0.2)
+        //Troca pro texto do tutorial
         var moveText = SKAction.moveTo(CGPointMake(pointOrganicMatterLabel.x, pointOrganicMatterLabel.y), duration: 0.2)
         
         for i in menuButtons {
@@ -438,152 +354,150 @@ class TutorialScene: SKScene {
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
         screenPressed = true
-        
-        if(lostGame == false) {
-            for touch in (touches as! Set<UITouch>) {
-                
-                if(pausedGame == false) {
-                    
-                    var name = nodeAtPoint(touch.locationInNode(self)).name
-                    
-                    if name == "MenuButton" {
-                        //Open pause menu
-                    } else {
-                        NSTimer.scheduledTimerWithTimeInterval(0.25, target: self, selector: Selector("openItensMenu"), userInfo: nil, repeats: false)
-                    }
-                } else {
-                    
-                    var name = nodeAtPoint(touch.locationInNode(self)).name
-                    if(name == "give") {
-                        pollution = 100000
-                        unPause()
-                    } else {
-                        unPause()
-                    }
-                }
+        if (currentPhase == TutorialPhase.WelcomePhase || currentPhase == TutorialPhase.AddFactory||currentPhase == TutorialPhase.NiceJob||currentPhase == TutorialPhase.FinalPhase){
+            updateTutorialForPhase(currentPhase)
+            return
+        }
+        for touch in (touches as! Set<UITouch>) {
+            
+            var name = nodeAtPoint(touch.locationInNode(self)).name
+            
+            if name == "MenuButton" {
+                //Open pause menu
+            } else {
+                NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("openItensMenu"), userInfo: nil, repeats: false)
             }
         }
         
     }
     
-    override func touchesMoved(touches: Set<NSObject>, withEvent event: UIEvent) {
-        
-        hideDescriptor()
-        
-        if(lostGame == false) {
-            for touch in (touches as! Set<UITouch>) {
-                
-                var name = nodeAtPoint(touch.locationInNode(self)).name
-                
-                var options = Actions.getActionsArray()
-                
-                for i in options {
-                    if name == i {
-                        showDescriptorToMenu(i)
-                    }
-                }
-            }
-        }
-    }
     
     override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
+        
+        if (currentPhase == TutorialPhase.WelcomePhase || currentPhase == TutorialPhase.AddFactory||currentPhase == TutorialPhase.NiceJob || currentPhase == TutorialPhase.FinalPhase){
+            return
+        }
+        
         screenPressed = false
         
-        hideDescriptor()
         closeItensMenu()
         
-        if(lostGame == false) {
-            for touch in (touches as! Set<UITouch>) {
-                
-                var name = nodeAtPoint(touch.locationInNode(self)).name
-                
-                var options = Actions.getActionsArray()
-                
-                for i in options {
-                    if name == i {
-                        if(organicMatter < Actions.getActionCost(i)) {
-                            //Not enough matter
-                        } else {
-                            executeGameAction(i)
-                            organicMatterLabel?.text = "\(organicMatter)"
-                        }
-                        
-                    }
+        for touch in (touches as! Set<UITouch>) {
+            
+            var name = nodeAtPoint(touch.locationInNode(self)).name
+            
+            if (currentPhase == TutorialPhase.AddTree){
+                if (name != "AddTree"){
+                    return
                 }
-                
-                if (name == "Time") {
-                    fastFoward()
-                } else if (name == "Pause") {
-                    pause()
+            }
+            
+            if (currentPhase == TutorialPhase.AddHerbivore){
+                if (name != "AddHerb"){
+                    return
+                }
+            }
+            
+            if (currentPhase == TutorialPhase.RemoveFactory){
+                if (name != "RemoveFactory"){
+                    return
+                }
+            }
+            var options = Actions.getActionsArray()
+            
+            for i in options {
+                if name == i { //Name = AddTree or AddHerb or AddCarn or RemoveFactory
+                    if(organicMatter < Actions.getActionCost(i)) {
+                        //Not enough matter
+                    } else {
+                        executeGameAction(i)
+                        organicMatterLabel?.text = "\(organicMatter)"
+                    }
+                    
                 }
             }
         }
     }
     
-    func pause() {
-        pausedGame = true
-        pauseScreen.alpha = 0.6
-        pauseScreen.zPosition = 100
-        pauseText.zPosition = 101
-        giveUpText.zPosition = 102
-        giveUpText.alpha = 1
-        pauseText.alpha = 1
-        tickTimer.invalidate()
-        for i in creaturesArray {
-            i.removeAllActions()
+    func updateTutorialForPhase(phase :TutorialPhase){
+        
+        currentString++
+        if (currentString < descriptionArray.count){
+            redrawDescriptorText(descriptionArray[currentString])
+        }
+        
+        switch(currentString){
+        case 4:
+            addArrowForSprite(organicMatterLabel!)
+            break
+        case 5:
+            theArrow?.alpha = 0.0
+            break
+        case 6:
+            addArrowForSprite(menuButtons[0])
+            currentPhase = TutorialPhase.AddTree
+            break
+        case 8:
+            theArrow?.alpha = 0.0
+            currentPhase = TutorialPhase.AddFactory
+            break
+        case 9:
+            executeGameAction("AddFactory")
+            break
+        case 12:
+            smoke()
+            break
+        case 15:
+            currentPhase = TutorialPhase.RemoveFactory
+            addArrowForSprite(menuButtons[3])
+            break
+        case 17:
+            theArrow!.alpha = 0.0
+            currentPhase = TutorialPhase.NiceJob
+        case 18:
+            currentPhase = TutorialPhase.AddHerbivore
+            addArrowForSprite(menuButtons[1])
+            break
+        case 19:
+            currentPhase = TutorialPhase.FinalPhase
+        case 24:
+            addArrowForSprite(presentTimeLabel!)
+            
+            break
+        default:
+            break
         }
     }
     
-    func unPause() {
-        pausedGame = false
-        pauseScreen.zPosition = -3
-        pauseText.zPosition = -3
-        giveUpText.zPosition = -3
-        pauseScreen.alpha = 0
-        pauseText.alpha = 0
-        giveUpText.alpha = 0
-        updateTick()
-    }
-    
-    func fastFoward() {
+    func addArrowForSprite(sprite:SKNode){
         
-        timeSpeed++
+        theArrow = SKSpriteNode(texture: SKTexture(imageNamed: "RectGreen.png"))
+        theArrow?.size = CGSizeMake(30, 65)
+        theArrow?.zPosition = 1
         
-        if(timeSpeed > 2) {
-            timeSpeed = 0
+        if (sprite == presentTimeLabel){
+            self.addChild(theArrow!)
+            theArrow?.position = CGPointMake(50, self.view!.frame.size.height - 80)
         }
-        
-        if(timeSpeed == 0) {
-            showDescriptorToMenu("1x")
-            tickTime = 2.0
-        } else if(timeSpeed == 1) {
-            showDescriptorToMenu("2x")
-            tickTime = 0.8
-        } else if(timeSpeed == 2) {
-            tickTime = 0.2
-            showDescriptorToMenu("3x")
+        else{
+            theArrow?.position = CGPointMake(0, 80)
+            sprite.addChild(theArrow!)
         }
-        
-        speedTimer.invalidate()
-        speedTimer = NSTimer.scheduledTimerWithTimeInterval(2.0, target: self, selector: Selector("hideDescriptor"), userInfo: nil, repeats: false)
         
     }
     
     func updateTick() {
         
-        if(lostGame == false && pausedGame == false) {
-            deleteMarkedEntities()
-            checkForCollisions()
-            moveAndAgeEntities()
-            calculatePollution()
-            chanceSpawnFactory()
-            
-            presentTime++
-            
-            redrawPresentTime()
-            
-            tickTimer = NSTimer.scheduledTimerWithTimeInterval(tickTime, target: self, selector: Selector("updateTick"), userInfo: nil, repeats: false)
-        }
+        deleteMarkedEntities()
+        checkForCollisions()
+        moveAndAgeEntities()
+        calculatePollution()
+        
+        presentTime++
+        
+        redrawPresentTime()
+        
+        tickTimer = NSTimer.scheduledTimerWithTimeInterval(tickTime, target: self, selector: Selector("updateTick"), userInfo: nil, repeats: false)
     }
     
     func deleteMarkedEntities() {
@@ -595,27 +509,6 @@ class TutorialScene: SKScene {
                 creaturesArray.removeAtIndex(i)
             }
         }
-    }
-    
-    func moreOrganicMatter(x: CGFloat, y: CGFloat) {
-        
-        var image = SKSpriteNode(imageNamed: "MoreOrganic")
-        image.size = CGSizeMake(sizeOfSprites + 10, sizeOfSprites + 10)
-        image.position = CGPointMake(x, y)
-        image.zPosition = 100
-        image.alpha = 0
-        self.islandSprite.addChild(image)
-        var appear = SKAction.fadeAlphaTo(1, duration: 0.2)
-        var up = SKAction.moveBy(CGVectorMake(0, 20), duration: 0.8)
-        var disappear = SKAction.fadeAlphaTo(0, duration: 0.2)
-        var block = SKAction.runBlock({
-            
-            image.removeFromParent()
-            
-        })
-        var sequence = SKAction.sequence([appear,up,disappear,block])
-        image.runAction(sequence)
-        
     }
     
     func checkForCollisions() {
@@ -664,15 +557,25 @@ class TutorialScene: SKScene {
                 i.aboutToDelete = 1
                 organicMatter += i.organicProduction
                 organicMatterLabel?.text = "\(organicMatter)"
-                if(i.organicProduction > 0) {
-                    moreOrganicMatter(i.position.x, y: i.position.y)
-                }
             }
         }
     }
     
     func executeGameAction(type: String) {
         
+        if (currentString == 7){
+            updateTutorialForPhase(currentPhase)
+            
+        }
+        
+        if (currentString == 16){
+            updateTutorialForPhase(currentPhase)
+            
+        }
+        if (currentString == 18){
+            updateTutorialForPhase(currentPhase)
+            
+        }
         var new = Actions.executeAction(type, size: sizeOfSprites, rect: islandSprite.frame)
         
         if(new.node != nil) {
@@ -695,7 +598,7 @@ class TutorialScene: SKScene {
     
     func calculatePollution() {
         
-        //println(pollution)
+        println(pollution)
         
         for i in buildingsArray {
             pollution += i.pollutionRate
@@ -709,20 +612,16 @@ class TutorialScene: SKScene {
             pollution = 0
         }
         
-        if(pollution >= pollutionLimits[6]) {
-            loseGame()
-        } else if(pollution >= pollutionLimits[5]) {
+        if(pollution <= pollutionLimits[0]) {
+            rain()
+        } else if(pollution <= pollutionLimits[1]) {
+            smoke()
+        } else if(pollution <= pollutionLimits[2]) {
+            acidRain()
+        } else if(pollution <= pollutionLimits[3]) {
             darkenColor()
         } else if(pollution >= pollutionLimits[4]) {
-            backDark()
-        } else if(pollution >= pollutionLimits[3]) {
-            acidRain()
-        } else if(pollution >= pollutionLimits[2]) {
-            smoke()
-        } else if(pollution >= pollutionLimits[1]) {
-            smokeLess()
-        } else if(pollution >= pollutionLimits[0]) {
-            rain()
+            loseGame()
         }
         
         for i in creaturesArray {
@@ -734,8 +633,8 @@ class TutorialScene: SKScene {
     }
     
     func chanceSpawnFactory() {
-        
-        var r = random(1...chanceToSpawnFactory)
+        //Chance de spawnar fabrica
+        var r = random(1...10)
         
         if(r<=1) {
             executeGameAction("AddFactory")
@@ -744,110 +643,24 @@ class TutorialScene: SKScene {
     }
     
     func rain() {
-        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
-        orbSmoke.runAction(vanish)
-        orbBadCloud.runAction(vanish)
-        orbBackgroundBad.runAction(vanish)
-        orbWaterBad.runAction(vanish)
-        orbSmokeLess.runAction(vanish)
-    }
-    
-    func smokeLess() {
-        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
-        orbSmoke.runAction(vanish)
-        orbBadCloud.runAction(vanish)
-        orbBackgroundBad.runAction(vanish)
-        orbWaterBad.runAction(vanish)
         
-        var action = SKAction.fadeAlphaTo(0.7, duration: 1.0)
-        orbSmokeLess.runAction(action)
     }
     
     func smoke() {
-        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
-        orbSmokeLess.runAction(vanish)
-        orbBadCloud.runAction(vanish)
-        orbBackgroundBad.runAction(vanish)
-        orbWaterBad.runAction(vanish)
         
-        var action = SKAction.fadeAlphaTo(0.7, duration: 1.0)
-        orbSmoke.runAction(action)
     }
     
     func acidRain() {
-        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
-        orbBackgroundBad.runAction(vanish)
-        orbWaterBad.runAction(vanish)
         
-        var action = SKAction.fadeAlphaTo(1, duration: 1.0)
-        orbBadCloud.runAction(action)
-        
-    }
-    
-    func backDark() {
-        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
-        orbWaterBad.runAction(vanish)
-        
-        var action2 = SKAction.fadeAlphaTo(1, duration: 1.0)
-        orbBackgroundBad.runAction(action2)
     }
     
     func darkenColor() {
-        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
         
-        var action = SKAction.fadeAlphaTo(1, duration: 1.0)
-        orbWaterBad.runAction(action)
     }
     
     func loseGame() {
-        lostGame = true
-        orbBackgroundBad.alpha = 1
-        var vanish = SKAction.fadeAlphaTo(0, duration: 0.25)
-        islandSprite.runAction(vanish)
-        orbBadCloud.runAction(vanish)
-        orbSmoke.runAction(vanish)
-        presentTimeLabel?.runAction(vanish)
-        organicMatterImage?.runAction(vanish)
-        organicMatterLabel?.runAction(vanish)
-        hideDescriptor()
-        var action = SKAction.fadeAlphaTo(1, duration: 0.5)
-        orbWaterFlood.runAction(action)
-        
-        NSTimer.scheduledTimerWithTimeInterval(0.5, target: self, selector: Selector("lostLevelTransition"), userInfo: nil, repeats: false)
-        
-    }
-    
-    func lostLevelTransition() {
-        
-        var action = SKAction.resizeToWidth(self.frame.width/3, height: self.frame.width/3, duration: 0.4)
-        var action2 = SKAction.moveTo(CGPoint(x: self.frame.width/2, y: self.frame.height/1.4), duration: 0.4)
-        
-        action.timingMode = SKActionTimingMode.EaseInEaseOut
-        action2.timingMode = SKActionTimingMode.EaseInEaseOut
-        
-        orbGlass.runAction(action)
-        orbGlass.runAction(action2)
-        orbBackgroundBad.runAction(action)
-        orbBackgroundBad.runAction(action2)
-        orbWaterFlood.runAction(action)
-        orbWaterFlood.runAction(action2)
-        
-        backgroundSprite.removeFromParent()
-        islandSprite.removeFromParent()
-        orbWaterBad.removeFromParent()
-        orbWater.removeFromParent()
-        
-        NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("nextScene"), userInfo: nil, repeats: false)
-        
-    }
-    
-    func nextScene() {
-        
-        var scene = EndScene(size:self.size)
-        scene.scoreValue = presentTime
-        
-        self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.6))
-        
+        //Anima enchete e abre proxima cena.
+        println("YOU LOST MOTAFOCKA")
     }
     
     func random(range: Range<Int> ) -> Int

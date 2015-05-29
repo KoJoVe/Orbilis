@@ -10,7 +10,7 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    var pollutionLimits = [0,100,200,300,500,600,700]
+    var pollutionLimits = [0,100,200,300,400,500,600]
     
     var timeSpeed = 0
     
@@ -19,8 +19,6 @@ class GameScene: SKScene {
     var tickTimer = NSTimer()
     var speedTimer = NSTimer()
     var audioManager = AudioManager()
-    
-    var chanceToSpawnFactory = 10
     
     var pointOrganicMatter = CGPointMake(0, 0)
     var pointOrganicMatterLabel = CGPointMake(0, 0)
@@ -67,10 +65,14 @@ class GameScene: SKScene {
     
     var presentTime = 0
     var pollution = 0
-    var organicMatter = 356
+    var organicMatter = 500
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
+        
+        var prop:CGFloat = self.frame.size.width/375.0
+        
+        sizeOfSprites = 30 * prop
         
         var background = SKSpriteNode(imageNamed: "Background")
         background.size = CGSizeMake(self.frame.size.width, self.frame.size.height)
@@ -180,7 +182,7 @@ class GameScene: SKScene {
         
         descriptor = SKSpriteNode()
         descriptor!.size = CGSizeMake(self.frame.size.width/6, self.frame.size.width/6)
-        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2 + textSize - 20)
+        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2 + textSize - 10)
         descriptor!.alpha = 0
         descriptor!.zPosition = 2
         self.addChild(descriptor!)
@@ -551,12 +553,12 @@ class GameScene: SKScene {
         }
     }
     
-    func moreOrganicMatter(x: CGFloat, y: CGFloat) {
+    func popStatus(x: CGFloat, y: CGFloat,type: String) {
         
-        var image = SKSpriteNode(imageNamed: "MoreOrganic")
-        image.size = CGSizeMake(sizeOfSprites + 10, sizeOfSprites + 10)
-        image.position = CGPointMake(x, y)
-        image.zPosition = 5
+        var image = SKSpriteNode(imageNamed: type)
+        image.size = CGSizeMake(sizeOfSprites, sizeOfSprites)
+        image.position = CGPointMake(x, y + sizeOfSprites/2)
+        image.zPosition = 100
         image.alpha = 0
         self.islandSprite.addChild(image)
         var appear = SKAction.fadeAlphaTo(1, duration: 0.2)
@@ -619,7 +621,7 @@ class GameScene: SKScene {
                 organicMatter += i.organicProduction
                 organicMatterLabel?.text = "\(organicMatter)"
                 if(i.organicProduction > 0) {
-                    moreOrganicMatter(i.position.x, y: i.position.y)
+                    popStatus(i.position.x, y: i.position.y,type: "MoreOrganic")
                 }
             }
         }
@@ -634,12 +636,15 @@ class GameScene: SKScene {
                 creaturesArray.append(new.node! as! Lifeform)
                 self.islandSprite.addChild(new.node! as! Lifeform)
                 organicMatter -= Actions.getActionCost(type)
+                popStatus(new.node!.position.x, y: new.node!.position.y,type: "LessOrganic")
             } else if (new.type == "Building") {
                 buildingsArray.append(new.node! as! Building)
                 self.islandSprite.addChild(new.node! as! Building)
+                popStatus(new.node!.position.x, y: new.node!.position.y,type: "MoreFac")
             } else if (new.type == "RemoveFactory") {
                 if(buildingsArray.count >= 1) {
                     buildingsArray[0].destroy()
+                    popStatus(buildingsArray[0].position.x, y: buildingsArray[0].position.y,type: "LessFac")
                     buildingsArray.removeAtIndex(0)
                     organicMatter -= Actions.getActionCost(type)
                 }
@@ -683,15 +688,30 @@ class GameScene: SKScene {
             if(i.chanceToDie(pollution) == true) {
                 i.animateToDie()
                 i.aboutToDelete = 1
+                organicMatter += i.organicProduction
+                organicMatterLabel?.text = "\(organicMatter)"
+                if(i.organicProduction > 0) {
+                    popStatus(i.position.x, y: i.position.y,type: "MoreOrganic")
+                }
             }
         }
     }
     
     func chanceSpawnFactory() {
         
-        var r = random(1...chanceToSpawnFactory)
+        var r = Double(random(1...1000))
         
-        if(r<=1) {
+        var chance:Double = 1 * Double(presentTime/10)
+        
+        if(chance < 1) {
+            chance = 15
+        }
+        
+        if(chance > 120) {
+            chance = 120
+        }
+        
+        if(r<=chance) {
             executeGameAction("AddFactory")
         }
         
@@ -756,7 +776,7 @@ class GameScene: SKScene {
     func loseGame() {
         lostGame = true
         orbBackgroundBad.alpha = 1
-        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
+        var vanish = SKAction.fadeAlphaTo(0, duration: 0.25)
         islandSprite.runAction(vanish)
         orbBadCloud.runAction(vanish)
         orbSmoke.runAction(vanish)
@@ -773,8 +793,8 @@ class GameScene: SKScene {
     
     func lostLevelTransition() {
         
-        var action = SKAction.resizeToWidth(self.frame.width/3, height: self.frame.width/3, duration: 1.0)
-        var action2 = SKAction.moveTo(CGPoint(x: self.frame.width/2, y: self.frame.height/1.4), duration: 1.0)
+        var action = SKAction.resizeToWidth(self.frame.width/3, height: self.frame.width/3, duration: 0.4)
+        var action2 = SKAction.moveTo(CGPoint(x: self.frame.width/2, y: self.frame.height/1.4), duration: 0.4)
         
         action.timingMode = SKActionTimingMode.EaseInEaseOut
         action2.timingMode = SKActionTimingMode.EaseInEaseOut
@@ -791,7 +811,7 @@ class GameScene: SKScene {
         orbWaterBad.removeFromParent()
         orbWater.removeFromParent()
         
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("nextScene"), userInfo: nil, repeats: false)
+        NSTimer.scheduledTimerWithTimeInterval(0.4, target: self, selector: Selector("nextScene"), userInfo: nil, repeats: false)
         
     }
     
@@ -800,7 +820,7 @@ class GameScene: SKScene {
         var scene = EndScene(size:self.size)
         scene.scoreValue = presentTime
         
-        self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(1.5))
+        self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.6))
         
     }
     

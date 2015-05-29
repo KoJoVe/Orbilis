@@ -58,6 +58,11 @@
 		51A9A2D51B1390E700E24060 /* TutorialScene.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A9A2D41B1390E700E24060 /* TutorialScene.swift */; };
 		51A9A2D71B13912400E24060 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A9A2D61B13912400E24060 /* UserData.swift */; };
 		51A9A2D91B13930C00E24060 /* AudioManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51A9A2D81B13930C00E24060 /* AudioManager.swift */; };
+		51DD0FA11B17BEC000141954 /* OrbTreeTiny.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FA01B17BEC000141954 /* OrbTreeTiny.png */; };
+		51DD0FA51B17D88F00141954 /* LessFac.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FA21B17D88F00141954 /* LessFac.png */; };
+		51DD0FA61B17D88F00141954 /* LessOrganic.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FA31B17D88F00141954 /* LessOrganic.png */; };
+		51DD0FA71B17D88F00141954 /* MoreFac.png in Resources */ = {isa = PBXBuildFile; fileRef = 51DD0FA41B17D88F00141954 /* MoreFac.png */; };
+		51DD0FA91B17E51700141954 /* CENA.swift in Sources */ = {isa = PBXBuildFile; fileRef = 51DD0FA81B17E51700141954 /* CENA.swift */; };
 		51FEA46E1B1677C2007EBB09 /* NormalIsland.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA46D1B1677C2007EBB09 /* NormalIsland.png */; };
 		51FEA4741B1678CC007EBB09 /* GoodCloud.png in Resources */ = {isa = PBXBuildFile; fileRef = 51FEA4711B1678CC007EBB09 /* GoodCloud.png */; };
 		94BB5AED1B17BB3600EECD5E /* tantoFaz.plist in Resources */ = {isa = PBXBuildFile; fileRef = 94BB5AEC1B17BB3600EECD5E /* tantoFaz.plist */; };
@@ -130,6 +135,11 @@
 		51A9A2D41B1390E700E24060 /* TutorialScene.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TutorialScene.swift; sourceTree = "<group>"; };
 		51A9A2D61B13912400E24060 /* UserData.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		51A9A2D81B13930C00E24060 /* AudioManager.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AudioManager.swift; sourceTree = "<group>"; };
+		51DD0FA01B17BEC000141954 /* OrbTreeTiny.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = OrbTreeTiny.png; sourceTree = "<group>"; };
+		51DD0FA21B17D88F00141954 /* LessFac.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LessFac.png; sourceTree = "<group>"; };
+		51DD0FA31B17D88F00141954 /* LessOrganic.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = LessOrganic.png; sourceTree = "<group>"; };
+		51DD0FA41B17D88F00141954 /* MoreFac.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = MoreFac.png; sourceTree = "<group>"; };
+		51DD0FA81B17E51700141954 /* CENA.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CENA.swift; sourceTree = "<group>"; };
 		51FEA46D1B1677C2007EBB09 /* NormalIsland.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = NormalIsland.png; sourceTree = "<group>"; };
 		51FEA4711B1678CC007EBB09 /* GoodCloud.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = GoodCloud.png; sourceTree = "<group>"; };
 		94BB5AEC1B17BB3600EECD5E /* tantoFaz.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = tantoFaz.plist; sourceTree = "<group>"; };
@@ -221,6 +231,7 @@
 				51A9A2D01B1390B300E24060 /* StartScene.swift */,
 				51A9A2D21B1390DA00E24060 /* EndScene.swift */,
 				51A9A2D41B1390E700E24060 /* TutorialScene.swift */,
+				51DD0FA81B17E51700141954 /* CENA.swift */,
 			);
 			name = Scenes;
 			sourceTree = "<group>";
@@ -267,6 +278,10 @@
 		51A9A2DC1B1394B100E24060 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				51DD0FA21B17D88F00141954 /* LessFac.png */,
+				51DD0FA31B17D88F00141954 /* LessOrganic.png */,
+				51DD0FA41B17D88F00141954 /* MoreFac.png */,
+				51DD0FA01B17BEC000141954 /* OrbTreeTiny.png */,
 				519CE5F21B17ACDE00A85E53 /* MoreOrganic.png */,
 				519CE5F01B17A29600A85E53 /* OrbTree.png */,
 				519CE5EC1B17A03300A85E53 /* RateButton.png */,
@@ -403,13 +418,16 @@
 				519CE5DF1B17874300A85E53 /* Fast3x.png in Resources */,
 				51FEA46E1B1677C2007EBB09 /* NormalIsland.png in Resources */,
 				511C16901B175E0C003CA03E /* Smoke.png in Resources */,
+				51DD0FA11B17BEC000141954 /* OrbTreeTiny.png in Resources */,
 				519CE5EA1B179D0800A85E53 /* OrbPure.png in Resources */,
 				51A8E92C1B166C63001F24DC /* HerbButton.png in Resources */,
 				513994F71B113D7B003C408C /* LaunchScreen.xib in Resources */,
 				511C169A1B1767A1003CA03E /* BadIsland.png in Resources */,
 				94BB5AED1B17BB3600EECD5E /* tantoFaz.plist in Resources */,
 				51A8E93A1B166F2C001F24DC /* NormalBackground.png in Resources */,
+				51DD0FA61B17D88F00141954 /* LessOrganic.png in Resources */,
 				51A8E9281B166C63001F24DC /* Herb.png in Resources */,
+				51DD0FA71B17D88F00141954 /* MoreFac.png in Resources */,
 				515FDA971B13B40E00D4A3BE /* RectBlue.png in Resources */,
 				51A8E92D1B166C63001F24DC /* TreeButton.png in Resources */,
 				519CE5E91B179D0800A85E53 /* OrbFlood.png in Resources */,
@@ -419,6 +437,7 @@
 				51A8E92A1B166C63001F24DC /* FacButton.png in Resources */,
 				519CE5EF1B17A03300A85E53 /* PlayButton.png in Resources */,
 				515FDA991B13B40E00D4A3BE /* RectOrange.png in Resources */,
+				51DD0FA51B17D88F00141954 /* LessFac.png in Resources */,
 				519CE5DD1B17874300A85E53 /* Fast1x.png in Resources */,
 				51A8E9271B166C63001F24DC /* Carn.png in Resources */,
 				515FDA9C1B13B40E00D4A3BE /* RectYellow.png in Resources */,
@@ -452,6 +471,7 @@
 			files = (
 				513994ED1B113D7B003C408C /* GameScene.swift in Sources */,
 				51A9A2CD1B138D8700E24060 /* Herbivore.swift in Sources */,
+				51DD0FA91B17E51700141954 /* CENA.swift in Sources */,
 				51A9A2C91B138B5F00E24060 /* Building.swift in Sources */,
 				51A9A2D51B1390E700E24060 /* TutorialScene.swift in Sources */,
 				51A9A2CF1B138DB300E24060 /* Carnivore.swift in Sources */,

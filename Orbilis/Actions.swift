@@ -140,7 +140,7 @@ class Actions: NSObject {
             return 100
         }
         if(type=="AddHerb") {
-            return 50
+            return 60
         }
         if(type=="AddCarn") {
             return 80

@@ -23,8 +23,8 @@ class Herbivore: Lifeform {
         
         super.init(texture: texture, color: nil, size: sizeWH)
         
-        pollutionIncrement = -10
-        pollutionLimit = 300
+        pollutionIncrement = 0
+        pollutionLimit = 400
         reproductionRate = 0
         lifeTimeMax = 90
         organicProduction = 0
@@ -37,9 +37,10 @@ class Herbivore: Lifeform {
     
     override func interact(lifeform: SKSpriteNode) -> Bool {
         
-        if(lifeform.name == "tree") {
+        if(lifeform.name == "tree" && fed == false) {
             var node = lifeform as! Lifeform
             node.animateToDie()
+            fed = true
             node.aboutToDelete = 1
             return true
         }

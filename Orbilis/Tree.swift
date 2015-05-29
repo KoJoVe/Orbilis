@@ -17,8 +17,8 @@ class Tree: Lifeform {
         
         super.init(texture: texture, color: nil, size: sizeWH)
         
-        pollutionIncrement = -10
-        pollutionLimit = 300
+        pollutionIncrement = -15
+        pollutionLimit = 500
         reproductionRate = 0
         lifeTimeMax = 300
         organicProduction = 0
