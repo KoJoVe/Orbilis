@@ -193,9 +193,10 @@ class TutorialScene: SKScene {
         var textSize:CGFloat = 30
         
         descriptor = SKSpriteNode()
-        descriptor!.size = CGSizeMake(self.frame.size.width/6, self.frame.size.width/6)
-        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + backgroundSprite.frame.size.height/2 + descriptor!.frame.size.height/2 + textSize)
-        descriptor!.zPosition = 2
+        descriptor!.size = CGSizeMake(self.frame.size.width/4, self.frame.size.width/4)
+        descriptor!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) + 70)
+        descriptor!.alpha = 0
+        descriptor!.zPosition = 50
         self.addChild(descriptor!)
         
         redrawDescriptorText(descriptionArray[0])
@@ -208,14 +209,16 @@ class TutorialScene: SKScene {
     
     func redrawDescriptorText(text: String) {
         
+        var space:CGFloat = 0
+        
         descriptorLabel?.removeFromParent()
         descriptorLabel = SKLabelNode()
         descriptorLabel!.text = text
-        descriptorLabel!.fontSize = 12
-        descriptorLabel!.fontName = "Avenir-Black"
-        descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - backgroundSprite.size.height/2 + self.frame.size.height/16)
+        descriptorLabel!.fontName = "Avenir-Roman"
+        descriptorLabel!.fontSize = 18
+        descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), descriptor!.position.y - descriptor!.frame.size.height/2 - descriptorLabel!.frame.size.height/2 - space)
         descriptorLabel!.alpha = 1
-        descriptorLabel!.zPosition = 30
+        descriptorLabel!.zPosition = 50
         self.addChild(descriptorLabel!)
         
     }
