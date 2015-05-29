@@ -65,7 +65,7 @@ class CENA: SKScene {
     
     var currentPhase = TutorialPhase.WelcomePhase
     var currentString = 0
-    let descriptionArray = ["Welcome to orbilis!","You have one simple job.","Dont let the enviroment die with pollution.","Let`s see how you do this.","This is your organic matter.","You spend this to modify your enviroment.","Tap and hold the screen to open menu.","Lets add a tree.","Trees help decrease pollution","Once in a while, factories will appear","They increase the pollution!","You will begin to see the...","pollution effects in the long term.","And that`s not good…","Lets remove this factory!","Tap and hold to open menu.","Tap on remove factory.","Nice job!","Now, let`s add a herbivore","Herbivores eat trees and reproduce","You can add carnivores too!","They eat the herbivores and reproduce.","And, when they die…","…you get more organic matter!","Up there, is the number of days passed","You can tap there…","…to change time speed!","Try to keep the environment running…","…for the maximum days you can!","Thats it! You can acess this tutorial…","…again, trhough the initial screen!","Good luck!"]
+    let descriptionArray = ["Welcome to orbilis!","You have one simple job.","Dont let the enviroment die with pollution.","Let`s see how you do this.","This is your organic matter.","You spend this to modify your enviroment.","Tap and hold the screen to open menu.","Lets add a tree. Release your finger on the tree icon.","Trees help decrease pollution","Once in a while, factories will appear","They increase the pollution!","You will see the pollution effects in the long term.","And that`s not good…","Lets remove this factory!","Tap and hold to open menu.","Release your finger on the remove factory iconjm.","Nice job!","Now, let`s add a herbivore","Herbivores eat trees and reproduce","You can add carnivores too!","They eat the herbivores and reproduce.","And, when they die…","…you get more organic matter!","Up there, is the number of days passed","You can tap there to change time speed!","Try to keep the environment running for the maximum days you can!","Thats it! You can acess this tutorial again.", "Just click in 'tutorial' in the initial screen!","Good luck!"]
     
     var pollutionLimits = [0,100,200,300,500]
     
@@ -92,6 +92,7 @@ class CENA: SKScene {
     var orbWater = SKSpriteNode()
     var orbSand = SKSpriteNode()
     var orbCloud = SKSpriteNode()
+    var orbSmoke = SKSpriteNode()
     
     var creaturesArray: Array<Lifeform> = []
     var buildingsArray: Array<Building> = []
@@ -130,7 +131,7 @@ class CENA: SKScene {
     
     func drawOrb() {
         //Joao
-        var spacing: CGFloat = 40
+        var spacing: CGFloat = 0
         var islandW: CGFloat = 400
         var islandH: CGFloat = 230
         
@@ -157,6 +158,13 @@ class CENA: SKScene {
         orbGlass.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
         orbGlass.zPosition = 6
         self.addChild(orbGlass)
+        
+        orbSmoke = SKSpriteNode(imageNamed: "Smoke")
+        orbSmoke.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
+        orbSmoke.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        orbSmoke.zPosition = 5
+        orbSmoke.alpha = 0
+        self.addChild(orbSmoke)
         
         islandSprite = SKSpriteNode()
         islandSprite.size = CGSizeMake(islandW, islandH)
@@ -189,7 +197,7 @@ class CENA: SKScene {
         descriptorLabel?.removeFromParent()
         descriptorLabel = SKLabelNode()
         descriptorLabel!.text = text
-        descriptorLabel!.fontSize = 18
+        descriptorLabel!.fontSize = 15
         descriptorLabel!.position = CGPointMake(CGRectGetMidX(self.frame), descriptor!.position.y - descriptor!.frame.size.height/2 - descriptorLabel!.frame.size.height/2 - space)
         descriptorLabel!.alpha = 1
         descriptorLabel!.zPosition = 2
@@ -215,7 +223,7 @@ class CENA: SKScene {
         
         var difference = organicMatterLabel!.frame.size.width - organicMatterImage!.frame.size.width + space/2
         
-        var y = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2)/2
+        var y = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20)/2
         var x = CGRectGetMidX(self.frame) - organicMatterImage!.frame.size.width/2 - difference
         
         organicMatterImage!.position = CGPointMake(x, y)
@@ -244,7 +252,7 @@ class CENA: SKScene {
         
         var textSize:CGFloat = 20
         
-        var buttonSize:CGFloat = ((CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2) - (self.frame.size.width/10) - (textSize + 10))
+        var buttonSize:CGFloat = ((CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20) - (self.frame.size.width/10) - (textSize + 10))
         var buttonsSpace:CGFloat = 0
         
         if(buttonSize * CGFloat(menuItens.count) >= self.frame.size.width - 10) {
@@ -259,7 +267,7 @@ class CENA: SKScene {
         for i in menuItens {
             
             var x = counter*buttonsSpace + buttonSize/2 + (counter-1)*buttonSize
-            var y:CGFloat = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2)/2
+            var y:CGFloat = (CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20)/2
             
             var button = Actions.getActionButton(i)
             button!.size = CGSizeMake(buttonSize, buttonSize)
@@ -287,8 +295,8 @@ class CENA: SKScene {
         if(screenPressed==true) {
             //Show itens menu
             var action = SKAction.fadeAlphaTo(1, duration: 0.2)
-            var move = SKAction.moveTo(CGPointMake(pointOrganicMatter.x, CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 - organicMatterImage!.frame.size.height/2), duration: 0.2)
-            var moveText = SKAction.moveTo(CGPointMake(pointOrganicMatterLabel.x, CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 - organicMatterImage!.frame.size.height/2 - organicMatterLabel!.frame.size.height/2), duration: 0.2)
+            var move = SKAction.moveTo(CGPointMake(pointOrganicMatter.x, CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20 - organicMatterImage!.frame.size.height/2), duration: 0.2)
+            var moveText = SKAction.moveTo(CGPointMake(pointOrganicMatterLabel.x, CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20 - organicMatterImage!.frame.size.height/2 - organicMatterLabel!.frame.size.height/2), duration: 0.2)
             
             for i in menuButtons {
                 i.runAction(action)
