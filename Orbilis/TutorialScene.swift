@@ -62,11 +62,12 @@ class TutorialScene: SKScene {
         case AddHerbivore
         case AddCarnivore
         case FinalPhase
+        case SpeedUp
     }
     
     var currentPhase = TutorialPhase.WelcomePhase
     var currentString = 0
-    let descriptionArray = ["Welcome to orbilis!","You have one simple job.","Dont let the enviroment die with pollution.","Let`s see how you do this.","This is your organic matter.","You spend this to modify your enviroment.","Tap and hold the screen to open menu.","Lets add a tree. Tap on the add tree icon.","Trees help decrease pollution","Once in a while, factories will appear","They increase the pollution!","You will see the pollution effects in the long term.","And that`s not good…","Lets remove this factory!","Tap and hold to open menu.","Tap the remove factory icon.","Nice job!","Now, let's add a herbivore","Herbivores eat trees and reproduce","You can add carnivores too!","They eat the herbivores and reproduce.","And, when they die…","…you get more organic matter!","Up there, is the number of days passed","You can tap in the orb to change time speed!","Try to keep the environment running…", "…for the maximum days you can!","Thats it! You can acess this tutorial again.", "Just click in 'tutorial' in the initial screen!","Good luck!"]
+    let descriptionArray = ["Welcome to orbilis!","You have one simple job.","Dont let the enviroment die with pollution.","Let`s see how you do this.","This is your organic matter.","You spend this to modify your enviroment.","Lets add a tree. Tap on the add tree icon.","Trees help decrease pollution","Once in a while, factories will appear","They increase the pollution!","You will see the pollution effects in the long term.","And that`s not good…","Lets remove this factory!","Tap the remove factory icon.","Nice job!","Now, let's add a herbivore","Herbivores eat trees and reproduce","You can add carnivores too!","They eat the herbivores and reproduce.","And, when they die…","…you get more organic matter!","Up there, is the number of days passed","You can tap in the orb to change time speed!","Try to keep the environment running…", "…for the maximum days you can!","Thats it! You can acess this tutorial again.", "Just click in 'tutorial' in the initial screen!","Good luck!"]
     
     var pollutionLimits = [0,100,200,300,500]
     
@@ -80,7 +81,6 @@ class TutorialScene: SKScene {
     var pointOrganicMatter = CGPointMake(0, 0)
     var pointOrganicMatterLabel = CGPointMake(0, 0)
     
-    var menuIsOpen = false
     var screenPressed = false
     
     var islandRect = SKSpriteNode()
@@ -135,6 +135,7 @@ class TutorialScene: SKScene {
         drawOrb()
         drawInfo()
         drawItensMenu()
+        openItensMenu()
         updateTick()
     }
     
@@ -204,6 +205,7 @@ class TutorialScene: SKScene {
         redrawOrganicMatter()
         
         redrawPresentTime()
+        
         
     }
     
@@ -314,7 +316,6 @@ class TutorialScene: SKScene {
     }
     
     func openItensMenu() {
-        if(screenPressed==true) {
             //Show itens menu
             var action = SKAction.fadeAlphaTo(1, duration: 0.2)
             var move = SKAction.moveTo(CGPointMake(pointOrganicMatter.x, CGRectGetMidY(self.frame) - backgroundSprite.frame.size.height/2 + 20 - organicMatterImage!.frame.size.height/2), duration: 0.2)
@@ -338,29 +339,15 @@ class TutorialScene: SKScene {
                 updateTutorialForPhase()
             }
             
-        }
-    }
-    
-    func closeItensMenu() {
-        //Show itens menu
-        var action = SKAction.fadeAlphaTo(0, duration: 0.2)
-        var move = SKAction.moveTo(CGPointMake(pointOrganicMatter.x, pointOrganicMatter.y), duration: 0.2)
-        //Troca pro texto do tutorial
-        var moveText = SKAction.moveTo(CGPointMake(pointOrganicMatterLabel.x, pointOrganicMatterLabel.y), duration: 0.2)
         
-        for i in menuButtons {
-            i.runAction(action)
-        }
-        for i in menuCosts {
-            i.runAction(action)
-        }
-        
-//        organicMatterImage?.runAction(move)
-//        organicMatterLabel?.runAction(moveText)
     }
     
     func showDescriptorToMenu(type: String) {
-        var action = SKAction.fadeAlphaTo(1, duration: 0.2)
+        var action = SKAction.sequence([
+            SKAction.fadeAlphaTo(1, duration: 0.2),
+            SKAction.fadeAlphaTo(0, duration: 0.8)
+            ])
+        tickTime = 0.8
         descriptor!.runAction(action)
         descriptor!.texture = Actions.getActionDescriptor(type)
         descriptorLabel!.runAction(action)
@@ -375,7 +362,7 @@ class TutorialScene: SKScene {
     
     override func touchesBegan(touches: Set<NSObject>, withEvent event: UIEvent) {
         /* Called when a touch begins */
-        screenPressed = true
+        println(currentString)
         if (currentPhase == TutorialPhase.WelcomePhase || currentPhase == TutorialPhase.AddFactory||currentPhase == TutorialPhase.NiceJob||currentPhase == TutorialPhase.FinalPhase){
             updateTutorialForPhase()
             return
@@ -384,34 +371,17 @@ class TutorialScene: SKScene {
             
             var name = nodeAtPoint(touch.locationInNode(self)).name
             
-            if name == "MenuButton" {
-                //Open pause menu
-            } else {
-                NSTimer.scheduledTimerWithTimeInterval(0.1, target: self, selector: Selector("openItensMenu"), userInfo: nil, repeats: false)
+            
+            if (currentString == 22){
+                if (orbGlass.containsPoint(touch.locationInNode(self))){
+                showDescriptorToMenu("2x")
+                updateTutorialForPhase()
+                }else{
+                    return
+                }
             }
-        }
-        
-    }
-    
-    
-    override func touchesEnded(touches: Set<NSObject>, withEvent event: UIEvent) {
-        
-        if (currentPhase == TutorialPhase.WelcomePhase || currentPhase == TutorialPhase.AddFactory||currentPhase == TutorialPhase.NiceJob || currentPhase == TutorialPhase.FinalPhase){
-            return
-        }
-        
-        screenPressed = false
-        
-        closeItensMenu()
-        
-        for touch in (touches as! Set<UITouch>) {
-            
-            var name = nodeAtPoint(touch.locationInNode(self)).name
-            
-            if (currentPhase == TutorialPhase.AddTree){
+            if (currentString == 6){
                 if (name != "AddTree"){
-                    currentString = 5
-                    updateTutorialForPhase()
                     return
                 }
             }
@@ -427,10 +397,9 @@ class TutorialScene: SKScene {
                     return
                 }
             }
-            if (currentPhase == TutorialPhase.RemoveFactory){
+            if (currentString == 13){
                 if (name != "RemoveFactory"){
-                    currentString = 13
-                    updateTutorialForPhase()
+                   
                     return
                 }
             }
@@ -449,7 +418,11 @@ class TutorialScene: SKScene {
             }
             
         }
+
+        
     }
+    
+   
     
     func updateTutorialForPhase(){
         
@@ -471,46 +444,50 @@ class TutorialScene: SKScene {
             addArrowForSprite(menuButtons[0])
             currentPhase = TutorialPhase.AddTree
             break
-        case 8:
+        case 7:
             menuButtons[0].removeAllChildren()
             currentPhase = TutorialPhase.AddFactory
             break
-        case 9:
+        case 8:
             executeGameAction("AddFactory")
             break
-        case 11:
+        case 10:
             orbSmoke.runAction(SKAction.fadeAlphaTo(1.0, duration: 0.5))
             break
-        case 14:
+        case 13:
             currentPhase = TutorialPhase.RemoveFactory
             addArrowForSprite(menuButtons[3])
             break
-        case 16:
+        case 14:
             orbSmoke.runAction(SKAction.fadeAlphaTo(0, duration: 0.5))
             currentPhase = TutorialPhase.NiceJob
             menuButtons[3].removeAllChildren()
             break
-        case 17:
+        case 16:
             currentPhase = TutorialPhase.AddHerbivore
             addArrowForSprite(menuButtons[1])
             break
-        case 18:
+        case 17:
             currentPhase = TutorialPhase.FinalPhase
             menuButtons[1].removeAllChildren()
             break
-        case 19:
+        case 18:
             currentPhase = TutorialPhase.AddCarnivore
             addArrowForSprite(menuButtons[2])
             break
-        case 20:
+        case 19:
             currentPhase = TutorialPhase.FinalPhase
             menuButtons[2].removeAllChildren()
             break
-        case 23:
+        case 21:
             addArrowForSprite(presentTimeLabel!)
             break
-        case 24:
+        case 22:
+            currentPhase = TutorialPhase.SpeedUp
             theArrow?.removeFromParent()
+            break
+        case 23:
+            currentPhase = TutorialPhase.FinalPhase
             break
         default:
             break
@@ -616,20 +593,20 @@ class TutorialScene: SKScene {
     
     func executeGameAction(type: String) {
         
-        if (currentString == 7){
+        if (currentString == 6){
             updateTutorialForPhase()
             
         }
         
-        if (currentString == 15){
+        if (currentString == 13){
             updateTutorialForPhase()
             
         }
-        if (currentString == 17){
+        if (currentString == 16){
             updateTutorialForPhase()
             
         }
-        if (currentString == 19){
+        if (currentString == 18){
             updateTutorialForPhase()
             
         }
