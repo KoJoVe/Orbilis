@@ -3,7 +3,7 @@
 <plist version="1.0">
 <dict>
 	<key>UserRecord</key>
-	<string></string>
+	<integer>0</integer>
 	<key>FirstTime</key>
 	<integer>0</integer>
 </dict>
