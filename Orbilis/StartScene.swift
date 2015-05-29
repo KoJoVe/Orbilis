@@ -12,6 +12,8 @@ import UIKit
 class StartScene: SKScene, UIAlertViewDelegate {
     
     var initialOrb: SKSpriteNode = SKSpriteNode()
+    var audio: SKSpriteNode = SKSpriteNode()
+    var audioButton: SKSpriteNode = SKSpriteNode()
     var orbTitle: SKLabelNode = SKLabelNode()
     var orbPlay: SKLabelNode = SKLabelNode()
     var orbTutorial: SKLabelNode = SKLabelNode()
@@ -51,16 +53,48 @@ class StartScene: SKScene, UIAlertViewDelegate {
         orbPlay.position = labelPosition
         self.addChild(orbPlay)
         
+//        audio
+        
+        audio = SKSpriteNode(color: UIColor.clearColor(), size: CGSize(width: self.frame.width/6, height: self.frame.width/6))
+        audio.position = CGPoint(x: self.frame.width/2, y: self.frame.height/1.1)
+        audio.name = "audio"
+        audio.zPosition = 100
+        self.addChild(audio)
+        
+        audioButton = SKSpriteNode()
+        
+        if UserData.getAudio() {
+            
+            audioButton.texture = SKTexture(imageNamed: "RectGreen.png")
+            
+        }
+        
+        else {
+            
+            audioButton.texture = SKTexture(imageNamed: "RectRed.png")
+            
+        }
+        
+        audioButton.size = CGSize(width: self.frame.width/10, height: self.frame.width/10)
+        audioButton.name = "audio"
+        audioButton.zPosition = 101
+        
+        audio.addChild(audioButton)
+        
         //tutorial
         
         labelPosition = CGPoint(x: labelPosition.x, y: labelPosition.y - initialOrb.size.height/1.25 - 30)
         
+        var emptySprite = SKSpriteNode(color: UIColor.clearColor(), size: CGSizeMake(self.frame.width/3, 50))
+        emptySprite.position = CGPoint(x: self.frame.width/2, y: labelPosition.y*1.1)
+        emptySprite.name = "tutorial"
+        self.addChild(emptySprite)
+        
         orbTutorial = SKLabelNode(text: "Tutorial")
-        orbTutorial.position = labelPosition
         orbTutorial.fontSize = 22
         orbTutorial.name = "tutorial"
         orbTutorial.fontName = "Avenir-Roman"
-        self.addChild(orbTutorial)
+        emptySprite.addChild(orbTutorial)
         
         
 //        Check if First Time
@@ -81,6 +115,12 @@ class StartScene: SKScene, UIAlertViewDelegate {
                 gotoTut()
                 
                 UserData.setAlreadyUser(1)
+            }
+            
+            else if name == "audio" {
+                
+                UserData.changeAudio()
+                self.changeAudioTexture()
             }
             
             else {
@@ -162,6 +202,22 @@ class StartScene: SKScene, UIAlertViewDelegate {
         } else {
             gotoGame()
         }
+    }
+    
+    func changeAudioTexture() {
+        
+        if UserData.getAudio() {
+            
+            audioButton.texture = SKTexture(imageNamed: "RectGreen.png")
+            
+        }
+            
+        else {
+            
+            audioButton.texture = SKTexture(imageNamed: "RectRed.png")
+            
+        }
+        
     }
     
     override func update(currentTime: CFTimeInterval) {
