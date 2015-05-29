@@ -55,12 +55,16 @@ class StartScene: SKScene, UIAlertViewDelegate {
         
         labelPosition = CGPoint(x: labelPosition.x, y: labelPosition.y - initialOrb.size.height/1.25 - 30)
         
+        var emptySprite = SKSpriteNode(color: UIColor.clearColor(), size: CGSizeMake(self.frame.width/3, 50))
+        emptySprite.position = CGPoint(x: self.frame.width/2, y: labelPosition.y*1.1)
+        emptySprite.name = "tutorial"
+        self.addChild(emptySprite)
+        
         orbTutorial = SKLabelNode(text: "Tutorial")
-        orbTutorial.position = labelPosition
         orbTutorial.fontSize = 22
         orbTutorial.name = "tutorial"
         orbTutorial.fontName = "Avenir-Roman"
-        self.addChild(orbTutorial)
+        emptySprite.addChild(orbTutorial)
         
         
 //        Check if First Time
