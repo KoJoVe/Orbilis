@@ -10,20 +10,21 @@ import SpriteKit
 
 class GameScene: SKScene {
     
-    var pollutionLimits = [0,100,200,300,400,500,600]
+    var pollutionLimits = [0,100,400,1600,6400,25600,102400]
     
     var timeSpeed = 0
     var itemsBought = [0,0,0,0]
     
     var ticksPassed = 0
     var totalTicks = 0
-    var tickDay = 10
+    var tickDay = 48
+    var nightTime = 28
     
     var sizeOfSprites: CGFloat = 20
     var tickTime = 2.0
     var tickTimer = NSTimer()
     var speedTimer = NSTimer()
-    var audioManager = AudioManager()
+    var audioManager: AudioManager?
     
     var pointOrganicMatter = CGPointMake(0, 0)
     var pointOrganicMatterLabel = CGPointMake(0, 0)
@@ -65,6 +66,7 @@ class GameScene: SKScene {
     var organicMatterImage: SKSpriteNode?
     var descriptor: SKSpriteNode?
     var descriptorLabel: SKLabelNode?
+    var hoursLabel: SKLabelNode?
     
     var menuButtons: Array<SKSpriteNode> = []
     var menuCosts: Array<SKLabelNode> = []
@@ -87,7 +89,7 @@ class GameScene: SKScene {
         var background = SKSpriteNode(imageNamed: "Background")
         background.size = CGSizeMake(self.frame.size.width, self.frame.size.height)
         background.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        background.zPosition = -1
+        background.zPosition = -2
         background.name = "TheBackground"
         self.addChild(background)
         
@@ -121,16 +123,23 @@ class GameScene: SKScene {
         backgroundSprite = SKSpriteNode(imageNamed: "NormalBackground")
         backgroundSprite.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
         backgroundSprite.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        backgroundSprite.zPosition = 0
+        backgroundSprite.zPosition = -1
         self.addChild(backgroundSprite)
         
         orbBackgroundBad = SKSpriteNode(imageNamed: "BadBackground")
         orbBackgroundBad.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
         orbBackgroundBad.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
-        orbBackgroundBad.zPosition = 1
+        orbBackgroundBad.zPosition = 0
         orbBackgroundBad.name = "Flood"
         orbBackgroundBad.alpha = 0
         self.addChild(orbBackgroundBad)
+        
+        orbNight = SKSpriteNode(imageNamed: "NightBackground")
+        orbNight.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
+        orbNight.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame))
+        orbNight.zPosition = 1
+        orbNight.alpha = 0
+        self.addChild(orbNight)
         
         orbWaterBad = SKSpriteNode(imageNamed: "BadIsland")
         orbWaterBad.size = CGSizeMake(self.frame.size.width - spacing, self.frame.size.width - spacing)
@@ -192,6 +201,7 @@ class GameScene: SKScene {
         islandSprite.size = CGSizeMake(islandW, islandH)
         islandSprite.position = CGPointMake(CGRectGetMidX(self.frame), CGRectGetMidY(self.frame) - deloc)
         self.addChild(islandSprite)
+        
     }
     
     func drawInfo() {
@@ -322,6 +332,15 @@ class GameScene: SKScene {
         presentTimeLabel!.position = CGPointMake(presentTimeLabel!.frame.size.width/2 + 10, self.frame.height - presentTimeLabel!.frame.size.height/2 - 20)
         presentTimeLabel!.zPosition = 2
         self.addChild(presentTimeLabel!)
+        
+        hoursLabel?.removeFromParent()
+        hoursLabel = SKLabelNode()
+        hoursLabel?.fontName = "Avenir-Roman"
+        hoursLabel?.text = "\(totalTicks/2)hours"
+        hoursLabel?.fontSize = 12
+        hoursLabel?.position = CGPointMake(CGRectGetMidX(self.frame), self.frame.height - presentTimeLabel!.frame.size.height/2 - 20)
+        
+        self.addChild(hoursLabel!)
     }
     
     func drawItensMenu() {
@@ -448,9 +467,9 @@ class GameScene: SKScene {
                         } else {
                             executeGameAction(i)
                             organicMatterLabel?.text = "\(organicMatter)"
-                            
-                            var a1 = SKAction.fadeAlphaTo(0.6, duration: 0)
-                            var a2 = SKAction.waitForDuration(0.001)
+                            audioManager?.playClick()
+                            var a1 = SKAction.fadeAlphaTo(0.35, duration: 0)
+                            var a2 = SKAction.waitForDuration(0.05)
                             var a3 = SKAction.fadeAlphaTo(1, duration: 0)
                             
                             node.runAction(SKAction.sequence([a1,a2,a3]))
@@ -461,14 +480,18 @@ class GameScene: SKScene {
                 
                 if (pausedGame == true) {
                     if(name == "give") {
-                        pollution = 100000
+                        pollution = 200000
+                        audioManager?.playClick()
                         unPause()
                     } else {
+                        audioManager?.playClick()
                         unPause()
                     }
                 } else if (name == "Pause") {
+                    audioManager?.playClick()
                     pause()
                 } else if (name == "Flood" || name == "desc") {
+                    audioManager?.playClick()
                     fastFoward()
                 } else {
 
@@ -513,12 +536,12 @@ class GameScene: SKScene {
         
         if(timeSpeed == 0) {
             showDescriptorToMenu("1x")
-            tickTime = 1.8
+            tickTime = 1.5
         } else if(timeSpeed == 1) {
             showDescriptorToMenu("2x")
-            tickTime = 0.6
+            tickTime = 0.45
         } else if(timeSpeed == 2) {
-            tickTime = 0.1
+            tickTime = 0.05
             showDescriptorToMenu("3x")
         }
         
@@ -537,7 +560,10 @@ class GameScene: SKScene {
             chanceSpawnFactory()
             
             ticksPassed++
+            
             totalTicks++
+            
+            hoursLabel?.text = "\((totalTicks/2))hours"
             
             if(ticksPassed > tickDay) {
                 
@@ -545,6 +571,14 @@ class GameScene: SKScene {
                 presentTime++
                 redrawPresentTime()
                 
+            }
+            
+            if(ticksPassed == nightTime) {
+                var action = SKAction.fadeAlphaTo(1, duration: 1.0)
+                orbNight.runAction(action)
+            } else if (ticksPassed == 0) {
+                var action = SKAction.fadeAlphaTo(0, duration: 1.0)
+                orbNight.runAction(action)
             }
             
             tickTimer = NSTimer.scheduledTimerWithTimeInterval(tickTime, target: self, selector: Selector("updateTick"), userInfo: nil, repeats: false)
@@ -563,6 +597,8 @@ class GameScene: SKScene {
     }
     
     func popStatus(x: CGFloat, y: CGFloat,type: String) {
+        
+        audioManager?.playBip()
         
         var image = SKSpriteNode(imageNamed: type)
         image.size = CGSizeMake(sizeOfSprites, sizeOfSprites)
@@ -727,11 +763,19 @@ class GameScene: SKScene {
     
     func chanceSpawnFactory() {
         
-        var r = Double(random(0...totalTicks))/100
+        //pollution += 5
         
-        var chance = random(1...3)
+        var r = Double(random(0...totalTicks))/300
         
-        var n = random(0...Int(r))
+        var chance = random(1...20)
+        
+        var n = 0
+        
+        if(r > 1) {
+            n = random(1...Int(r))
+        } else {
+            n = 0
+        }
         
         if(chance == 1) {
             for var i=0; i<n; i++ {
@@ -772,7 +816,7 @@ class GameScene: SKScene {
         } else {
             
             var r = random(1...20)
-            if(r == 0) {
+            if(r == 1) {
                 orbCloud.runAction(vanish)
                 rainEmitter.alpha = 0
                 raining = false
@@ -813,11 +857,63 @@ class GameScene: SKScene {
         orbBackgroundBad.runAction(vanish)
         orbWaterBad.runAction(vanish)
         
+        acidRainChance()
+
+    }
+    
+    func backDark() {
+        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
+        orbWaterBad.runAction(vanish)
+        acidRainChance()
+        var action2 = SKAction.fadeAlphaTo(1, duration: 1.0)
+        orbBackgroundBad.runAction(action2)
+    }
+    
+    func darkenColor() {
+        var action = SKAction.fadeAlphaTo(1, duration: 1.0)
+        orbWaterBad.removeAllActions()
+        orbWaterBad.runAction(action)
+        acidRainChance()
+    }
+    
+    func loseGame() {
+        var vanish = SKAction.fadeAlphaTo(0, duration: 0.25)
+        
+        tickTimer.invalidate()
+        
+        closeItensMenu()
+        lostGame = true
+        raining = false
+        
+        rainEmitter.alpha = 0
+        orbBackgroundBad.alpha = 1
+        
+        islandSprite.runAction(vanish)
+        
+        orbNight.size = CGSizeMake(0, 0)
+        orbBadCloud.size = CGSizeMake(0, 0)
+        orbCloud.size = CGSizeMake(0, 0)
+        
+        orbSmoke.runAction(vanish)
+        presentTimeLabel?.runAction(vanish)
+        organicMatterImage?.runAction(vanish)
+        organicMatterLabel?.runAction(vanish)
+        hideDescriptor()
+        var action = SKAction.fadeAlphaTo(1, duration: 1.0)
+        orbWaterFlood.runAction(action)
+        
+        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("lostLevelTransition"), userInfo: nil, repeats: false)
+        
+    }
+    
+    func acidRainChance() {
+        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
+        
         var action = SKAction.fadeAlphaTo(1, duration: 1.0)
         
         if raining == false {
             
-            var r = random(1...30)
+            var r = random(1...65)
             if(r == 1) {
                 orbBadCloud.runAction(action) //Wait for block
                 
@@ -844,45 +940,12 @@ class GameScene: SKScene {
             }
             
         }
-
-    }
-    
-    func backDark() {
-        var vanish = SKAction.fadeAlphaTo(0, duration: 1.0)
-        orbWaterBad.runAction(vanish)
-        
-        var action2 = SKAction.fadeAlphaTo(1, duration: 1.0)
-        orbBackgroundBad.runAction(action2)
-    }
-    
-    func darkenColor() {
-        var action = SKAction.fadeAlphaTo(1, duration: 1.0)
-        orbWaterBad.removeAllActions()
-        orbWaterBad.runAction(action)
-    }
-    
-    func loseGame() {
-        closeItensMenu()
-        lostGame = true
-        rainEmitter.alpha = 0
-        orbBackgroundBad.alpha = 1
-        var vanish = SKAction.fadeAlphaTo(0, duration: 0.25)
-        islandSprite.runAction(vanish)
-        orbBadCloud.runAction(vanish)
-        orbCloud.runAction(vanish)
-        orbSmoke.runAction(vanish)
-        presentTimeLabel?.runAction(vanish)
-        organicMatterImage?.runAction(vanish)
-        organicMatterLabel?.runAction(vanish)
-        hideDescriptor()
-        var action = SKAction.fadeAlphaTo(1, duration: 1.0)
-        orbWaterFlood.runAction(action)
-        
-        NSTimer.scheduledTimerWithTimeInterval(1.0, target: self, selector: Selector("lostLevelTransition"), userInfo: nil, repeats: false)
-        
     }
     
     func lostLevelTransition() {
+        
+        var vanish = SKAction.fadeAlphaTo(0, duration: 0.25)
+        orbNight.runAction(vanish)
         
         var action = SKAction.resizeToWidth(self.frame.width/3, height: self.frame.width/3, duration: 0.4)
         var action2 = SKAction.moveTo(CGPoint(x: self.frame.width/2, y: self.frame.height/1.4), duration: 0.4)
@@ -909,7 +972,8 @@ class GameScene: SKScene {
     func nextScene() {
         
         var scene = EndScene(size:self.size)
-        scene.scoreValue = presentTime
+        scene.scoreValue = totalTicks/2
+        scene.audioManager = self.audioManager
         
         self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.6))
         

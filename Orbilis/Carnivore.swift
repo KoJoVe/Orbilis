@@ -24,11 +24,10 @@ class Carnivore: Lifeform {
         super.init(texture: texture, color: nil, size: sizeWH)
         
         pollutionIncrement = 0
-        pollutionLimit = 200
+        pollutionLimit = 30000
         reproductionRate = 0
-        lifeTimeMax = 35
-        organicProduction = 120
-        organicProductionP = 50
+        lifeTimeMax = 70
+        organicProduction = 95
         
         self.position = randomPointInsideRect(rect)
         self.zPosition = 5
@@ -38,7 +37,7 @@ class Carnivore: Lifeform {
     
     override func interact(lifeform: SKSpriteNode) -> Bool {
         
-        var r = random(1...3)
+        var r = random(1...120)
         
         if(lifeform.name == "herbivore" && fed == false && r == 1) {
             var node = lifeform as! Lifeform

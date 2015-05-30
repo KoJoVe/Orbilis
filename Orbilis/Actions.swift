@@ -150,16 +150,16 @@ class Actions: NSObject {
     class func getActionCost(type: String, timesExecuted: Int) -> Int {
         
         if(type=="AddTree") {
-            return 100//Int(100 * pow(9/8,Double(timesExecuted)))
+            return 50//Int(100 * pow(9/8,Double(timesExecuted)))
         }
         if(type=="AddHerb") {
-            return 60
+            return 75
         }
         if(type=="AddCarn") {
-            return 80
+            return 100
         }
         if(type=="RemoveFactory") {
-            return Int(50 * pow(16/15,Double(timesExecuted)))
+            return Int(50 * pow(51/50,Double(timesExecuted)))
         }
         
         return 0

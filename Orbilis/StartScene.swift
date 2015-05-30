@@ -18,6 +18,7 @@ class StartScene: SKScene, UIAlertViewDelegate {
     var orbPlay: SKLabelNode = SKLabelNode()
     var orbTutorial: SKLabelNode = SKLabelNode()
     var animationDuration = 0.4
+    var audioManager: AudioManager?
     
     override func didMoveToView(view: SKView) {
         /* Setup your scene here */
@@ -25,6 +26,7 @@ class StartScene: SKScene, UIAlertViewDelegate {
         //Orb no meio
         //Titulo orbilis
         //tap screen to play
+        
         
         var background = SKSpriteNode(imageNamed: "Background")
         background.size = CGSizeMake(self.frame.size.width, self.frame.size.height)
@@ -67,10 +69,19 @@ class StartScene: SKScene, UIAlertViewDelegate {
             
             audioButton.texture = SKTexture(imageNamed: "SoundButton")
             
+            if(audioManager == nil) {
+                audioManager = AudioManager()
+                audioManager!.play()
+            } else {
+                audioManager!.play()
+            }
+            
+            
         }
         
         else {
             
+            audioManager = AudioManager()
             audioButton.texture = SKTexture(imageNamed: "NoSoundButton")
             
         }
@@ -113,7 +124,7 @@ class StartScene: SKScene, UIAlertViewDelegate {
             if name == "tutorial" {
                 
                 gotoTut()
-                
+                audioManager?.playClick()
                 UserData.setAlreadyUser(1)
             }
             
@@ -134,6 +145,7 @@ class StartScene: SKScene, UIAlertViewDelegate {
                     
                 } else {
                     
+                    audioManager?.playClick()
                     gotoGame()
                     
                 }
@@ -157,6 +169,7 @@ class StartScene: SKScene, UIAlertViewDelegate {
         var block = SKAction.runBlock({
             
             var scene = GameScene(size:self.size)
+            scene.audioManager = self.audioManager
             
             self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.1))
             
@@ -183,6 +196,7 @@ class StartScene: SKScene, UIAlertViewDelegate {
         var block = SKAction.runBlock({
             
             var scene = TutorialScene(size:self.size)
+            scene.audioManager = self.audioManager
             
             self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.1))
             
@@ -212,12 +226,20 @@ class StartScene: SKScene, UIAlertViewDelegate {
             
             audioButton.texture = SKTexture(imageNamed: "SoundButton")
             
+            if(audioManager == nil) {
+                audioManager = AudioManager()
+                audioManager!.play()
+            } else {
+                audioManager!.play()
+            }
+            
         }
             
         else {
             
+            audioManager = AudioManager()
             audioButton.texture = SKTexture(imageNamed: "NoSoundButton")
-            
+            audioManager?.stop()
         }
         
     }

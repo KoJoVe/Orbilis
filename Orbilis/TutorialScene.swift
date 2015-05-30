@@ -65,16 +65,16 @@ class TutorialScene: SKScene {
         case SpeedUp
     }
     
+    var audioManager: AudioManager?
     var currentPhase = TutorialPhase.WelcomePhase
     var currentString = 0
-    let descriptionArray = ["Welcome to orbilis!","You have one simple job.","Dont let the enviroment die with pollution.","Let`s see how you do this.","This is your organic matter.","You spend this to modify your enviroment.","Lets add a tree. Tap on the add tree icon.","Trees help decrease pollution","Once in a while, factories will appear","They increase the pollution!","You will see the pollution effects in the long term.","And that`s not good…","Lets remove this factory!","Tap the remove factory icon.","Nice job!","Now, let's add a herbivore","Herbivores eat trees and reproduce","You can add carnivores too!","They eat the herbivores and reproduce.","And, when they die…","…you get more organic matter!","Up there, is the number of days passed","You can tap in the orb to change time speed!","Try to keep the environment running…", "…for the maximum days you can!","Thats it! You can acess this tutorial again.", "Just click in 'tutorial' in the initial screen!","Good luck!"]
+    let descriptionArray = ["Welcome to orbilis!","You have one simple job.","Dont let the enviroment die with pollution.","Let`s see how you do this.","This is your organic matter.","You spend this to modify your enviroment.","Lets add a tree. Tap on the add tree icon.","Trees help decrease pollution","Once in a while, factories will appear","They increase the pollution!","You will see the pollution effects in the long term.","And that`s not good…","Lets remove this factory!","Tap the remove factory icon.","Nice job!","Now, let's add a herbivore","Herbivores eat trees and reproduce","You can add carnivores too!","They eat the herbivores and reproduce.","If one creature die...","...you get more organic matter!","Up there, is the number of days passed","You can tap in the orb to change time speed!","Try to keep the environment running…", "…for the maximum days you can!","Thats it! You can access this tutorial again.", "Just click in 'tutorial' in the initial screen!","Good luck!"]
     
     var pollutionLimits = [0,100,200,300,500]
     
     var sizeOfSprites: CGFloat = 20
     var tickTime = 2.0
     var tickTimer = NSTimer()
-    var audioManager = AudioManager()
     
     var ticksPassed = 0
     var totalTicks = 0
@@ -796,6 +796,7 @@ class TutorialScene: SKScene {
     func nextScene() {
         
         var scene = StartScene(size:self.size)
+        scene.audioManager = self.audioManager
         
         self.scene!.view?.presentScene(scene, transition: SKTransition.crossFadeWithDuration(0.6))
         

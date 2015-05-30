@@ -10,7 +10,7 @@ import SpriteKit
 
 class Building: SKSpriteNode {
     
-    var pollutionRate = 10
+    var pollutionRate = 20
     
     init(size: CGFloat, rect: CGRect) {
         

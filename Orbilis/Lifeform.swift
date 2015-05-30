@@ -19,6 +19,7 @@ class Lifeform: SKSpriteNode {
     var organicProduction = 0
     var hungerCooldownRate = 10
     var organicProductionP = 0
+    var eaten = false
     
     var aboutToDelete = 0 //Prevent Flying Memory
     
@@ -34,7 +35,7 @@ class Lifeform: SKSpriteNode {
     
     func chanceToDie(pollution: Int) -> Bool {
         if(pollution >= pollutionLimit) {
-            var r = random(1...10)
+            var r = random(1...4)
             if(r<=1) {
                 return true
             }

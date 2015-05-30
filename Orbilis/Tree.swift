@@ -17,11 +17,11 @@ class Tree: Lifeform {
         
         super.init(texture: texture, color: nil, size: sizeWH)
         
-        pollutionIncrement = -15
-        pollutionLimit = 500
+        pollutionIncrement = -40
+        pollutionLimit = 80000
         reproductionRate = 0
-        lifeTimeMax = 300
-        organicProduction = 0
+        lifeTimeMax = 100
+        organicProduction = 45
         
         self.position = randomPointInsideRect(rect)
         self.zPosition = 5
@@ -30,9 +30,19 @@ class Tree: Lifeform {
     }
     
     override func move(rect: CGRect, time: Double) {
-        
+        lifeTime++
     }
 
+    override func chanceToDie(pollution: Int) -> Bool {
+        if(pollution >= pollutionLimit) {
+            var r = random(1...15)
+            if(r<=1) {
+                return true
+            }
+        }
+        return false
+    }
+    
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }

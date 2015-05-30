@@ -24,10 +24,10 @@ class Herbivore: Lifeform {
         super.init(texture: texture, color: nil, size: sizeWH)
         
         pollutionIncrement = 0
-        pollutionLimit = 400
+        pollutionLimit = 40000
         reproductionRate = 0
-        lifeTimeMax = 90
-        organicProduction = 0
+        lifeTimeMax = 25
+        organicProduction = 70
         
         self.position = randomPointInsideRect(rect)
         self.zPosition = 5
@@ -37,14 +37,20 @@ class Herbivore: Lifeform {
     
     override func interact(lifeform: SKSpriteNode) -> Bool {
         
-        var r = random(1...3)
+        //         node.aboutToDelete = 1
+        //            node.animateToDie()
         
-        if(lifeform.name == "tree" && fed == false && r == 1 ) {
+        var r = random(1...80)
+        
+        if(lifeform.name == "tree" && fed == false && r == 1) {
             var node = lifeform as! Lifeform
-            node.animateToDie()
-            fed = true
-            node.aboutToDelete = 1
-            return true
+            if(node.eaten == false) {
+                node.eaten = true
+                fed = true
+                return true
+            } else {
+                return false
+            }
         }
         
         return false

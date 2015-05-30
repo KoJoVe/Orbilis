@@ -19,6 +19,7 @@ class EndScene: SKScene {
     var rateUs: SKLabelNode = SKLabelNode()
     var playButton = SKSpriteNode()
     var rateButton = SKSpriteNode()
+    var audioManager: AudioManager?
     
     var animationDuration = 0.4
     var scoreValue = 0
@@ -59,7 +60,7 @@ class EndScene: SKScene {
         
         //You've kept up the orb for x days
         
-        score = SKLabelNode(text: "You've kept up the orb for \(scoreValue) days!")
+        score = SKLabelNode(text: "You've kept up the orb for \(scoreValue) hours!")
         score.position = CGPoint(x: self.frame.width/2, y: self.frame.height/2.2)
         score.fontSize = 15
         score.fontName = "Avenir-Roman"
@@ -128,7 +129,7 @@ class EndScene: SKScene {
             var name = nodeAtPoint(touch.locationInNode(self)).name
             
             if name == "playAgain" {
-                
+                audioManager?.playClick()
                 var fadeOut = SKAction.fadeOutWithDuration(animationDuration)
                 var moveToCenter = SKAction.moveToY(self.frame.height/2 + 30, duration: animationDuration)
                 moveToCenter.timingMode = SKActionTimingMode.EaseInEaseOut
@@ -138,6 +139,7 @@ class EndScene: SKScene {
                     var transition = SKTransition.crossFadeWithDuration(self.animationDuration)
                     
                     var scene = StartScene(size:self.size)
+                    scene.audioManager = self.audioManager
                     
                     self.scene!.view?.presentScene(scene, transition: transition)
                     
@@ -156,9 +158,9 @@ class EndScene: SKScene {
                 self.rateButton.runAction(fadeOut)
                 
             } else if name == "rateUs" {
-                
+                audioManager?.playClick()
                 //Mudar ID
-                var url = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=991654758&onlyLatestVersion=true&pageNumber=0&sortOrdering=1)"
+                var url = "itms-apps://itunes.apple.com/WebObjects/MZStore.woa/wa/viewContentsUserReviews?id=1000119185&onlyLatestVersion=true&pageNumber=0&sortOrdering=1)"
                 UIApplication.sharedApplication().openURL(NSURL(string: url)!)
                 
             }
